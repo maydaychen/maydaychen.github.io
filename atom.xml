@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>陈译的博客</title>
+  <subtitle>Android,Web</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="maydaychen.github.io/"/>
+  <updated>2017-03-22T13:55:28.770Z</updated>
+  <id>maydaychen.github.io/</id>
+  
+  <author>
+    <name>maydaychen</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Tablayout之Tab宽度左右无法填充</title>
+    <link href="maydaychen.github.io/2017/03/22/Tablayout%E4%B9%8BTab%E5%AE%BD%E5%BA%A6%E5%B7%A6%E5%8F%B3%E6%97%A0%E6%B3%95%E5%A1%AB%E5%85%85/"/>
+    <id>maydaychen.github.io/2017/03/22/Tablayout之Tab宽度左右无法填充/</id>
+    <published>2017-03-22T13:48:05.000Z</published>
+    <updated>2017-03-22T13:55:28.770Z</updated>
+    
+    <content type="html"><![CDATA[<p> 前段时间做一个项目使用到了Tablayout,可以用来实现类似知乎分栏的效果要使用Tablayout，必须引用Google的Android Support Design库，使用Android Studio 的同学可以直接使用只要在build.gradle中加入<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">compile <span class="string">'com.android.support:design:22.2.0'</span></div></pre></td></tr></table></figure></p>
+<p>即可<br><a id="more"></a></p>
+<h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2><p>使用中，我需要设置Tab的点击效果，所以我新建了一个selector，并将每一个tab的界面背景设置为该selector<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">itemTab.setCustomView(R.layout.item_tab_layout_custom);</div><div class="line">                        itemTab.getCustomView().setBackgroundResource(R.drawable.selector_tab);</div><div class="line">                        TextView itemTv = (TextView) itemTab.getCustomView().findViewById(R.id</div><div class="line">                                .tv_menu_item);</div><div class="line">                        itemTv.setText(tabIndicators.get(i));</div></pre></td></tr></table></figure></p>
+<p>但是效果并不理想，如下图</p>
+<p><img src="http://www.lovemay.online/wp-content/uploads/2016/12/S61226-165004-169x300.jpg" alt="原图"></p>
+<h2 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h2><p>百度了两天后，还是没有解决该问题，直到第三天，我的科学上网工具又好了- -感动到晕厥（事实证明，程序员真的不适合用百度，生活服务还好）<br>我google到了<a href="http://panavtec.me/playing-with-the-new-support-tablayout" target="_blank" rel="external">下面一篇文章</a>，其中讲到了：<br>如果你设置了TabMode为MODE_FIXED然后发现文本并没有包围全局，或许是因为Tablayout在创建时应用了一些嵌入设置，你可以将下面的代码写入xml以解决此问题：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">app:tabPaddingStart=<span class="string">"-1dp"</span></div><div class="line">app:tabPaddingEnd=<span class="string">"-1dp"</span></div></pre></td></tr></table></figure></p>
+<p>效果如下：</p>
+<p>代码加入前：<br><img src="http://www.lovemay.online/wp-content/uploads/2016/12/原版-300x110.png" alt="加入前"></p>
+<p>代码加入后：<br><img src="http://www.lovemay.online/wp-content/uploads/2016/12/终版-300x61.png" alt="加入后"></p>
+<p>由此可见，问题完美解决</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>经过了这一次的问题，越发觉得程序员学会科学上网是多么重要，也增加了自己查询解决问题的能力，Tablayout作为谷歌推出的遵循MD的控件，应该多加学习利用。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt; 前段时间做一个项目使用到了Tablayout,可以用来实现类似知乎分栏的效果要使用Tablayout，必须引用Google的Android Support Design库，使用Android Studio 的同学可以直接使用只要在build.gradle中加入&lt;br&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;compile &lt;span class=&quot;string&quot;&gt;&#39;com.android.support:design:22.2.0&#39;&lt;/span&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;即可&lt;br&gt;
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Ubuntu相关简易操作汇总（实时更新）</title>
+    <link href="maydaychen.github.io/2017/03/22/Ubuntu%E7%9B%B8%E5%85%B3%E7%AE%80%E6%98%93%E6%93%8D%E4%BD%9C%E6%B1%87%E6%80%BB%EF%BC%88%E5%AE%9E%E6%97%B6%E6%9B%B4%E6%96%B0%EF%BC%89/"/>
+    <id>maydaychen.github.io/2017/03/22/Ubuntu相关简易操作汇总（实时更新）/</id>
+    <published>2017-03-22T13:30:32.000Z</published>
+    <updated>2017-03-22T13:34:41.871Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="获取root权限"><a href="#获取root权限" class="headerlink" title="获取root权限"></a>获取root权限</h2><ol>
+<li><p>输入命令：sudo su;</p>
+</li>
+<li><p>屏幕上会回显要求输入当前用户密码的提示，输入密码即可获得管理员权限;</p>
+</li>
+<li><p>若想退出管理员权限可输入命令：su 用户名.</p>
+</li>
+</ol>
+<a id="more"></a>
+<h2 id="vim显示行数"><a href="#vim显示行数" class="headerlink" title="vim显示行数"></a>vim显示行数</h2><ol>
+<li><p>进入终端，在命令行中输入cd  /etc/vim 后敲回车，进入/etc/vim目录；</p>
+</li>
+<li><p>进入etc/vim目录后，找到vimrc文件（vim的初始化文件），使用cp命令对其进行备份，命令为：cp  vimrc  vimrc.bak（必须要有管理员权限，否则无法成功）</p>
+</li>
+<li><p>用管理员权限打开vimrc，命令为：sudo  vi  vimrc</p>
+</li>
+<li><p>打开后，在vimrc文件最后加入一行命令：set  nu;</p>
+</li>
+<li><p>加完后，写入，退出，（esc -&gt; :wq），重新使用vim打开任意文件即可发现有行号的标示。</p>
+</li>
+</ol>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;获取root权限&quot;&gt;&lt;a href=&quot;#获取root权限&quot; class=&quot;headerlink&quot; title=&quot;获取root权限&quot;&gt;&lt;/a&gt;获取root权限&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;输入命令：sudo su;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;屏幕上会回显要求输入当前用户密码的提示，输入密码即可获得管理员权限;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;若想退出管理员权限可输入命令：su 用户名.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Android5.0以下报NoClassDefFoundError</title>
+    <link href="maydaychen.github.io/2017/03/21/Android5.0%E4%BB%A5%E4%B8%8B%E6%8A%A5NoClassDefFoundError/"/>
+    <id>maydaychen.github.io/2017/03/21/Android5.0以下报NoClassDefFoundError/</id>
+    <published>2017-03-21T13:11:01.000Z</published>
+    <updated>2017-03-22T13:23:47.963Z</updated>
+    
+    <content type="html"><![CDATA[<p>一开始，我的项目都是在API21（5.0）的情况下编写的，所以过程很顺利，没有任何的错误，但是偶然之下，我用了同事的4.4的测试机，发现只要用到网络请求的地方，就会报NoClassDefFoundError，毫无办法。因为项目里用到了okhttp跟retrofit，我一度以为是引入的包冲突了，在那查了半天，无果。后来发现是Multidex这个操作的时候有问题，网上一查，真的有这个问题，现在阐述一下具体解决过程。</p>
+<a id="more"></a>
+<h2 id="论坛方法："><a href="#论坛方法：" class="headerlink" title="论坛方法："></a>论坛方法：</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">apply plugin: <span class="string">'com.android.application'</span></div><div class="line">android &#123;</div><div class="line">  ...</div><div class="line">&#125;</div><div class="line">dependencies &#123;</div><div class="line">  ...</div><div class="line">&#125;</div><div class="line">android.applicationVariants.all &#123; variant -&gt;</div><div class="line">    task <span class="string">"fix$&#123;variant.name.capitalize()&#125;MainDexClassList"</span> &lt;&lt; &#123;</div><div class="line">        logger.info <span class="string">"Fixing main dex keep file for $variant.name"</span></div><div class="line">        File keepFile = <span class="keyword">new</span> File(<span class="string">"$buildDir/intermediates/multi-dex/$variant.buildType.name/maindexlist.txt"</span>)</div><div class="line">        keepFile.withWriterAppend &#123; w -&gt;</div><div class="line">            <span class="comment">// Get a reader for the input file</span></div><div class="line">            w.append(<span class="string">'\n'</span>)</div><div class="line">            <span class="keyword">new</span> File(<span class="string">"$&#123;projectDir&#125;/multidex.keep"</span>).withReader &#123; r -&gt;</div><div class="line">                <span class="comment">// And write data from the input into the output</span></div><div class="line">                w &lt;&lt; r &lt;&lt; <span class="string">'\n'</span></div><div class="line">            &#125;</div><div class="line">            logger.info <span class="string">"Updated main dex keep file for $&#123;keepFile.getAbsolutePath()&#125;\n$keepFile.text"</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">tasks.whenTaskAdded &#123; task -&gt;</div><div class="line">    android.applicationVariants.all &#123; variant -&gt;</div><div class="line">        <span class="keyword">if</span> (task.name == <span class="string">"create$&#123;variant.name.capitalize()&#125;MainDexClassList"</span>) &#123;</div><div class="line">            task.finalizedBy <span class="string">"fix$&#123;variant.name.capitalize()&#125;MainDexClassList"</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>clean 然后 rebuild 项目，完成之后在 module 下的 build/intermediates/multi-dex/xxx 里找到 maindexlist.txt 文件（如果找不到相关目录，可能需要你同步后 rebuild 项目才能生成），复制里面的内容到 module 根目录下 multidex.keep 文件中（没有则先创建此文件）<br>具体的步骤经测试可行</p>
+<h2 id="没用出现该maindexlist-txt-文件解决办法"><a href="#没用出现该maindexlist-txt-文件解决办法" class="headerlink" title="没用出现该maindexlist.txt 文件解决办法"></a>没用出现该maindexlist.txt 文件解决办法</h2><p>在上述代码执行后并没有出现maindexlist.txt 这个文件（其实我一开始也没有- -），然后我查阅了<a href="https://developer.android.com/studio/build/multidex.html" target="_blank" rel="external">android程序员都知道的网站</a>，发现自己确实引用了<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">compile <span class="string">'com.android.support:multidex:1.0.0'</span></div></pre></td></tr></table></figure></p>
+<p>也确实设置了<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">multiDexEnabled <span class="keyword">true</span></div></pre></td></tr></table></figure></p>
+<p>但是没有在manifest文件中设置（不太习惯使用markdown的标签，application缺少标签，见谅）<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">application</div><div class="line">    ...</div><div class="line">    android:name=<span class="string">"android.support.multidex.MultiDexApplication"</span>&gt;</div><div class="line">    ...</div><div class="line">/application</div></pre></td></tr></table></figure></p>
+<p>重新运行，不报错，问题解决</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;一开始，我的项目都是在API21（5.0）的情况下编写的，所以过程很顺利，没有任何的错误，但是偶然之下，我用了同事的4.4的测试机，发现只要用到网络请求的地方，就会报NoClassDefFoundError，毫无办法。因为项目里用到了okhttp跟retrofit，我一度以为是引入的包冲突了，在那查了半天，无果。后来发现是Multidex这个操作的时候有问题，网上一查，真的有这个问题，现在阐述一下具体解决过程。&lt;/p&gt;
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Hello World</title>
+    <link href="maydaychen.github.io/2017/03/21/hello-world/"/>
+    <id>maydaychen.github.io/2017/03/21/hello-world/</id>
+    <published>2017-03-21T12:22:37.289Z</published>
+    <updated>2017-03-21T12:22:37.293Z</updated>
+    
+    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.
+    
+    </summary>
+    
+    
+  </entry>
+  
+</feed>
