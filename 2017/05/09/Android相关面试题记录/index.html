@@ -77,6 +77,8 @@
 
 
 
+  
+
 
   <link rel="alternate" href="/atom.xml" title="陈译的博客" type="application/atom+xml">
 
@@ -91,21 +93,21 @@
 
 
 <meta name="description" content="此文章不定时更新，记录面试过程中遇到的相关问题
-##1.activity的启动模式有几种？分别是什么？&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; 4种
-&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; standard：默认模式，可以不用写配置。在这个模式下，都会默认创建一个新的实例。因此，在这种模式下，可以有多个相同的实例，也允许多个相同Activity叠加。&amp;nbsp; &amp;n">
+1.activity的启动模式有几种？分别是什么？&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; 4种
+&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; standard：默认模式，可以不用写配置。在这个模式下，都会默认创建一个新的实例。因此，在这种模式下，可以有多个相同的实例，也允许多个相同Activity叠加。&amp;nbsp; &amp;nbs">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android相关面试题记录">
 <meta property="og:url" content="maydaychen.github.io/2017/05/09/Android相关面试题记录/index.html">
 <meta property="og:site_name" content="陈译的博客">
 <meta property="og:description" content="此文章不定时更新，记录面试过程中遇到的相关问题
-##1.activity的启动模式有几种？分别是什么？&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; 4种
-&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; standard：默认模式，可以不用写配置。在这个模式下，都会默认创建一个新的实例。因此，在这种模式下，可以有多个相同的实例，也允许多个相同Activity叠加。&amp;nbsp; &amp;n">
-<meta property="og:updated_time" content="2017-05-09T15:15:54.559Z">
+1.activity的启动模式有几种？分别是什么？&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; 4种
+&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; standard：默认模式，可以不用写配置。在这个模式下，都会默认创建一个新的实例。因此，在这种模式下，可以有多个相同的实例，也允许多个相同Activity叠加。&amp;nbsp; &amp;nbs">
+<meta property="og:updated_time" content="2017-05-09T15:24:39.438Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android相关面试题记录">
 <meta name="twitter:description" content="此文章不定时更新，记录面试过程中遇到的相关问题
-##1.activity的启动模式有几种？分别是什么？&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; 4种
-&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; standard：默认模式，可以不用写配置。在这个模式下，都会默认创建一个新的实例。因此，在这种模式下，可以有多个相同的实例，也允许多个相同Activity叠加。&amp;nbsp; &amp;n">
+1.activity的启动模式有几种？分别是什么？&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; 4种
+&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; standard：默认模式，可以不用写配置。在这个模式下，都会默认创建一个新的实例。因此，在这种模式下，可以有多个相同的实例，也允许多个相同Activity叠加。&amp;nbsp; &amp;nbs">
 
 
 
@@ -331,9 +333,9 @@
 
       
         <p>此文章不定时更新，记录面试过程中遇到的相关问题</p>
-<p>##1.activity的启动模式有几种？分别是什么？<br>&nbsp; &nbsp; &nbsp; &nbsp; 4种</p>
+<h1 id="1-activity的启动模式有几种？分别是什么？"><a href="#1-activity的启动模式有几种？分别是什么？" class="headerlink" title="1.activity的启动模式有几种？分别是什么？"></a>1.activity的启动模式有几种？分别是什么？</h1><p>&nbsp; &nbsp; &nbsp; &nbsp; 4种</p>
 <p>&nbsp; &nbsp; &nbsp; &nbsp; standard：默认模式，可以不用写配置。在这个模式下，都会默认创建一个新的实例。因此，在这种模式下，可以有多个相同的实例，也允许多个相同Activity叠加。<br>&nbsp; &nbsp; &nbsp; &nbsp; singleTop：如果Activity在栈顶的时候，启动相同的Activity，不会创建新的实例，而会调用其onNewIntent方法。<br>&nbsp; &nbsp; &nbsp; &nbsp; singleTask：只有一个实例。在同一个应用程序中启动他的时候，若Activity不存在，则会在当前task创建一个新的实例，若存在，则会把task中在其之上的其它Activity destory掉并调用它的onNewIntent方法。如果是在别的应用程序中启动它，则会新建一个task，并在该task中启动这个Activity，singleTask允许别的Activity与其在一个task中共存，也就是说，如果我在这个singleTask的实例中再打开新的Activity，这个新的Activity还是会在singleTask的实例的task中。<br>&nbsp; &nbsp; &nbsp; &nbsp; singleInstance：只有一个实例，并且这个实例独立运行在一个task中，这个task只有这个实例，不允许有别的Activity存在。</p>
-<h2 id=""><a href="#" class="headerlink" title=""></a><a id="more"></a></h2><p>##2.请用代码写出一个接口回调的例子<br> <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">A</span> <span class="keyword">implements</span> <span class="title">View</span>.<span class="title">OnClickListener</span></span>&#123;</div><div class="line">    <span class="keyword">private</span> OnRecyclerViewItemClickListener mOnItemClickListener = <span class="keyword">null</span>;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">OnRecyclerViewItemClickListener</span> </span>&#123;</div><div class="line">        <span class="function"><span class="keyword">void</span> <span class="title">onItemClick</span><span class="params">(View view, <span class="keyword">int</span> data)</span></span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (mOnItemClickListener != <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="comment">//注意这里使用getTag方法获取数据</span></div><div class="line">            mOnItemClickListener.onItemClick(v, (Integer) v.getTag());</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setOnItemClickListener</span><span class="params">(OnRecyclerViewItemClickListener listener)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.mOnItemClickListener = listener;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id=""><a href="#" class="headerlink" title=""></a><a id="more"></a></h2><h1 id="2-请用代码写出一个接口回调的例子"><a href="#2-请用代码写出一个接口回调的例子" class="headerlink" title="2.请用代码写出一个接口回调的例子"></a>2.请用代码写出一个接口回调的例子</h1> <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">A</span> <span class="keyword">implements</span> <span class="title">View</span>.<span class="title">OnClickListener</span></span>&#123;</div><div class="line">    <span class="keyword">private</span> OnRecyclerViewItemClickListener mOnItemClickListener = <span class="keyword">null</span>;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">OnRecyclerViewItemClickListener</span> </span>&#123;</div><div class="line">        <span class="function"><span class="keyword">void</span> <span class="title">onItemClick</span><span class="params">(View view, <span class="keyword">int</span> data)</span></span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (mOnItemClickListener != <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="comment">//注意这里使用getTag方法获取数据</span></div><div class="line">            mOnItemClickListener.onItemClick(v, (Integer) v.getTag());</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setOnItemClickListener</span><span class="params">(OnRecyclerViewItemClickListener listener)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.mOnItemClickListener = listener;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>然后在B类中实现具体操作<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">B</span></span>&#123;</div><div class="line">    A a = <span class="keyword">new</span> A();</div><div class="line">    a.setOnItemClickListener()&#123;</div><div class="line">    <span class="comment">//各种噼里啪啦的操作</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>##3.ScrollView嵌套RecyclerView会有什么问题？怎么解决？<br>    ScrollView中嵌套了几个RecyclerView，会导致滑动RecyclerView没有惯性效果<br>    解决办法：重写LayoutManager,设置canScrollVertically属性为false<br>    eg:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">layoutManager = <span class="keyword">new</span> GridLayoutManager(<span class="keyword">this</span>, <span class="number">2</span>, LinearLayoutManager.VERTICAL, <span class="keyword">false</span>)&#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">canScrollVertically</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
       
@@ -495,7 +497,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">1.</span> <span class="nav-text"></span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-activity的启动模式有几种？分别是什么？"><span class="nav-number">1.</span> <span class="nav-text">1.activity的启动模式有几种？分别是什么？</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">1.1.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-请用代码写出一个接口回调的例子"><span class="nav-number">2.</span> <span class="nav-text">2.请用代码写出一个接口回调的例子</span></a></li></ol></div>
             
 
           </div>
