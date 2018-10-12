@@ -90,16 +90,19 @@
 
 
 
-<meta name="description" content="一开始，我的项目都是在API21（5.0）的情况下编写的，所以过程很顺利，没有任何的错误，但是偶然之下，我用了同事的4.4的测试机，发现只要用到网络请求的地方，就会报NoClassDefFoundError，毫无办法。因为项目里用到了okhttp跟retrofit，我一度以为是引入的包冲突了，在那查了半天，无果。后来发现是Multidex这个操作的时候有问题，网上一查，真的有这个问题，现在阐述一下">
+<meta name="description" content="最近几个版本的Android studio有时候一直会不停的indexing，什么操作都不让执行，现在有两种解决办法：简单粗暴方法一：关闭Android studio，重新打开，问题解决方法二：File &amp;gt; Invalidate Caches/Restart
+个人感觉操作大同小异，就是重启IDE，希望Google能早日修复">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Android5.0以下报NoClassDefFoundError">
-<meta property="og:url" content="maydaychen.github.io/2017/03/21/Android5.0以下报NoClassDefFoundError/index.html">
+<meta property="og:title" content="studio不停indexing解决">
+<meta property="og:url" content="maydaychen.github.io/2018/10/12/studio不停indexing解决/index.html">
 <meta property="og:site_name" content="陈译的博客">
-<meta property="og:description" content="一开始，我的项目都是在API21（5.0）的情况下编写的，所以过程很顺利，没有任何的错误，但是偶然之下，我用了同事的4.4的测试机，发现只要用到网络请求的地方，就会报NoClassDefFoundError，毫无办法。因为项目里用到了okhttp跟retrofit，我一度以为是引入的包冲突了，在那查了半天，无果。后来发现是Multidex这个操作的时候有问题，网上一查，真的有这个问题，现在阐述一下">
-<meta property="og:updated_time" content="2017-03-22T13:23:47.963Z">
+<meta property="og:description" content="最近几个版本的Android studio有时候一直会不停的indexing，什么操作都不让执行，现在有两种解决办法：简单粗暴方法一：关闭Android studio，重新打开，问题解决方法二：File &amp;gt; Invalidate Caches/Restart
+个人感觉操作大同小异，就是重启IDE，希望Google能早日修复">
+<meta property="og:updated_time" content="2018-10-12T02:34:44.041Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Android5.0以下报NoClassDefFoundError">
-<meta name="twitter:description" content="一开始，我的项目都是在API21（5.0）的情况下编写的，所以过程很顺利，没有任何的错误，但是偶然之下，我用了同事的4.4的测试机，发现只要用到网络请求的地方，就会报NoClassDefFoundError，毫无办法。因为项目里用到了okhttp跟retrofit，我一度以为是引入的包冲突了，在那查了半天，无果。后来发现是Multidex这个操作的时候有问题，网上一查，真的有这个问题，现在阐述一下">
+<meta name="twitter:title" content="studio不停indexing解决">
+<meta name="twitter:description" content="最近几个版本的Android studio有时候一直会不停的indexing，什么操作都不让执行，现在有两种解决办法：简单粗暴方法一：关闭Android studio，重新打开，问题解决方法二：File &amp;gt; Invalidate Caches/Restart
+个人感觉操作大同小异，就是重启IDE，希望Google能早日修复">
 
 
 
@@ -127,13 +130,13 @@
 
 
 
-  <link rel="canonical" href="maydaychen.github.io/2017/03/21/Android5.0以下报NoClassDefFoundError/">
+  <link rel="canonical" href="maydaychen.github.io/2018/10/12/studio不停indexing解决/">
 
 
 
 
 
-  <title> Android5.0以下报NoClassDefFoundError | 陈译的博客 </title>
+  <title> studio不停indexing解决 | 陈译的博客 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -252,7 +255,7 @@
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="maydaychen.github.io/2017/03/21/Android5.0以下报NoClassDefFoundError/">
+    <link itemprop="mainEntityOfPage" href="maydaychen.github.io/2018/10/12/studio不停indexing解决/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="maydaychen">
@@ -273,7 +276,7 @@
             
             
               
-                Android5.0以下报NoClassDefFoundError
+                studio不停indexing解决
               
             
           </h1>
@@ -288,8 +291,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-21T21:11:01+08:00">
-                2017-03-21
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-12T10:33:02+08:00">
+                2018-10-12
               </time>
             
 
@@ -328,14 +331,8 @@
       
 
       
-        <p>一开始，我的项目都是在API21（5.0）的情况下编写的，所以过程很顺利，没有任何的错误，但是偶然之下，我用了同事的4.4的测试机，发现只要用到网络请求的地方，就会报NoClassDefFoundError，毫无办法。因为项目里用到了okhttp跟retrofit，我一度以为是引入的包冲突了，在那查了半天，无果。后来发现是Multidex这个操作的时候有问题，网上一查，真的有这个问题，现在阐述一下具体解决过程。</p>
-<a id="more"></a>
-<h2 id="论坛方法："><a href="#论坛方法：" class="headerlink" title="论坛方法："></a>论坛方法：</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">apply plugin: <span class="string">'com.android.application'</span></div><div class="line">android &#123;</div><div class="line">  ...</div><div class="line">&#125;</div><div class="line">dependencies &#123;</div><div class="line">  ...</div><div class="line">&#125;</div><div class="line">android.applicationVariants.all &#123; variant -&gt;</div><div class="line">    task <span class="string">"fix$&#123;variant.name.capitalize()&#125;MainDexClassList"</span> &lt;&lt; &#123;</div><div class="line">        logger.info <span class="string">"Fixing main dex keep file for $variant.name"</span></div><div class="line">        File keepFile = <span class="keyword">new</span> File(<span class="string">"$buildDir/intermediates/multi-dex/$variant.buildType.name/maindexlist.txt"</span>)</div><div class="line">        keepFile.withWriterAppend &#123; w -&gt;</div><div class="line">            <span class="comment">// Get a reader for the input file</span></div><div class="line">            w.append(<span class="string">'\n'</span>)</div><div class="line">            <span class="keyword">new</span> File(<span class="string">"$&#123;projectDir&#125;/multidex.keep"</span>).withReader &#123; r -&gt;</div><div class="line">                <span class="comment">// And write data from the input into the output</span></div><div class="line">                w &lt;&lt; r &lt;&lt; <span class="string">'\n'</span></div><div class="line">            &#125;</div><div class="line">            logger.info <span class="string">"Updated main dex keep file for $&#123;keepFile.getAbsolutePath()&#125;\n$keepFile.text"</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">tasks.whenTaskAdded &#123; task -&gt;</div><div class="line">    android.applicationVariants.all &#123; variant -&gt;</div><div class="line">        <span class="keyword">if</span> (task.name == <span class="string">"create$&#123;variant.name.capitalize()&#125;MainDexClassList"</span>) &#123;</div><div class="line">            task.finalizedBy <span class="string">"fix$&#123;variant.name.capitalize()&#125;MainDexClassList"</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>clean 然后 rebuild 项目，完成之后在 module 下的 build/intermediates/multi-dex/xxx 里找到 maindexlist.txt 文件（如果找不到相关目录，可能需要你同步后 rebuild 项目才能生成），复制里面的内容到 module 根目录下 multidex.keep 文件中（没有则先创建此文件）<br>具体的步骤经测试可行</p>
-<h2 id="没用出现该maindexlist-txt-文件解决办法"><a href="#没用出现该maindexlist-txt-文件解决办法" class="headerlink" title="没用出现该maindexlist.txt 文件解决办法"></a>没用出现该maindexlist.txt 文件解决办法</h2><p>在上述代码执行后并没有出现maindexlist.txt 这个文件（其实我一开始也没有- -），然后我查阅了<a href="https://developer.android.com/studio/build/multidex.html" target="_blank" rel="external">android程序员都知道的网站</a>，发现自己确实引用了<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">compile <span class="string">'com.android.support:multidex:1.0.0'</span></div></pre></td></tr></table></figure></p>
-<p>也确实设置了<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">multiDexEnabled <span class="keyword">true</span></div></pre></td></tr></table></figure></p>
-<p>但是没有在manifest文件中设置（不太习惯使用markdown的标签，application缺少标签，见谅）<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">application</div><div class="line">    ...</div><div class="line">    android:name=<span class="string">"android.support.multidex.MultiDexApplication"</span>&gt;</div><div class="line">    ...</div><div class="line">/application</div></pre></td></tr></table></figure></p>
-<p>重新运行，不报错，问题解决</p>
+        <p>最近几个版本的Android studio有时候一直会不停的indexing，什么操作都不让执行，现在有两种解决办法：<br>简单粗暴方法一：关闭Android studio，重新打开，问题解决<br>方法二：File &gt; Invalidate Caches/Restart</p>
+<p>个人感觉操作大同小异，就是重启IDE，希望Google能早日修复</p>
       
     </div>
 
@@ -371,8 +368,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/03/21/hello-world/" rel="next" title="Hello World">
-                <i class="fa fa-chevron-left"></i> Hello World
+              <a href="/2017/05/09/自制版知乎日报/" rel="next" title="自制版知乎日报">
+                <i class="fa fa-chevron-left"></i> 自制版知乎日报
               </a>
             
           </div>
@@ -380,10 +377,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/03/22/Ubuntu相关简易操作汇总（实时更新）/" rel="prev" title="Ubuntu相关简易操作汇总（实时更新）">
-                Ubuntu相关简易操作汇总（实时更新） <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -430,17 +423,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview sidebar-panel">
+      <section class="site-overview sidebar-panel sidebar-panel-active">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image" src="/images/avatar.gif" alt="maydaychen">
           <p class="site-author-name" itemprop="name">maydaychen</p>
@@ -489,22 +473,6 @@
 
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#论坛方法："><span class="nav-number">1.</span> <span class="nav-text">论坛方法：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#没用出现该maindexlist-txt-文件解决办法"><span class="nav-number">2.</span> <span class="nav-text">没用出现该maindexlist.txt 文件解决办法</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       

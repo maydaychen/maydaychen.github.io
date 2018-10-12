@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="maydaychen.github.io/"/>
-  <updated>2017-05-09T15:34:44.456Z</updated>
+  <updated>2018-10-12T02:34:44.041Z</updated>
   <id>maydaychen.github.io/</id>
   
   <author>
@@ -16,11 +16,30 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>studio不停indexing解决</title>
+    <link href="maydaychen.github.io/2018/10/12/studio%E4%B8%8D%E5%81%9Cindexing%E8%A7%A3%E5%86%B3/"/>
+    <id>maydaychen.github.io/2018/10/12/studio不停indexing解决/</id>
+    <published>2018-10-12T02:33:02.000Z</published>
+    <updated>2018-10-12T02:34:44.041Z</updated>
+    
+    <content type="html"><![CDATA[<p>最近几个版本的Android studio有时候一直会不停的indexing，什么操作都不让执行，现在有两种解决办法：<br>简单粗暴方法一：关闭Android studio，重新打开，问题解决<br>方法二：File &gt; Invalidate Caches/Restart</p>
+<p>个人感觉操作大同小异，就是重启IDE，希望Google能早日修复</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;最近几个版本的Android studio有时候一直会不停的indexing，什么操作都不让执行，现在有两种解决办法：&lt;br&gt;简单粗暴方法一：关闭Android studio，重新打开，问题解决&lt;br&gt;方法二：File &amp;gt; Invalidate Caches/Rest
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
     <title>自制版知乎日报</title>
     <link href="maydaychen.github.io/2017/05/09/%E8%87%AA%E5%88%B6%E7%89%88%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5/"/>
     <id>maydaychen.github.io/2017/05/09/自制版知乎日报/</id>
     <published>2017-05-09T15:27:56.000Z</published>
-    <updated>2017-05-09T15:34:44.456Z</updated>
+    <updated>2017-05-09T15:34:44.457Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Zhihu"><a href="#Zhihu" class="headerlink" title="Zhihu"></a>Zhihu</h1><p>模仿知乎日报，不用来盈利，只用来练习<br><a href="https://github.com/maydaychen/Zhihu" target="_blank" rel="external">项目相关</a><br><a href="https://github.com/izzyleung/ZhihuDailyPurify/wiki/知乎日报-API-分析" target="_blank" rel="external">接口信息</a></p>
 <h2 id=""><a href="#" class="headerlink" title=""></a><a id="more"></a></h2><h1 id="实现功能"><a href="#实现功能" class="headerlink" title="实现功能"></a>实现功能</h1><p>1.当日热门及具体内容显示<br>2.主题日报<br>3.夜间/日间模式切换</p>
@@ -76,7 +95,7 @@ eg:
     <link href="maydaychen.github.io/2017/03/23/%E8%BF%9F%E6%9D%A5%E7%9A%84%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/"/>
     <id>maydaychen.github.io/2017/03/23/迟来的年度总结/</id>
     <published>2017-03-23T13:00:14.000Z</published>
-    <updated>2017-05-09T15:29:39.093Z</updated>
+    <updated>2017-05-09T15:29:39.094Z</updated>
     
     <content type="html"><![CDATA[<h1 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h1><p>时间真的像流水，匆匆越过指尖，再怎么使劲也抓不住一点。珍惜现在，立足当前，显然这些话已经是老生常谈了。从去年六月份毕业以来，感觉一开始像是开足了马力的拖拉机，学会了好多，但是始终是一个人在做着app开发，学什么都感觉有点跑偏。从年初到现在，活也没有了，感觉就像一条咸鱼，在慢慢风干。这种心情我也不知道怎么描述，内心暗自庆幸可以有更多自由的时间来研究新的知识，又觉得这样很闲很无聊的生活并不是我想要的。温水煮青蛙，慢慢的，我也不知道会不会成为一个废人。每天逛逛简书，鸡汤也好，新闻也罢，亦或是听着熟悉还证明我没有忘记基础的技术知识也好，想着当年说，年轻嘛，就该多闯闯，怎么就成了这个样子……</p>
 <h2 id=""><a href="#" class="headerlink" title=""></a><a id="more"></a></h2><p>好了，该抱怨的也抱怨过了，接下来，就要写自己给自己的鸡汤了。17年，是一个很重要的一年，基本上，将来废不废，就靠这一年了，毕业工作后的第一年，就算环境再不好，也要做最好的自己不是么？去年听了一年的这货<br><img src="http://upload-images.jianshu.io/upload_images/1987727-9421ba63d7dbed8d.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Android没人要了"><br>如今经过三个月的试水探索，发现还真有这迹象╮(╯▽╰)╭，毕竟经验少，要的全是3-5年的高手，日子不好混啊。今年打算略微接触一下前端，至少搞懂一下RN的相关方法。其次，继续巩固Android知识，动画也好，网络也好，还有一些其他领域的知识都尝试一下，多逛逛GitHub。</p>
@@ -107,7 +126,7 @@ eg:
     <link href="maydaychen.github.io/2017/03/22/Tablayout%E4%B9%8BTab%E5%AE%BD%E5%BA%A6%E5%B7%A6%E5%8F%B3%E6%97%A0%E6%B3%95%E5%A1%AB%E5%85%85/"/>
     <id>maydaychen.github.io/2017/03/22/Tablayout之Tab宽度左右无法填充/</id>
     <published>2017-03-22T13:48:05.000Z</published>
-    <updated>2017-03-22T13:55:28.770Z</updated>
+    <updated>2017-03-22T13:55:28.771Z</updated>
     
     <content type="html"><![CDATA[<p> 前段时间做一个项目使用到了Tablayout,可以用来实现类似知乎分栏的效果要使用Tablayout，必须引用Google的Android Support Design库，使用Android Studio 的同学可以直接使用只要在build.gradle中加入<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">compile <span class="string">'com.android.support:design:22.2.0'</span></div></pre></td></tr></table></figure></p>
 <p>即可<br><a id="more"></a></p>
