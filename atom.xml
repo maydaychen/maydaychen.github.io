@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="maydaychen.github.io/"/>
-  <updated>2018-10-12T02:34:44.041Z</updated>
+  <updated>2018-10-12T02:38:52.032Z</updated>
   <id>maydaychen.github.io/</id>
   
   <author>
@@ -14,6 +14,70 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Android调用sharesdk过程及问题</title>
+    <link href="maydaychen.github.io/2018/10/12/Android%E8%B0%83%E7%94%A8sharesdk%E8%BF%87%E7%A8%8B%E5%8F%8A%E9%97%AE%E9%A2%98/"/>
+    <id>maydaychen.github.io/2018/10/12/Android调用sharesdk过程及问题/</id>
+    <published>2018-10-12T02:38:38.000Z</published>
+    <updated>2018-10-12T02:38:52.032Z</updated>
+    
+    <content type="html"><![CDATA[<p>具体配置方法详见官网，我这边使用的离线配置，即没有使用gradle进行配置，这里偷偷懒，不详细记录</p>
+<p>#详细步骤<br>步骤为粗略步骤，详细步骤参照<a href="http://wiki.mob.com/sharesdk%E5%BF%AB%E9%80%9F%E9%9B%86%E6%88%90%E9%9D%9Emaven/" target="_blank" rel="external">此处</a></p>
+<ol>
+<li>在<a href="http://www.mob.com/" target="_blank" rel="external">官网</a>根据自己要分享的平台下载相关的jar包</li>
+<li>将下载的jar包放在自己目录的lib文件夹下并在项目中引用</li>
+<li>使用它提供的指导文件生成相关文件，并根据readme将各个文件放在各自对应的路径下</li>
+<li><p>在manifests文件下申请相关权限</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;uses-permission android:name=&quot;android.permission.ACCESS_FINE_LOCATION&quot;/&gt;</div><div class="line">&lt;uses-permission android:name=&quot;android.permission.ACCESS_COARSE_LOCATION&quot;/&gt;</div><div class="line">&lt;uses-permission android:name=&quot;android.permission.GET_TASKS&quot; /&gt;</div><div class="line">&lt;uses-permission android:name=&quot;android.permission.INTERNET&quot; /&gt;</div><div class="line">&lt;uses-permission android:name=&quot;android.permission.ACCESS_WIFI_STATE&quot; /&gt;</div><div class="line">&lt;uses-permission android:name=&quot;android.permission.ACCESS_NETWORK_STATE&quot; /&gt;</div><div class="line">&lt;uses-permission android:name=&quot;android.permission.CHANGE_WIFI_STATE&quot; /&gt;</div><div class="line">&lt;uses-permission android:name=&quot;android.permission.WRITE_EXTERNAL_STORAGE&quot; /&gt;</div><div class="line">&lt;uses-permission android:name=&quot;android.permission.READ_PHONE_STATE&quot; /&gt;</div></pre></td></tr></table></figure>
+</li>
+<li><p>在application标签中添加以下内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">&lt;activity</div><div class="line">     android:name=&quot;com.mob.tools.MobUIShell&quot;</div><div class="line">     android:theme=&quot;@android:style/Theme.Translucent.NoTitleBar&quot;</div><div class="line">     android:configChanges=&quot;keyboardHidden|orientation|screenSize&quot;</div><div class="line">     android:windowSoftInputMode=&quot;stateHidden|adjustResize&quot; &gt;</div><div class="line"> </div><div class="line">    &lt;!-- 调用新浪原生SDK，需要注册的回调activity --&gt;</div><div class="line">    &lt;intent-filter&gt;</div><div class="line">        &lt;action android:name=&quot;com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY&quot; /&gt;</div><div class="line">        &lt;category android:name=&quot;android.intent.category.DEFAULT&quot; /&gt;</div><div class="line">    &lt;/intent-filter&gt;</div><div class="line"> </div><div class="line">    &lt;!--集成line客户端登录授权，需要添如下格式的过滤器--&gt;</div><div class="line">    &lt;intent-filter&gt;	</div><div class="line">	&lt;data android:scheme=&quot;line.1477692153&quot; /&gt;</div><div class="line">	&lt;action android:name=&quot;android.intent.action.VIEW&quot;/&gt;</div><div class="line">	&lt;category android:name=&quot;android.intent.category.BROWSABLE&quot; /&gt;</div><div class="line">	&lt;category android:name=&quot;android.intent.category.DEFAULT&quot; /&gt;</div><div class="line">    &lt;/intent-filter&gt;</div><div class="line"> </div><div class="line">&lt;!-- ShareSDK&lt;strong&gt;3.1.0版本之前&lt;/strong&gt;才需要在MobUIShell下面注册此意图，3.1.0版本之后（包含3.1.0）不需要注册此intent--&gt;</div><div class="line"> &lt;intent-filter&gt;</div><div class="line"> &lt;data android:scheme=&quot;tencent100371282&quot; /&gt; </div><div class="line">&lt;action android:name=&quot;android.intent.action.VIEW&quot; /&gt; </div><div class="line">&lt;category android:name=&quot;android.intent.category.BROWSABLE&quot; /&gt;</div><div class="line"> &lt;category android:name=&quot;android.intent.category.DEFAULT&quot; /&gt; </div><div class="line">&lt;/intent-filter&gt; </div><div class="line">&lt;/activity&gt;</div><div class="line">&lt;!-- 填写您从Mob开发者后台中得到的Appkey和AppSecret --&gt;</div><div class="line">&lt;meta-data android:name=&quot;Mob-AppKey&quot; android:value=&quot;您的AppKey&quot;/&gt;</div><div class="line">&lt;meta-data android:name=&quot;Mob-AppSecret&quot; android:value=&quot;您的AppSecret&quot;/&gt;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>其中Mob-AppKey与Mob-AppSecret是自己申请时后台分配的，根据后台数据如实替换即可</p>
+<ol>
+<li>在assets文件夹的ShareSDK.xml文件下，填写每个平台需要的参数，例如<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;Wechat</div><div class="line">       Id=&quot;4&quot;</div><div class="line">       SortId=&quot;4&quot;</div><div class="line">       AppId=&quot;xxx&quot;</div><div class="line">       AppSecret=&quot;xxx&quot;</div><div class="line">userName=&quot;xxx&quot;</div><div class="line">path=&quot;pages/index/index.html?id=1&quot;</div><div class="line">       BypassApproval=&quot;true&quot;</div><div class="line">       Enable=&quot;true&quot; /&gt;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>每个字段的意思详见上面链接的官网教程</p>
+<ol>
+<li>启动分享<br>在需要弹出分享页面进行分享的页面，添加以下方法<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">showShare</span><span class="params">()</span> </span>&#123;</div><div class="line">     OnekeyShare oks = <span class="keyword">new</span> OnekeyShare();</div><div class="line">     <span class="comment">//关闭sso授权</span></div><div class="line">     oks.disableSSOWhenAuthorize(); </div><div class="line"> </div><div class="line">    <span class="comment">// 分享时Notification的图标和文字  2.5.9以后的版本不     调用此方法</span></div><div class="line">     <span class="comment">//oks.setNotification(R.drawable.ic_launcher, getString(R.string.app_name));</span></div><div class="line">     <span class="comment">// title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间使用</span></div><div class="line">     oks.setTitle(getString(R.string.share));</div><div class="line">     <span class="comment">// titleUrl是标题的网络链接，仅在人人网和QQ空间使用</span></div><div class="line">     oks.setTitleUrl(<span class="string">"http://sharesdk.cn"</span>);</div><div class="line">     <span class="comment">// text是分享文本，所有平台都需要这个字段</span></div><div class="line">     oks.setText(<span class="string">"我是分享文本"</span>);</div><div class="line">     <span class="comment">// imagePath是图片的本地路径，Linked-In以外的平台都支持此参数</span></div><div class="line">     oks.setImagePath(<span class="string">"/sdcard/test.jpg"</span>);<span class="comment">//确保SDcard下面存在此张图片</span></div><div class="line">     <span class="comment">// url仅在微信（包括好友和朋友圈）中使用</span></div><div class="line">     oks.setUrl(<span class="string">"http://sharesdk.cn"</span>);</div><div class="line">     <span class="comment">// comment是我对这条分享的评论，仅在人人网和QQ空间使用</span></div><div class="line">     oks.setComment(<span class="string">"我是测试评论文本"</span>);</div><div class="line">     <span class="comment">// site是分享此内容的网站名称，仅在QQ空间使用</span></div><div class="line">     oks.setSite(getString(R.string.app_name));</div><div class="line">     <span class="comment">// siteUrl是分享此内容的网站地址，仅在QQ空间使用</span></div><div class="line">     oks.setSiteUrl(<span class="string">"http://sharesdk.cn"</span>);</div><div class="line"> </div><div class="line">    <span class="comment">// 启动分享GUI</span></div><div class="line">    oks.show(<span class="keyword">this</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>分享朋友圈时，可以分享网络图片或本机图片，本机图片需要设置 oks.setImagePath(“/sdcard/test.jpg”)，网络图片需要设置  oks.setImageUrl(url);//url即为网络图片链接。</p>
+<ol>
+<li>分享回调<br>有时候我们要做活动，分享成功后赠送优惠券，这时候我们可以设置相关回调<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">oks.setCallback(new PlatformActionListener() &#123;</div><div class="line">            @Override</div><div class="line">            public void onComplete(Platform platform, int i, HashMap&lt;String, Object&gt; hashMap) &#123;</div><div class="line"></div><div class="line">            &#125;</div><div class="line"></div><div class="line">            @Override</div><div class="line">            public void onError(Platform platform, int i, Throwable throwable) &#123;</div><div class="line"></div><div class="line">            &#125;</div><div class="line"></div><div class="line">            @Override</div><div class="line">            public void onCancel(Platform platform, int i) &#123;</div><div class="line"></div><div class="line">            &#125;</div><div class="line">        &#125;);</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>可以看到，这里面定义了三个方法</p>
+<ul>
+<li>onComplete，分享成功的回调，可以在这里调用接口，赠送优惠券等</li>
+<li>onError，分享发生错误的回调</li>
+<li>onCancel，分享取消的回调<br>我们一般关注第一个onComplete就行</li>
+</ul>
+<p>至此，完整的分享过程已经全部结束，可以欢快的进行相关平台的分享了</p>
+<p>#分享问题与解决</p>
+<ol>
+<li><p>分享完成后选择留在微信，分享回调失效<br>此问题暂时无解……真的- -官方论坛也说没有解决办法……<br>所以取巧的解决办法是，在用户调用分享的时候就调用接口发放优惠券，缺点是可能会造成假分享</p>
+</li>
+<li><p>在安卓6.0以上的系统分享界面打不开<br>本来以为是部分手机问题，借了很多手机发现都有这个问题，于是想到了动态权限问题，可是不知道是什么权限，直到在文档里发现了这段话</p>
+</li>
+</ol>
+<hr>
+<p>微信并无实际的分享网络图片和分享bitmap的功能，如果设置了网络图片，此图片会先下载会本地，之后再当作本地图片分享，因此延迟较大。bitmap则好一些，但是由于bitmap并不知道图片的格式，因此都会被当作png编码，再提交微信客户端。此外，SHARE_EMOJI支持gif文件，但是如果使用imageData，则默认只是提交一个png图片，因为bitmap是静态图片。</p>
+<hr>
+<p>sharesdk会将网络图片或者图片都下载到本地，所以我们这边必须申请存储权限。<br>在申请完存储权限后分享，成功！问题解决</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;具体配置方法详见官网，我这边使用的离线配置，即没有使用gradle进行配置，这里偷偷懒，不详细记录&lt;/p&gt;
+&lt;p&gt;#详细步骤&lt;br&gt;步骤为粗略步骤，详细步骤参照&lt;a href=&quot;http://wiki.mob.com/sharesdk%E5%BF%AB%E9%80%9F%E
+    
+    </summary>
+    
+    
+  </entry>
   
   <entry>
     <title>studio不停indexing解决</title>
