@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="maydaychen.github.io/"/>
-  <updated>2018-10-12T09:03:35.287Z</updated>
+  <updated>2018-10-16T07:58:44.521Z</updated>
   <id>maydaychen.github.io/</id>
   
   <author>
@@ -16,15 +16,114 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>CentOS7 安装GitLab</title>
+    <link href="maydaychen.github.io/2018/10/16/CentOS7-%E5%AE%89%E8%A3%85GitLab/"/>
+    <id>maydaychen.github.io/2018/10/16/CentOS7-安装GitLab/</id>
+    <published>2018-10-16T07:58:21.000Z</published>
+    <updated>2018-10-16T07:58:44.521Z</updated>
+    
+    <content type="html"><![CDATA[<p><a href="https://www.gitlab.com.cn/installation/#centos-7" target="_blank" rel="external">官方中文指导</a><br>现记录安装过程中遇到的相关问题</p>
+<p>#1. sudo firewall-cmd –permanent –add-service=http这一步报错<br><img src="https://upload-images.jianshu.io/upload_images/1987727-06e11b5948d0aeeb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="错误信息"><br>显示系统防火墙未打开</p>
+<a id="more"></a>
+<p>解决办法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"> service firewalld status; #查看防火墙状态</div><div class="line"> service firewalld start;  或者 #systemctl start firewalld.service;#开启防火墙</div><div class="line">service firewalld stop;  或者 #systemctl stop firewalld.service;#关闭防火墙</div><div class="line">service firewalld restart;  或者 #systemctl restart firewalld.service;  #重启防火墙</div></pre></td></tr></table></figure></p>
+<p>开启防火墙即可</p>
+<hr>
+<p>#2. systemctl status postfix.service报错<br><img src="https://upload-images.jianshu.io/upload_images/1987727-b3c40819ed573d60.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="错误2.png"><br>随即根据提示<br><img src="https://upload-images.jianshu.io/upload_images/1987727-8b7256db76fbe69b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="信息1.png"><br>解决办法：<br>vi  /etc/postfix/main.cf<br>发现配置为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">inet_interfaces = localhost</div><div class="line">inet_protocols = all</div></pre></td></tr></table></figure></p>
+<p>改成：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">inet_interfaces = all</div><div class="line">inet_protocols = all</div></pre></td></tr></table></figure></p>
+<p>重新启动<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">service postfix start</div></pre></td></tr></table></figure></p>
+<p>重新输入systemctl status postfix.service，解决！</p>
+<hr>
+<p>#3. # Whoops, GitLab is taking too much time to respond<br><img src="https://upload-images.jianshu.io/upload_images/1987727-579863b91f6e61d8.PNG?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="502.PNG"></p>
+<p>原因我知道的有两个</p>
+<ol>
+<li>端口被占用，gitlab跟unicorn需要两个不冲突的端口<br>解决方法：修改 /etc/gitlab/gitlab.rb<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">external_url &apos;http://localhost:8800&apos; //修改gitlab端口</div><div class="line">unicorn[&apos;listen&apos;]=&apos;127.0.0.1&apos;</div><div class="line">unicorn[&apos;port&apos;]=8801  //修改unicorn端口</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>然后运行：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo gitlab-ctl reconfigure</div></pre></td></tr></table></figure></p>
+<ol>
+<li>服务器资源不足<br><a href="https://docs.gitlab.com.cn/ce/install/requirements.html#cpu" target="_blank" rel="external">这个网站</a>列举了所有配置要求，而我直用2G1核的服务器搞这个，真的吃不消，差点连不上服务器重装系统。。。</li>
+</ol>
+<hr>
+<p>gitlab常用命令<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">gitlab-ctl start  #启动gitlab</div><div class="line"> </div><div class="line">gitlab-ctl stop  #关闭gitlab</div><div class="line"></div><div class="line">gitlab-ctl status  #查看gitlab状态</div><div class="line"></div><div class="line">gitlab-ctl restart  #重启gitlab</div><div class="line"></div><div class="line">gitlab-ctl tail #查看全部日志，Gitlab 默认的日志文件存放在/var/log/gitlab 目录下:</div><div class="line"></div><div class="line">gitlab-ctl tail nginx/gitlab_access.log #查看nginx访问日志</div></pre></td></tr></table></figure></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;a href=&quot;https://www.gitlab.com.cn/installation/#centos-7&quot;&gt;官方中文指导&lt;/a&gt;&lt;br&gt;现记录安装过程中遇到的相关问题&lt;/p&gt;
+&lt;p&gt;#1. sudo firewall-cmd –permanent –add-service=http这一步报错&lt;br&gt;&lt;img src=&quot;https://upload-images.jianshu.io/upload_images/1987727-06e11b5948d0aeeb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;错误信息&quot;&gt;&lt;br&gt;显示系统防火墙未打开&lt;/p&gt;
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>常用Windows软件总结</title>
+    <link href="maydaychen.github.io/2018/10/16/%E5%B8%B8%E7%94%A8Windows%E8%BD%AF%E4%BB%B6%E6%80%BB%E7%BB%93/"/>
+    <id>maydaychen.github.io/2018/10/16/常用Windows软件总结/</id>
+    <published>2018-10-16T07:57:17.000Z</published>
+    <updated>2018-10-16T07:57:46.573Z</updated>
+    
+    <content type="html"><![CDATA[<p>为了每次重装电脑的时候不会遗漏相关软件，特写下此文章，提醒自己保持较高生产力</p>
+<p>#图片查看</p>
+<ol>
+<li>Picasa 3<br> 出师不利……貌似谷歌爸爸不支持了</li>
+</ol>
+<p>#服务器相关</p>
+<ol>
+<li>Xshell<br> 远程连接服务器，执行相关操作<br> <a href="https://www.netsarang.com/products/xsh_overview.html" target="_blank" rel="external">https://www.netsarang.com/products/xsh_overview.html</a></li>
+<li>FileZilla<br> 服务器远程文件传输<br> <a href="https://filezilla-project.org/" target="_blank" rel="external">https://filezilla-project.org/</a><a id="more"></a>
+</li>
+</ol>
+<p>#影音</p>
+<ol>
+<li><p>Listen1<br> 支持网易云音乐/QQ音乐/虾米音乐三合一<br> <a href="https://github.com/listen1/listen1_chrome_extension" target="_blank" rel="external">https://github.com/listen1/listen1_chrome_extension</a></p>
+</li>
+<li><p>网易云音乐<br> 以前很喜欢，可是现在- -版权实在太少，能听的不多，而且推荐算法工程师可能换人了……<br> <a href="https://music.163.com/" target="_blank" rel="external">https://music.163.com/</a></p>
+</li>
+<li><p>win10商店中的爱奇艺<br> 没！有！广！告！</p>
+</li>
+</ol>
+<p>#工具</p>
+<ol>
+<li><p>微软 To- Do<br> 每日备忘记录提醒<br> <a href="https://todo.microsoft.com/zh-cn" target="_blank" rel="external">https://todo.microsoft.com/zh-cn</a></p>
+</li>
+<li><p>geek<br> 很舒服的卸载工具<br> <a href="https://geekuninstaller.com/" target="_blank" rel="external">https://geekuninstaller.com/</a></p>
+</li>
+<li><p>TeamViewer<br> 远程控制软件，work from home 必备<br> <a href="https://www.teamviewer.com/zhCN/" target="_blank" rel="external">https://www.teamviewer.com/zhCN/</a></p>
+</li>
+<li><p>notepad++<br> 替代记事本良心直选<br> <a href="https://notepad-plus-plus.org/" target="_blank" rel="external">https://notepad-plus-plus.org/</a></p>
+</li>
+</ol>
+<hr>
+<p>持续更新ing……</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;为了每次重装电脑的时候不会遗漏相关软件，特写下此文章，提醒自己保持较高生产力&lt;/p&gt;
+&lt;p&gt;#图片查看&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Picasa 3&lt;br&gt; 出师不利……貌似谷歌爸爸不支持了&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;#服务器相关&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Xshell&lt;br&gt; 远程连接服务器，执行相关操作&lt;br&gt; &lt;a href=&quot;https://www.netsarang.com/products/xsh_overview.html&quot;&gt;https://www.netsarang.com/products/xsh_overview.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;FileZilla&lt;br&gt; 服务器远程文件传输&lt;br&gt; &lt;a href=&quot;https://filezilla-project.org/&quot;&gt;https://filezilla-project.org/&lt;/a&gt;
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
     <title>通过hexo更新github-pages博客</title>
     <link href="maydaychen.github.io/2018/10/12/%E9%80%9A%E8%BF%87hexo%E6%9B%B4%E6%96%B0github-pages%E5%8D%9A%E5%AE%A2/"/>
     <id>maydaychen.github.io/2018/10/12/通过hexo更新github-pages博客/</id>
     <published>2018-10-12T09:03:23.000Z</published>
-    <updated>2018-10-12T09:03:35.287Z</updated>
+    <updated>2018-10-16T07:49:28.259Z</updated>
     
     <content type="html"><![CDATA[<p>#文件生成及编辑<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo new &quot;文章标题&quot;</div></pre></td></tr></table></figure></p>
 <p>通过该命令行，可以在 “博客所在路径\source_posts\”下生成一个md文件，文件名称为上面命令行所输入的文章标题</p>
-<p>由于生成的是markdown格式的文件，所以建议使用一个markdown编写完成后，复制粘贴到该md文件中。</p>
+<p>由于生成的是markdown格式的文件，所以建议使用一个markdown编写完成后，复制粘贴到该md文件中。<br><a id="more"></a></p>
 <p>#文件发布<br>编辑完成后，在命令行输入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo g</div></pre></td></tr></table></figure></p>
 <p>文章就会发布到本地，然后通过<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo s</div></pre></td></tr></table></figure></p>
 <p>将文件变化发布到本地环境，此时可以通过访问localhost:4000，查看自己博客相关变化</p>
@@ -33,7 +132,9 @@
     
     <summary type="html">
     
-      &lt;p&gt;#文件生成及编辑&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;
+      &lt;p&gt;#文件生成及编辑&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;hexo new &amp;quot;文章标题&amp;quot;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;通过该命令行，可以在 “博客所在路径\source_posts\”下生成一个md文件，文件名称为上面命令行所输入的文章标题&lt;/p&gt;
+&lt;p&gt;由于生成的是markdown格式的文件，所以建议使用一个markdown编写完成后，复制粘贴到该md文件中。&lt;br&gt;
     
     </summary>
     
@@ -45,10 +146,10 @@
     <link href="maydaychen.github.io/2018/10/12/Android%E8%B0%83%E7%94%A8sharesdk%E8%BF%87%E7%A8%8B%E5%8F%8A%E9%97%AE%E9%A2%98/"/>
     <id>maydaychen.github.io/2018/10/12/Android调用sharesdk过程及问题/</id>
     <published>2018-10-12T02:38:38.000Z</published>
-    <updated>2018-10-12T02:38:52.032Z</updated>
+    <updated>2018-10-16T07:49:12.934Z</updated>
     
     <content type="html"><![CDATA[<p>具体配置方法详见官网，我这边使用的离线配置，即没有使用gradle进行配置，这里偷偷懒，不详细记录</p>
-<p>#详细步骤<br>步骤为粗略步骤，详细步骤参照<a href="http://wiki.mob.com/sharesdk%E5%BF%AB%E9%80%9F%E9%9B%86%E6%88%90%E9%9D%9Emaven/" target="_blank" rel="external">此处</a></p>
+<p>#详细步骤<br>步骤为粗略步骤，详细步骤参照<a href="http://wiki.mob.com/sharesdk%E5%BF%AB%E9%80%9F%E9%9B%86%E6%88%90%E9%9D%9Emaven/" target="_blank" rel="external">此处</a><br><a id="more"></a></p>
 <ol>
 <li>在<a href="http://www.mob.com/" target="_blank" rel="external">官网</a>根据自己要分享的平台下载相关的jar包</li>
 <li>将下载的jar包放在自己目录的lib文件夹下并在项目中引用</li>
@@ -97,7 +198,7 @@
     <summary type="html">
     
       &lt;p&gt;具体配置方法详见官网，我这边使用的离线配置，即没有使用gradle进行配置，这里偷偷懒，不详细记录&lt;/p&gt;
-&lt;p&gt;#详细步骤&lt;br&gt;步骤为粗略步骤，详细步骤参照&lt;a href=&quot;http://wiki.mob.com/sharesdk%E5%BF%AB%E9%80%9F%E
+&lt;p&gt;#详细步骤&lt;br&gt;步骤为粗略步骤，详细步骤参照&lt;a href=&quot;http://wiki.mob.com/sharesdk%E5%BF%AB%E9%80%9F%E9%9B%86%E6%88%90%E9%9D%9Emaven/&quot;&gt;此处&lt;/a&gt;&lt;br&gt;
     
     </summary>
     

@@ -90,18 +90,24 @@
 
 
 
-<meta name="description" content="引子时间真的像流水，匆匆越过指尖，再怎么使劲也抓不住一点。珍惜现在，立足当前，显然这些话已经是老生常谈了。从去年六月份毕业以来，感觉一开始像是开足了马力的拖拉机，学会了好多，但是始终是一个人在做着app开发，学什么都感觉有点跑偏。从年初到现在，活也没有了，感觉就像一条咸鱼，在慢慢风干。这种心情我也不知道怎么描述，内心暗自庆幸可以有更多自由的时间来研究新的知识，又觉得这样很闲很无聊的生活并不是我想要">
+<meta name="description" content="官方中文指导现记录安装过程中遇到的相关问题
+#1. sudo firewall-cmd –permanent –add-service=http这一步报错显示系统防火墙未打开">
 <meta property="og:type" content="article">
-<meta property="og:title" content="迟来的年度总结">
-<meta property="og:url" content="maydaychen.github.io/2017/03/23/迟来的年度总结/index.html">
+<meta property="og:title" content="CentOS7 安装GitLab">
+<meta property="og:url" content="maydaychen.github.io/2018/10/16/CentOS7-安装GitLab/index.html">
 <meta property="og:site_name" content="陈译的博客">
-<meta property="og:description" content="引子时间真的像流水，匆匆越过指尖，再怎么使劲也抓不住一点。珍惜现在，立足当前，显然这些话已经是老生常谈了。从去年六月份毕业以来，感觉一开始像是开足了马力的拖拉机，学会了好多，但是始终是一个人在做着app开发，学什么都感觉有点跑偏。从年初到现在，活也没有了，感觉就像一条咸鱼，在慢慢风干。这种心情我也不知道怎么描述，内心暗自庆幸可以有更多自由的时间来研究新的知识，又觉得这样很闲很无聊的生活并不是我想要">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1987727-9421ba63d7dbed8d.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2017-05-09T15:29:39.094Z">
+<meta property="og:description" content="官方中文指导现记录安装过程中遇到的相关问题
+#1. sudo firewall-cmd –permanent –add-service=http这一步报错显示系统防火墙未打开">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/1987727-06e11b5948d0aeeb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/1987727-b3c40819ed573d60.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/1987727-8b7256db76fbe69b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/1987727-579863b91f6e61d8.PNG?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2018-10-16T07:58:44.521Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="迟来的年度总结">
-<meta name="twitter:description" content="引子时间真的像流水，匆匆越过指尖，再怎么使劲也抓不住一点。珍惜现在，立足当前，显然这些话已经是老生常谈了。从去年六月份毕业以来，感觉一开始像是开足了马力的拖拉机，学会了好多，但是始终是一个人在做着app开发，学什么都感觉有点跑偏。从年初到现在，活也没有了，感觉就像一条咸鱼，在慢慢风干。这种心情我也不知道怎么描述，内心暗自庆幸可以有更多自由的时间来研究新的知识，又觉得这样很闲很无聊的生活并不是我想要">
-<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/1987727-9421ba63d7dbed8d.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta name="twitter:title" content="CentOS7 安装GitLab">
+<meta name="twitter:description" content="官方中文指导现记录安装过程中遇到的相关问题
+#1. sudo firewall-cmd –permanent –add-service=http这一步报错显示系统防火墙未打开">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/1987727-06e11b5948d0aeeb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 
 
 
@@ -129,13 +135,13 @@
 
 
 
-  <link rel="canonical" href="maydaychen.github.io/2017/03/23/迟来的年度总结/">
+  <link rel="canonical" href="maydaychen.github.io/2018/10/16/CentOS7-安装GitLab/">
 
 
 
 
 
-  <title> 迟来的年度总结 | 陈译的博客 </title>
+  <title> CentOS7 安装GitLab | 陈译的博客 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -254,7 +260,7 @@
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="maydaychen.github.io/2017/03/23/迟来的年度总结/">
+    <link itemprop="mainEntityOfPage" href="maydaychen.github.io/2018/10/16/CentOS7-安装GitLab/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="maydaychen">
@@ -275,7 +281,7 @@
             
             
               
-                迟来的年度总结
+                CentOS7 安装GitLab
               
             
           </h1>
@@ -290,8 +296,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-23T21:00:14+08:00">
-                2017-03-23
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-16T15:58:21+08:00">
+                2018-10-16
               </time>
             
 
@@ -330,19 +336,29 @@
       
 
       
-        <h1 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h1><p>时间真的像流水，匆匆越过指尖，再怎么使劲也抓不住一点。珍惜现在，立足当前，显然这些话已经是老生常谈了。从去年六月份毕业以来，感觉一开始像是开足了马力的拖拉机，学会了好多，但是始终是一个人在做着app开发，学什么都感觉有点跑偏。从年初到现在，活也没有了，感觉就像一条咸鱼，在慢慢风干。这种心情我也不知道怎么描述，内心暗自庆幸可以有更多自由的时间来研究新的知识，又觉得这样很闲很无聊的生活并不是我想要的。温水煮青蛙，慢慢的，我也不知道会不会成为一个废人。每天逛逛简书，鸡汤也好，新闻也罢，亦或是听着熟悉还证明我没有忘记基础的技术知识也好，想着当年说，年轻嘛，就该多闯闯，怎么就成了这个样子……</p>
-<h2 id=""><a href="#" class="headerlink" title=""></a><a id="more"></a></h2><p>好了，该抱怨的也抱怨过了，接下来，就要写自己给自己的鸡汤了。17年，是一个很重要的一年，基本上，将来废不废，就靠这一年了，毕业工作后的第一年，就算环境再不好，也要做最好的自己不是么？去年听了一年的这货<br><img src="http://upload-images.jianshu.io/upload_images/1987727-9421ba63d7dbed8d.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Android没人要了"><br>如今经过三个月的试水探索，发现还真有这迹象╮(╯▽╰)╭，毕竟经验少，要的全是3-5年的高手，日子不好混啊。今年打算略微接触一下前端，至少搞懂一下RN的相关方法。其次，继续巩固Android知识，动画也好，网络也好，还有一些其他领域的知识都尝试一下，多逛逛GitHub。</p>
-<h1 id="2017书单总结"><a href="#2017书单总结" class="headerlink" title="2017书单总结"></a>2017书单总结</h1><ol>
-<li><a href="https://book.douban.com/subject/26599539/" target="_blank" rel="external">Android群英传</a></li>
-<li><a href="https://book.douban.com/subject/26599538/" target="_blank" rel="external">Android开发艺术探索</a></li>
-<li><a href="https://book.douban.com/subject/19976838/" target="_blank" rel="external">Android应用性能优化</a></li>
-<li><a href="https://book.douban.com/subject/3360807/" target="_blank" rel="external">(备选)Effective Java</a></li>
+        <p><a href="https://www.gitlab.com.cn/installation/#centos-7" target="_blank" rel="external">官方中文指导</a><br>现记录安装过程中遇到的相关问题</p>
+<p>#1. sudo firewall-cmd –permanent –add-service=http这一步报错<br><img src="https://upload-images.jianshu.io/upload_images/1987727-06e11b5948d0aeeb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="错误信息"><br>显示系统防火墙未打开</p>
+<a id="more"></a>
+<p>解决办法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"> service firewalld status; #查看防火墙状态</div><div class="line"> service firewalld start;  或者 #systemctl start firewalld.service;#开启防火墙</div><div class="line">service firewalld stop;  或者 #systemctl stop firewalld.service;#关闭防火墙</div><div class="line">service firewalld restart;  或者 #systemctl restart firewalld.service;  #重启防火墙</div></pre></td></tr></table></figure></p>
+<p>开启防火墙即可</p>
+<hr>
+<p>#2. systemctl status postfix.service报错<br><img src="https://upload-images.jianshu.io/upload_images/1987727-b3c40819ed573d60.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="错误2.png"><br>随即根据提示<br><img src="https://upload-images.jianshu.io/upload_images/1987727-8b7256db76fbe69b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="信息1.png"><br>解决办法：<br>vi  /etc/postfix/main.cf<br>发现配置为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">inet_interfaces = localhost</div><div class="line">inet_protocols = all</div></pre></td></tr></table></figure></p>
+<p>改成：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">inet_interfaces = all</div><div class="line">inet_protocols = all</div></pre></td></tr></table></figure></p>
+<p>重新启动<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">service postfix start</div></pre></td></tr></table></figure></p>
+<p>重新输入systemctl status postfix.service，解决！</p>
+<hr>
+<p>#3. # Whoops, GitLab is taking too much time to respond<br><img src="https://upload-images.jianshu.io/upload_images/1987727-579863b91f6e61d8.PNG?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="502.PNG"></p>
+<p>原因我知道的有两个</p>
+<ol>
+<li>端口被占用，gitlab跟unicorn需要两个不冲突的端口<br>解决方法：修改 /etc/gitlab/gitlab.rb<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">external_url &apos;http://localhost:8800&apos; //修改gitlab端口</div><div class="line">unicorn[&apos;listen&apos;]=&apos;127.0.0.1&apos;</div><div class="line">unicorn[&apos;port&apos;]=8801  //修改unicorn端口</div></pre></td></tr></table></figure>
+</li>
 </ol>
-<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><ol>
-<li>多多锻炼吧，下了个quick Fit，每天照着锻炼下，感觉应该是有用的</li>
-<li>我想买个surface 键盘/(ㄒoㄒ)/~~但是不是机械键盘要八百，软爸爸你真的不是打劫么？</li>
+<p>然后运行：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo gitlab-ctl reconfigure</div></pre></td></tr></table></figure></p>
+<ol>
+<li>服务器资源不足<br><a href="https://docs.gitlab.com.cn/ce/install/requirements.html#cpu" target="_blank" rel="external">这个网站</a>列举了所有配置要求，而我直用2G1核的服务器搞这个，真的吃不消，差点连不上服务器重装系统。。。</li>
 </ol>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>2017，希望万事顺利吧，入了社会，才知道真的是深似海，在学校被保护着没发现，现在发现当年的希望早日毕业的我是多么纯真幼稚。</p>
+<hr>
+<p>gitlab常用命令<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">gitlab-ctl start  #启动gitlab</div><div class="line"> </div><div class="line">gitlab-ctl stop  #关闭gitlab</div><div class="line"></div><div class="line">gitlab-ctl status  #查看gitlab状态</div><div class="line"></div><div class="line">gitlab-ctl restart  #重启gitlab</div><div class="line"></div><div class="line">gitlab-ctl tail #查看全部日志，Gitlab 默认的日志文件存放在/var/log/gitlab 目录下:</div><div class="line"></div><div class="line">gitlab-ctl tail nginx/gitlab_access.log #查看nginx访问日志</div></pre></td></tr></table></figure></p>
       
     </div>
 
@@ -378,8 +394,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/03/22/Tablayout之Tab宽度左右无法填充/" rel="next" title="Tablayout之Tab宽度左右无法填充">
-                <i class="fa fa-chevron-left"></i> Tablayout之Tab宽度左右无法填充
+              <a href="/2018/10/16/常用Windows软件总结/" rel="next" title="常用Windows软件总结">
+                <i class="fa fa-chevron-left"></i> 常用Windows软件总结
               </a>
             
           </div>
@@ -387,10 +403,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/05/09/Android相关面试题记录/" rel="prev" title="Android相关面试题记录">
-                Android相关面试题记录 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -437,17 +449,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview sidebar-panel">
+      <section class="site-overview sidebar-panel sidebar-panel-active">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image" src="/images/avatar.gif" alt="maydaychen">
           <p class="site-author-name" itemprop="name">maydaychen</p>
@@ -496,22 +499,6 @@
 
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#引子"><span class="nav-number">1.</span> <span class="nav-text">引子</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">1.1.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2017书单总结"><span class="nav-number">2.</span> <span class="nav-text">2017书单总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#其他"><span class="nav-number">3.</span> <span class="nav-text">其他</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
