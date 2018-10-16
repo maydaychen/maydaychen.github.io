@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="maydaychen.github.io/"/>
-  <updated>2018-10-16T07:58:44.521Z</updated>
+  <updated>2018-10-16T08:40:26.819Z</updated>
   <id>maydaychen.github.io/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="maydaychen.github.io/2018/10/16/CentOS7-%E5%AE%89%E8%A3%85GitLab/"/>
     <id>maydaychen.github.io/2018/10/16/CentOS7-安装GitLab/</id>
     <published>2018-10-16T07:58:21.000Z</published>
-    <updated>2018-10-16T07:58:44.521Z</updated>
+    <updated>2018-10-16T08:40:26.819Z</updated>
     
     <content type="html"><![CDATA[<p><a href="https://www.gitlab.com.cn/installation/#centos-7" target="_blank" rel="external">官方中文指导</a><br>现记录安装过程中遇到的相关问题</p>
 <p>#1. sudo firewall-cmd –permanent –add-service=http这一步报错<br><img src="https://upload-images.jianshu.io/upload_images/1987727-06e11b5948d0aeeb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="错误信息"><br>显示系统防火墙未打开</p>
@@ -53,6 +53,12 @@
     
     </summary>
     
+      <category term="linux" scheme="maydaychen.github.io/categories/linux/"/>
+    
+    
+      <category term="centos" scheme="maydaychen.github.io/tags/centos/"/>
+    
+      <category term="gitlab" scheme="maydaychen.github.io/tags/gitlab/"/>
     
   </entry>
   
