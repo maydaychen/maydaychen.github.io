@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="maydaychen.github.io/"/>
-  <updated>2018-10-16T08:40:26.819Z</updated>
+  <updated>2018-10-17T02:45:31.368Z</updated>
   <id>maydaychen.github.io/</id>
   
   <author>
@@ -16,11 +16,43 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Android studio 3.0 填坑</title>
+    <link href="maydaychen.github.io/2018/10/17/Android-studio-3-0-%E5%A1%AB%E5%9D%91/"/>
+    <id>maydaychen.github.io/2018/10/17/Android-studio-3-0-填坑/</id>
+    <published>2018-10-17T02:43:29.000Z</published>
+    <updated>2018-10-17T02:45:31.368Z</updated>
+    
+    <content type="html"><![CDATA[<p>#1.依赖项报错：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1987727-19fc4fcde9fcbfa3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="QQ截图20171030095418.png"></p>
+<p>解决方案：<br>    将compile project(‘:wheel’)<br>改为<br>     compile project(path: ‘:easeUI’, configuration: ‘default’)</p>
+<a id="more"></a>
+<p>#2.retrolambda报错：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Warning:One of the plugins you are using supports Java <span class="number">8</span> language features. To <span class="keyword">try</span> the support built into the Android plugin, remove the following from your build.gradle:</div><div class="line">    apply plugin: <span class="string">'me.tatarka.retrolambda'</span></div><div class="line">To learn more, go to https:<span class="comment">//d.android.com/r/tools/java-8-support-message.html</span></div></pre></td></tr></table></figure></p>
+<p>解决办法：<br>将<br>module层gradle中的apply plugin: ‘me.tatarka.retrolambda’<br>及project层gradle中的classpath ‘me.tatarka:gradle-retrolambda:3.2.5’<br>注释掉</p>
+<p>#3.apt插件报错<br><img src="http://upload-images.jianshu.io/upload_images/1987727-1f73330354fcbffa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="QQ截图20171030102700.png"><br>解决方案：<br>1.在project的build.gradle中删除<br>classpath ‘com.neenbedankt.gradle.plugins:android-apt:1.8’<br>2.在module的build.gradle中删除<br>apply plugin: ‘android-apt’<br>3.将module的build.gradle文件中的dependency<br>中所有的apt改为annotationProcessor</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;#1.依赖项报错：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/1987727-19fc4fcde9fcbfa3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&quot; alt=&quot;QQ截图20171030095418.png&quot;&gt;&lt;/p&gt;
+&lt;p&gt;解决方案：&lt;br&gt;    将compile project(‘:wheel’)&lt;br&gt;改为&lt;br&gt;     compile project(path: ‘:easeUI’, configuration: ‘default’)&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Android" scheme="maydaychen.github.io/categories/Android/"/>
+    
+    
+      <category term="AndroidStudio" scheme="maydaychen.github.io/tags/AndroidStudio/"/>
+    
+      <category term="problems" scheme="maydaychen.github.io/tags/problems/"/>
+    
+  </entry>
+  
+  <entry>
     <title>CentOS7 安装GitLab</title>
     <link href="maydaychen.github.io/2018/10/16/CentOS7-%E5%AE%89%E8%A3%85GitLab/"/>
     <id>maydaychen.github.io/2018/10/16/CentOS7-安装GitLab/</id>
     <published>2018-10-16T07:58:21.000Z</published>
-    <updated>2018-10-16T08:40:26.819Z</updated>
+    <updated>2018-10-17T02:36:01.143Z</updated>
     
     <content type="html"><![CDATA[<p><a href="https://www.gitlab.com.cn/installation/#centos-7" target="_blank" rel="external">官方中文指导</a><br>现记录安装过程中遇到的相关问题</p>
 <p>#1. sudo firewall-cmd –permanent –add-service=http这一步报错<br><img src="https://upload-images.jianshu.io/upload_images/1987727-06e11b5948d0aeeb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="错误信息"><br>显示系统防火墙未打开</p>
@@ -67,7 +99,7 @@
     <link href="maydaychen.github.io/2018/10/16/%E5%B8%B8%E7%94%A8Windows%E8%BD%AF%E4%BB%B6%E6%80%BB%E7%BB%93/"/>
     <id>maydaychen.github.io/2018/10/16/常用Windows软件总结/</id>
     <published>2018-10-16T07:57:17.000Z</published>
-    <updated>2018-10-16T07:57:46.573Z</updated>
+    <updated>2018-10-17T02:36:51.007Z</updated>
     
     <content type="html"><![CDATA[<p>为了每次重装电脑的时候不会遗漏相关软件，特写下此文章，提醒自己保持较高生产力</p>
 <p>#图片查看</p>
@@ -117,6 +149,10 @@
     
     </summary>
     
+      <category term="others" scheme="maydaychen.github.io/categories/others/"/>
+    
+    
+      <category term="windows" scheme="maydaychen.github.io/tags/windows/"/>
     
   </entry>
   
@@ -125,7 +161,7 @@
     <link href="maydaychen.github.io/2018/10/12/%E9%80%9A%E8%BF%87hexo%E6%9B%B4%E6%96%B0github-pages%E5%8D%9A%E5%AE%A2/"/>
     <id>maydaychen.github.io/2018/10/12/通过hexo更新github-pages博客/</id>
     <published>2018-10-12T09:03:23.000Z</published>
-    <updated>2018-10-16T07:49:28.259Z</updated>
+    <updated>2018-10-17T02:33:11.994Z</updated>
     
     <content type="html"><![CDATA[<p>#文件生成及编辑<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo new &quot;文章标题&quot;</div></pre></td></tr></table></figure></p>
 <p>通过该命令行，可以在 “博客所在路径\source_posts\”下生成一个md文件，文件名称为上面命令行所输入的文章标题</p>
@@ -144,6 +180,12 @@
     
     </summary>
     
+      <category term="博客" scheme="maydaychen.github.io/categories/%E5%8D%9A%E5%AE%A2/"/>
+    
+    
+      <category term="hexo" scheme="maydaychen.github.io/tags/hexo/"/>
+    
+      <category term="github" scheme="maydaychen.github.io/tags/github/"/>
     
   </entry>
   
@@ -152,7 +194,7 @@
     <link href="maydaychen.github.io/2018/10/12/Android%E8%B0%83%E7%94%A8sharesdk%E8%BF%87%E7%A8%8B%E5%8F%8A%E9%97%AE%E9%A2%98/"/>
     <id>maydaychen.github.io/2018/10/12/Android调用sharesdk过程及问题/</id>
     <published>2018-10-12T02:38:38.000Z</published>
-    <updated>2018-10-16T07:49:12.934Z</updated>
+    <updated>2018-10-17T02:35:13.085Z</updated>
     
     <content type="html"><![CDATA[<p>具体配置方法详见官网，我这边使用的离线配置，即没有使用gradle进行配置，这里偷偷懒，不详细记录</p>
 <p>#详细步骤<br>步骤为粗略步骤，详细步骤参照<a href="http://wiki.mob.com/sharesdk%E5%BF%AB%E9%80%9F%E9%9B%86%E6%88%90%E9%9D%9Emaven/" target="_blank" rel="external">此处</a><br><a id="more"></a></p>
@@ -208,6 +250,12 @@
     
     </summary>
     
+      <category term="Android" scheme="maydaychen.github.io/categories/Android/"/>
+    
+    
+      <category term="Android" scheme="maydaychen.github.io/tags/Android/"/>
+    
+      <category term="shareSDK" scheme="maydaychen.github.io/tags/shareSDK/"/>
     
   </entry>
   
@@ -216,7 +264,7 @@
     <link href="maydaychen.github.io/2018/10/12/studio%E4%B8%8D%E5%81%9Cindexing%E8%A7%A3%E5%86%B3/"/>
     <id>maydaychen.github.io/2018/10/12/studio不停indexing解决/</id>
     <published>2018-10-12T02:33:02.000Z</published>
-    <updated>2018-10-12T02:34:44.041Z</updated>
+    <updated>2018-10-17T02:35:47.129Z</updated>
     
     <content type="html"><![CDATA[<p>最近几个版本的Android studio有时候一直会不停的indexing，什么操作都不让执行，现在有两种解决办法：<br>简单粗暴方法一：关闭Android studio，重新打开，问题解决<br>方法二：File &gt; Invalidate Caches/Restart</p>
 <p>个人感觉操作大同小异，就是重启IDE，希望Google能早日修复</p>]]></content>
@@ -227,6 +275,12 @@
     
     </summary>
     
+      <category term="Android" scheme="maydaychen.github.io/categories/Android/"/>
+    
+    
+      <category term="AndroidStudio" scheme="maydaychen.github.io/tags/AndroidStudio/"/>
+    
+      <category term="problems" scheme="maydaychen.github.io/tags/problems/"/>
     
   </entry>
   
@@ -235,7 +289,7 @@
     <link href="maydaychen.github.io/2017/05/09/%E8%87%AA%E5%88%B6%E7%89%88%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5/"/>
     <id>maydaychen.github.io/2017/05/09/自制版知乎日报/</id>
     <published>2017-05-09T15:27:56.000Z</published>
-    <updated>2017-05-09T15:34:44.457Z</updated>
+    <updated>2018-10-17T02:37:46.318Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Zhihu"><a href="#Zhihu" class="headerlink" title="Zhihu"></a>Zhihu</h1><p>模仿知乎日报，不用来盈利，只用来练习<br><a href="https://github.com/maydaychen/Zhihu" target="_blank" rel="external">项目相关</a><br><a href="https://github.com/izzyleung/ZhihuDailyPurify/wiki/知乎日报-API-分析" target="_blank" rel="external">接口信息</a></p>
 <h2 id=""><a href="#" class="headerlink" title=""></a><a id="more"></a></h2><h1 id="实现功能"><a href="#实现功能" class="headerlink" title="实现功能"></a>实现功能</h1><p>1.当日热门及具体内容显示<br>2.主题日报<br>3.夜间/日间模式切换</p>
@@ -254,6 +308,10 @@
     
     </summary>
     
+      <category term="Android" scheme="maydaychen.github.io/categories/Android/"/>
+    
+    
+      <category term="zhihu" scheme="maydaychen.github.io/tags/zhihu/"/>
     
   </entry>
   
@@ -262,7 +320,7 @@
     <link href="maydaychen.github.io/2017/05/09/Android%E7%9B%B8%E5%85%B3%E9%9D%A2%E8%AF%95%E9%A2%98%E8%AE%B0%E5%BD%95/"/>
     <id>maydaychen.github.io/2017/05/09/Android相关面试题记录/</id>
     <published>2017-05-09T15:07:46.000Z</published>
-    <updated>2017-05-09T15:35:49.803Z</updated>
+    <updated>2018-10-17T02:34:06.411Z</updated>
     
     <content type="html"><![CDATA[<p>此文章不定时更新，记录面试过程中遇到的相关问题</p>
 <h1 id="activity的启动模式有几种？分别是什么？"><a href="#activity的启动模式有几种？分别是什么？" class="headerlink" title="activity的启动模式有几种？分别是什么？"></a>activity的启动模式有几种？分别是什么？</h1><p>&nbsp; &nbsp; &nbsp; &nbsp; 4种</p>
@@ -283,6 +341,12 @@ eg:
     
     </summary>
     
+      <category term="Android" scheme="maydaychen.github.io/categories/Android/"/>
+    
+    
+      <category term="Android" scheme="maydaychen.github.io/tags/Android/"/>
+    
+      <category term="面试" scheme="maydaychen.github.io/tags/%E9%9D%A2%E8%AF%95/"/>
     
   </entry>
   
@@ -291,7 +355,7 @@ eg:
     <link href="maydaychen.github.io/2017/03/23/%E8%BF%9F%E6%9D%A5%E7%9A%84%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/"/>
     <id>maydaychen.github.io/2017/03/23/迟来的年度总结/</id>
     <published>2017-03-23T13:00:14.000Z</published>
-    <updated>2017-05-09T15:29:39.094Z</updated>
+    <updated>2018-10-17T02:37:11.407Z</updated>
     
     <content type="html"><![CDATA[<h1 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h1><p>时间真的像流水，匆匆越过指尖，再怎么使劲也抓不住一点。珍惜现在，立足当前，显然这些话已经是老生常谈了。从去年六月份毕业以来，感觉一开始像是开足了马力的拖拉机，学会了好多，但是始终是一个人在做着app开发，学什么都感觉有点跑偏。从年初到现在，活也没有了，感觉就像一条咸鱼，在慢慢风干。这种心情我也不知道怎么描述，内心暗自庆幸可以有更多自由的时间来研究新的知识，又觉得这样很闲很无聊的生活并不是我想要的。温水煮青蛙，慢慢的，我也不知道会不会成为一个废人。每天逛逛简书，鸡汤也好，新闻也罢，亦或是听着熟悉还证明我没有忘记基础的技术知识也好，想着当年说，年轻嘛，就该多闯闯，怎么就成了这个样子……</p>
 <h2 id=""><a href="#" class="headerlink" title=""></a><a id="more"></a></h2><p>好了，该抱怨的也抱怨过了，接下来，就要写自己给自己的鸡汤了。17年，是一个很重要的一年，基本上，将来废不废，就靠这一年了，毕业工作后的第一年，就算环境再不好，也要做最好的自己不是么？去年听了一年的这货<br><img src="http://upload-images.jianshu.io/upload_images/1987727-9421ba63d7dbed8d.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Android没人要了"><br>如今经过三个月的试水探索，发现还真有这迹象╮(╯▽╰)╭，毕竟经验少，要的全是3-5年的高手，日子不好混啊。今年打算略微接触一下前端，至少搞懂一下RN的相关方法。其次，继续巩固Android知识，动画也好，网络也好，还有一些其他领域的知识都尝试一下，多逛逛GitHub。</p>
@@ -314,6 +378,10 @@ eg:
     
     </summary>
     
+      <category term="others" scheme="maydaychen.github.io/categories/others/"/>
+    
+    
+      <category term="Android" scheme="maydaychen.github.io/tags/Android/"/>
     
   </entry>
   
@@ -322,7 +390,7 @@ eg:
     <link href="maydaychen.github.io/2017/03/22/Tablayout%E4%B9%8BTab%E5%AE%BD%E5%BA%A6%E5%B7%A6%E5%8F%B3%E6%97%A0%E6%B3%95%E5%A1%AB%E5%85%85/"/>
     <id>maydaychen.github.io/2017/03/22/Tablayout之Tab宽度左右无法填充/</id>
     <published>2017-03-22T13:48:05.000Z</published>
-    <updated>2017-03-22T13:55:28.771Z</updated>
+    <updated>2018-10-17T02:36:27.078Z</updated>
     
     <content type="html"><![CDATA[<p> 前段时间做一个项目使用到了Tablayout,可以用来实现类似知乎分栏的效果要使用Tablayout，必须引用Google的Android Support Design库，使用Android Studio 的同学可以直接使用只要在build.gradle中加入<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">compile <span class="string">'com.android.support:design:22.2.0'</span></div></pre></td></tr></table></figure></p>
 <p>即可<br><a id="more"></a></p>
@@ -343,17 +411,23 @@ eg:
     
     </summary>
     
+      <category term="Android" scheme="maydaychen.github.io/categories/Android/"/>
+    
+    
+      <category term="problems" scheme="maydaychen.github.io/tags/problems/"/>
+    
+      <category term="Tablayout" scheme="maydaychen.github.io/tags/Tablayout/"/>
     
   </entry>
   
   <entry>
-    <title>Ubuntu相关简易操作汇总（实时更新）</title>
-    <link href="maydaychen.github.io/2017/03/22/Ubuntu%E7%9B%B8%E5%85%B3%E7%AE%80%E6%98%93%E6%93%8D%E4%BD%9C%E6%B1%87%E6%80%BB%EF%BC%88%E5%AE%9E%E6%97%B6%E6%9B%B4%E6%96%B0%EF%BC%89/"/>
-    <id>maydaychen.github.io/2017/03/22/Ubuntu相关简易操作汇总（实时更新）/</id>
+    <title>linux相关简易操作汇总（实时更新）</title>
+    <link href="maydaychen.github.io/2017/03/22/linux%E7%9B%B8%E5%85%B3%E7%AE%80%E6%98%93%E6%93%8D%E4%BD%9C%E6%B1%87%E6%80%BB%EF%BC%88%E5%AE%9E%E6%97%B6%E6%9B%B4%E6%96%B0%EF%BC%89/"/>
+    <id>maydaychen.github.io/2017/03/22/linux相关简易操作汇总（实时更新）/</id>
     <published>2017-03-22T13:30:32.000Z</published>
-    <updated>2017-03-22T13:34:41.871Z</updated>
+    <updated>2018-10-17T02:32:29.441Z</updated>
     
-    <content type="html"><![CDATA[<h2 id="获取root权限"><a href="#获取root权限" class="headerlink" title="获取root权限"></a>获取root权限</h2><ol>
+    <content type="html"><![CDATA[<h2 id="Ubuntu获取root权限"><a href="#Ubuntu获取root权限" class="headerlink" title="Ubuntu获取root权限"></a>Ubuntu获取root权限</h2><ol>
 <li><p>输入命令：sudo su;</p>
 </li>
 <li><p>屏幕上会回显要求输入当前用户密码的提示，输入密码即可获得管理员权限;</p>
@@ -361,8 +435,7 @@ eg:
 <li><p>若想退出管理员权限可输入命令：su 用户名.</p>
 </li>
 </ol>
-<a id="more"></a>
-<h2 id="vim显示行数"><a href="#vim显示行数" class="headerlink" title="vim显示行数"></a>vim显示行数</h2><ol>
+<h2 id="Ubuntu-vim显示行数"><a href="#Ubuntu-vim显示行数" class="headerlink" title="Ubuntu vim显示行数"></a>Ubuntu vim显示行数</h2><ol>
 <li><p>进入终端，在命令行中输入cd  /etc/vim 后敲回车，进入/etc/vim目录；</p>
 </li>
 <li><p>进入etc/vim目录后，找到vimrc文件（vim的初始化文件），使用cp命令对其进行备份，命令为：cp  vimrc  vimrc.bak（必须要有管理员权限，否则无法成功）</p>
@@ -373,21 +446,30 @@ eg:
 </li>
 <li><p>加完后，写入，退出，（esc -&gt; :wq），重新使用vim打开任意文件即可发现有行号的标示。</p>
 </li>
-</ol>]]></content>
+</ol>
+<h2 id="navicat-for-MySQL无法连接Linux服务器中的MySQL-1130错误"><a href="#navicat-for-MySQL无法连接Linux服务器中的MySQL-1130错误" class="headerlink" title="navicat for MySQL无法连接Linux服务器中的MySQL  1130错误"></a>navicat for MySQL无法连接Linux服务器中的MySQL  1130错误</h2><ol>
+<li>输入mysql  -p进入MySQL，输入密码 </li>
+<li><p>mysql&gt; grant all privileges on <em>.</em> to root@”%” identified by “root”;<br>结果如下：Query OK, 0 rows affected, 1 warning (0.00 sec)</p>
+</li>
+<li><p>退出数据库mysql&gt; exit</p>
+</li>
+<li>将/etc/mysql/my.cnf文件中bind-address=127.0.0.1 这句话注释掉</li>
+<li>sudo /etc/init.d/mysql restart 重启MySQL服务<br>成功！此时navicat客户端已可连接服务器MySQL</li>
+</ol>
+<hr>
+<p>自己新建的<a href="http://www.loveying.wang/" target="_blank" rel="external">个人博客</a>，至今还有很多的问题，如果谁有兴趣希望跟我联系，共同进步，共同学习，望不吝提出意见与指导，万分感谢！</p>]]></content>
     
     <summary type="html">
     
-      &lt;h2 id=&quot;获取root权限&quot;&gt;&lt;a href=&quot;#获取root权限&quot; class=&quot;headerlink&quot; title=&quot;获取root权限&quot;&gt;&lt;/a&gt;获取root权限&lt;/h2&gt;&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;输入命令：sudo su;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;屏幕上会回显要求输入当前用户密码的提示，输入密码即可获得管理员权限;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;若想退出管理员权限可输入命令：su 用户名.&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
+      &lt;h2 id=&quot;Ubuntu获取root权限&quot;&gt;&lt;a href=&quot;#Ubuntu获取root权限&quot; class=&quot;headerlink&quot; title=&quot;Ubuntu获取root权限&quot;&gt;&lt;/a&gt;Ubuntu获取root权限&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;输入命令：sudo su;
     
     </summary>
     
+      <category term="linux" scheme="maydaychen.github.io/categories/linux/"/>
+    
+    
+      <category term="linux" scheme="maydaychen.github.io/tags/linux/"/>
     
   </entry>
   
@@ -396,7 +478,7 @@ eg:
     <link href="maydaychen.github.io/2017/03/21/Android5.0%E4%BB%A5%E4%B8%8B%E6%8A%A5NoClassDefFoundError/"/>
     <id>maydaychen.github.io/2017/03/21/Android5.0以下报NoClassDefFoundError/</id>
     <published>2017-03-21T13:11:01.000Z</published>
-    <updated>2017-03-22T13:23:47.963Z</updated>
+    <updated>2018-10-17T02:34:35.971Z</updated>
     
     <content type="html"><![CDATA[<p>一开始，我的项目都是在API21（5.0）的情况下编写的，所以过程很顺利，没有任何的错误，但是偶然之下，我用了同事的4.4的测试机，发现只要用到网络请求的地方，就会报NoClassDefFoundError，毫无办法。因为项目里用到了okhttp跟retrofit，我一度以为是引入的包冲突了，在那查了半天，无果。后来发现是Multidex这个操作的时候有问题，网上一查，真的有这个问题，现在阐述一下具体解决过程。</p>
 <a id="more"></a>
@@ -413,6 +495,10 @@ eg:
     
     </summary>
     
+      <category term="Android" scheme="maydaychen.github.io/categories/Android/"/>
+    
+    
+      <category term="Android" scheme="maydaychen.github.io/tags/Android/"/>
     
   </entry>
   

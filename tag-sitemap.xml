@@ -2,15 +2,92 @@
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
     <url>
+        <loc>maydaychen.github.io/tags/linux/</loc>
+        <lastmod>2018-10-17T02:32:29.441Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>maydaychen.github.io/tags/hexo/</loc>
+        <lastmod>2018-10-17T02:33:11.994Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>maydaychen.github.io/tags/github/</loc>
+        <lastmod>2018-10-17T02:33:11.994Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>maydaychen.github.io/tags/%E9%9D%A2%E8%AF%95/</loc>
+        <lastmod>2018-10-17T02:34:06.411Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>maydaychen.github.io/tags/shareSDK/</loc>
+        <lastmod>2018-10-17T02:35:13.085Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
         <loc>maydaychen.github.io/tags/centos/</loc>
-        <lastmod>2018-10-16T08:40:26.819Z</lastmod>
+        <lastmod>2018-10-17T02:36:01.143Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
         <loc>maydaychen.github.io/tags/gitlab/</loc>
-        <lastmod>2018-10-16T08:40:26.819Z</lastmod>
+        <lastmod>2018-10-17T02:36:01.143Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>maydaychen.github.io/tags/Tablayout/</loc>
+        <lastmod>2018-10-17T02:36:27.078Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>maydaychen.github.io/tags/windows/</loc>
+        <lastmod>2018-10-17T02:36:51.007Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>maydaychen.github.io/tags/Android/</loc>
+        <lastmod>2018-10-17T02:37:11.407Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>maydaychen.github.io/tags/zhihu/</loc>
+        <lastmod>2018-10-17T02:37:46.318Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>maydaychen.github.io/tags/AndroidStudio/</loc>
+        <lastmod>2018-10-17T02:45:31.368Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>maydaychen.github.io/tags/problems/</loc>
+        <lastmod>2018-10-17T02:45:31.368Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>

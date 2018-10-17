@@ -7,8 +7,29 @@
     </url>
 
     <url>
+        <loc>maydaychen.github.io/categories/%E5%8D%9A%E5%AE%A2/</loc>
+        <lastmod>2018-10-17T02:33:11.994Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
         <loc>maydaychen.github.io/categories/linux/</loc>
-        <lastmod>2018-10-16T08:40:26.819Z</lastmod>
+        <lastmod>2018-10-17T02:36:01.143Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>maydaychen.github.io/categories/others/</loc>
+        <lastmod>2018-10-17T02:37:11.407Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>maydaychen.github.io/categories/Android/</loc>
+        <lastmod>2018-10-17T02:45:31.368Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>

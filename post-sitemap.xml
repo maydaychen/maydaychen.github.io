@@ -7,48 +7,8 @@
     </url>
 
     <url>
-        <loc>maydaychen.github.io/2018/10/16/CentOS7-%E5%AE%89%E8%A3%85GitLab/</loc>
-        <lastmod>2018-10-16T08:40:26.819Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>maydaychen.github.io/2018/10/16/%E5%B8%B8%E7%94%A8Windows%E8%BD%AF%E4%BB%B6%E6%80%BB%E7%BB%93/</loc>
-        <lastmod>2018-10-16T07:57:46.573Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>maydaychen.github.io/2018/10/12/%E9%80%9A%E8%BF%87hexo%E6%9B%B4%E6%96%B0github-pages%E5%8D%9A%E5%AE%A2/</loc>
-        <lastmod>2018-10-16T07:49:28.259Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>maydaychen.github.io/2018/10/12/Android%E8%B0%83%E7%94%A8sharesdk%E8%BF%87%E7%A8%8B%E5%8F%8A%E9%97%AE%E9%A2%98/</loc>
-        <lastmod>2018-10-16T07:49:12.934Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>maydaychen.github.io/2018/10/12/studio%E4%B8%8D%E5%81%9Cindexing%E8%A7%A3%E5%86%B3/</loc>
-        <lastmod>2018-10-12T02:34:44.041Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>maydaychen.github.io/2017/05/09/Android%E7%9B%B8%E5%85%B3%E9%9D%A2%E8%AF%95%E9%A2%98%E8%AE%B0%E5%BD%95/</loc>
-        <lastmod>2017-05-09T15:35:49.803Z</lastmod>
+        <loc>maydaychen.github.io/2018/10/17/Android-studio-3-0-%E5%A1%AB%E5%9D%91/</loc>
+        <lastmod>2018-10-17T02:45:31.368Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -56,7 +16,7 @@
 
     <url>
         <loc>maydaychen.github.io/2017/05/09/%E8%87%AA%E5%88%B6%E7%89%88%E7%9F%A5%E4%B9%8E%E6%97%A5%E6%8A%A5/</loc>
-        <lastmod>2017-05-09T15:34:44.457Z</lastmod>
+        <lastmod>2018-10-17T02:37:46.318Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -64,7 +24,15 @@
 
     <url>
         <loc>maydaychen.github.io/2017/03/23/%E8%BF%9F%E6%9D%A5%E7%9A%84%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/</loc>
-        <lastmod>2017-05-09T15:29:39.094Z</lastmod>
+        <lastmod>2018-10-17T02:37:11.407Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>maydaychen.github.io/2018/10/16/%E5%B8%B8%E7%94%A8Windows%E8%BD%AF%E4%BB%B6%E6%80%BB%E7%BB%93/</loc>
+        <lastmod>2018-10-17T02:36:51.007Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -72,15 +40,31 @@
 
     <url>
         <loc>maydaychen.github.io/2017/03/22/Tablayout%E4%B9%8BTab%E5%AE%BD%E5%BA%A6%E5%B7%A6%E5%8F%B3%E6%97%A0%E6%B3%95%E5%A1%AB%E5%85%85/</loc>
-        <lastmod>2017-03-22T13:55:28.771Z</lastmod>
+        <lastmod>2018-10-17T02:36:27.078Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
     </url>
 
     <url>
-        <loc>maydaychen.github.io/2017/03/22/Ubuntu%E7%9B%B8%E5%85%B3%E7%AE%80%E6%98%93%E6%93%8D%E4%BD%9C%E6%B1%87%E6%80%BB%EF%BC%88%E5%AE%9E%E6%97%B6%E6%9B%B4%E6%96%B0%EF%BC%89/</loc>
-        <lastmod>2017-03-22T13:34:41.871Z</lastmod>
+        <loc>maydaychen.github.io/2018/10/16/CentOS7-%E5%AE%89%E8%A3%85GitLab/</loc>
+        <lastmod>2018-10-17T02:36:01.143Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>maydaychen.github.io/2018/10/12/studio%E4%B8%8D%E5%81%9Cindexing%E8%A7%A3%E5%86%B3/</loc>
+        <lastmod>2018-10-17T02:35:47.129Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>maydaychen.github.io/2018/10/12/Android%E8%B0%83%E7%94%A8sharesdk%E8%BF%87%E7%A8%8B%E5%8F%8A%E9%97%AE%E9%A2%98/</loc>
+        <lastmod>2018-10-17T02:35:13.085Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -88,7 +72,31 @@
 
     <url>
         <loc>maydaychen.github.io/2017/03/21/Android5.0%E4%BB%A5%E4%B8%8B%E6%8A%A5NoClassDefFoundError/</loc>
-        <lastmod>2017-03-22T13:23:47.963Z</lastmod>
+        <lastmod>2018-10-17T02:34:35.971Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>maydaychen.github.io/2017/05/09/Android%E7%9B%B8%E5%85%B3%E9%9D%A2%E8%AF%95%E9%A2%98%E8%AE%B0%E5%BD%95/</loc>
+        <lastmod>2018-10-17T02:34:06.411Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>maydaychen.github.io/2018/10/12/%E9%80%9A%E8%BF%87hexo%E6%9B%B4%E6%96%B0github-pages%E5%8D%9A%E5%AE%A2/</loc>
+        <lastmod>2018-10-17T02:33:11.994Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>maydaychen.github.io/2017/03/22/linux%E7%9B%B8%E5%85%B3%E7%AE%80%E6%98%93%E6%93%8D%E4%BD%9C%E6%B1%87%E6%80%BB%EF%BC%88%E5%AE%9E%E6%97%B6%E6%9B%B4%E6%96%B0%EF%BC%89/</loc>
+        <lastmod>2018-10-17T02:32:29.441Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
