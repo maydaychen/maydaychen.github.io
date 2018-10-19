@@ -300,6 +300,175 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="maydaychen.github.io/2018/10/19/ImageLoader加载网络图片/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="maydaychen">
+      <meta itemprop="description" content="记录自己成长过程中遇到的困难们，共勉！">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="陈译的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/19/ImageLoader加载网络图片/" itemprop="url">
+                  ImageLoader加载网络图片
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-10-19 09:46:12 / 修改时间：09:48:06" itemprop="dateCreated datePublished" datetime="2018-10-19T09:46:12+08:00">2018-10-19</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><a href="https://link.jianshu.com/?t=https://github.com/nostra13/Android-Universal-Image-Loader" target="_blank" rel="external">github地址 </a></p>
+<p>#导入方法</p>
+<ol>
+<li><p>下载jar包并手动导入：    </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">implementation files(&apos;libs/universal-image-loader-1.9.5.jar&apos;)</div></pre></td></tr></table></figure>
+</li>
+<li><p>在build.gradle中添加 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">compile ‘com.nostra13.universalimageloader:universal-image-loader:1.9.5’</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>#添加权限<br>需要添加写入权限以及联网权限，注意安卓6.0以后动态权限问题<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;uses-permission android:name=<span class="string">"android.permission.WRITE_EXTERNAL_STORAGE"</span> /&gt;  </div><div class="line">&lt;uses-permission android:name=<span class="string">"android.permission.INTERNET"</span> /&gt;</div></pre></td></tr></table></figure></p>
+<p>#初始化<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"> <span class="comment">// 初始化</span></div><div class="line">ImageLoaderConfiguration configuration = <span class="keyword">new</span> ImageLoaderConfiguration.Builder(<span class="keyword">this</span>).writeDebugLogs().build();</div><div class="line">ImageLoader.getInstance().init(configuration);</div></pre></td></tr></table></figure></p>
+<p>#加载图片<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line">    <span class="comment">// 先设置网上图片的路径</span></div><div class="line">    String uri = <span class="string">""</span>;</div><div class="line">    <span class="comment">// 可以设置图片大小</span></div><div class="line">    ImageSize mImageSize = <span class="keyword">new</span> ImageSize(<span class="number">300</span>, <span class="number">300</span>);</div><div class="line">    <span class="comment">// 图片的相关配置</span></div><div class="line">    DisplayImageOptions mOptions = <span class="keyword">new</span> DisplayImageOptions.Builder()</div><div class="line">            .cacheInMemory(<span class="keyword">true</span>).cacheOnDisc(<span class="keyword">true</span>)</div><div class="line">            .bitmapConfig(Bitmap.Config.RGB_565).build();</div><div class="line"></div><div class="line">    ImageLoader.getInstance().loadImage(uri, mImageSize, mOptions,</div><div class="line">            <span class="keyword">new</span> ImageLoadingListener() &#123;</div><div class="line"></div><div class="line">                <span class="meta">@Override</span></div><div class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onLoadingStarted</span><span class="params">(String arg0, View arg1)</span> </span>&#123;</div><div class="line">                    <span class="comment">// TODO Auto-generated method stub</span></div><div class="line">                    <span class="comment">//图片开始加载状态</span></div><div class="line">                &#125;</div><div class="line"></div><div class="line">                <span class="meta">@Override</span></div><div class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onLoadingFailed</span><span class="params">(String arg0, View arg1,</span></span></div><div class="line">                                            FailReason arg2) &#123;</div><div class="line">                    <span class="comment">// TODO Auto-generated method stub</span></div><div class="line">                    <span class="comment">//图片加载失败后回调，可以在这设置图片加载失败后的默认图等</span></div><div class="line">                &#125;</div><div class="line"></div><div class="line">                <span class="meta">@Override</span></div><div class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onLoadingComplete</span><span class="params">(String arg0, View arg1,</span></span></div><div class="line">                                              Bitmap arg2) &#123;</div><div class="line">                    ivPersonLogo.setImageBitmap(arg2);</div><div class="line">                    <span class="comment">//图片加载完成，arg2即为加载出的图片，以bitmap形式存在</span></div><div class="line">                &#125;</div><div class="line"></div><div class="line">                <span class="meta">@Override</span></div><div class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onLoadingCancelled</span><span class="params">(String arg0, View arg1)</span> </span>&#123;</div><div class="line">                    <span class="comment">// TODO Auto-generated method stub</span></div><div class="line">                    <span class="comment">//图片加载取消回调</span></div><div class="line">                &#125;</div><div class="line">            &#125;);</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="maydaychen.github.io/2018/10/17/Android-studio-3-0-填坑/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1854,181 +2023,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="maydaychen.github.io/2017/03/22/Tablayout之Tab宽度左右无法填充/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="maydaychen">
-      <meta itemprop="description" content="记录自己成长过程中遇到的困难们，共勉！">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="陈译的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/03/22/Tablayout之Tab宽度左右无法填充/" itemprop="url">
-                  Tablayout之Tab宽度左右无法填充
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-03-22 21:48:05" itemprop="dateCreated datePublished" datetime="2017-03-22T21:48:05+08:00">2017-03-22</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-10-17 10:36:27" itemprop="dateModified" datetime="2018-10-17T10:36:27+08:00">2018-10-17</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p> 前段时间做一个项目使用到了Tablayout,可以用来实现类似知乎分栏的效果要使用Tablayout，必须引用Google的Android Support Design库，使用Android Studio 的同学可以直接使用只要在build.gradle中加入<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">compile <span class="string">'com.android.support:design:22.2.0'</span></div></pre></td></tr></table></figure></p>
-<p>即可<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/03/22/Tablayout之Tab宽度左右无法填充/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </p></div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2076,7 +2070,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">13</span>
+                    <span class="site-state-item-count">14</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -2136,7 +2130,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">13</span>
+                      
+                    
+                    <span class="site-state-item-count">14</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

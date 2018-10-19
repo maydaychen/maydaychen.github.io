@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="maydaychen.github.io/"/>
-  <updated>2018-10-17T02:45:31.368Z</updated>
+  <updated>2018-10-19T01:48:06.439Z</updated>
   <id>maydaychen.github.io/</id>
   
   <author>
@@ -14,6 +14,40 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>ImageLoader加载网络图片</title>
+    <link href="maydaychen.github.io/2018/10/19/ImageLoader%E5%8A%A0%E8%BD%BD%E7%BD%91%E7%BB%9C%E5%9B%BE%E7%89%87/"/>
+    <id>maydaychen.github.io/2018/10/19/ImageLoader加载网络图片/</id>
+    <published>2018-10-19T01:46:12.000Z</published>
+    <updated>2018-10-19T01:48:06.439Z</updated>
+    
+    <content type="html"><![CDATA[<p><a href="https://link.jianshu.com/?t=https://github.com/nostra13/Android-Universal-Image-Loader" target="_blank" rel="external">github地址 </a></p>
+<p>#导入方法</p>
+<ol>
+<li><p>下载jar包并手动导入：    </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">implementation files(&apos;libs/universal-image-loader-1.9.5.jar&apos;)</div></pre></td></tr></table></figure>
+</li>
+<li><p>在build.gradle中添加 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">compile ‘com.nostra13.universalimageloader:universal-image-loader:1.9.5’</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>#添加权限<br>需要添加写入权限以及联网权限，注意安卓6.0以后动态权限问题<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;uses-permission android:name=<span class="string">"android.permission.WRITE_EXTERNAL_STORAGE"</span> /&gt;  </div><div class="line">&lt;uses-permission android:name=<span class="string">"android.permission.INTERNET"</span> /&gt;</div></pre></td></tr></table></figure></p>
+<p>#初始化<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"> <span class="comment">// 初始化</span></div><div class="line">ImageLoaderConfiguration configuration = <span class="keyword">new</span> ImageLoaderConfiguration.Builder(<span class="keyword">this</span>).writeDebugLogs().build();</div><div class="line">ImageLoader.getInstance().init(configuration);</div></pre></td></tr></table></figure></p>
+<p>#加载图片<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line">    <span class="comment">// 先设置网上图片的路径</span></div><div class="line">    String uri = <span class="string">""</span>;</div><div class="line">    <span class="comment">// 可以设置图片大小</span></div><div class="line">    ImageSize mImageSize = <span class="keyword">new</span> ImageSize(<span class="number">300</span>, <span class="number">300</span>);</div><div class="line">    <span class="comment">// 图片的相关配置</span></div><div class="line">    DisplayImageOptions mOptions = <span class="keyword">new</span> DisplayImageOptions.Builder()</div><div class="line">            .cacheInMemory(<span class="keyword">true</span>).cacheOnDisc(<span class="keyword">true</span>)</div><div class="line">            .bitmapConfig(Bitmap.Config.RGB_565).build();</div><div class="line"></div><div class="line">    ImageLoader.getInstance().loadImage(uri, mImageSize, mOptions,</div><div class="line">            <span class="keyword">new</span> ImageLoadingListener() &#123;</div><div class="line"></div><div class="line">                <span class="meta">@Override</span></div><div class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onLoadingStarted</span><span class="params">(String arg0, View arg1)</span> </span>&#123;</div><div class="line">                    <span class="comment">// TODO Auto-generated method stub</span></div><div class="line">                    <span class="comment">//图片开始加载状态</span></div><div class="line">                &#125;</div><div class="line"></div><div class="line">                <span class="meta">@Override</span></div><div class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onLoadingFailed</span><span class="params">(String arg0, View arg1,</span></span></div><div class="line">                                            FailReason arg2) &#123;</div><div class="line">                    <span class="comment">// TODO Auto-generated method stub</span></div><div class="line">                    <span class="comment">//图片加载失败后回调，可以在这设置图片加载失败后的默认图等</span></div><div class="line">                &#125;</div><div class="line"></div><div class="line">                <span class="meta">@Override</span></div><div class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onLoadingComplete</span><span class="params">(String arg0, View arg1,</span></span></div><div class="line">                                              Bitmap arg2) &#123;</div><div class="line">                    ivPersonLogo.setImageBitmap(arg2);</div><div class="line">                    <span class="comment">//图片加载完成，arg2即为加载出的图片，以bitmap形式存在</span></div><div class="line">                &#125;</div><div class="line"></div><div class="line">                <span class="meta">@Override</span></div><div class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onLoadingCancelled</span><span class="params">(String arg0, View arg1)</span> </span>&#123;</div><div class="line">                    <span class="comment">// TODO Auto-generated method stub</span></div><div class="line">                    <span class="comment">//图片加载取消回调</span></div><div class="line">                &#125;</div><div class="line">            &#125;);</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;a href=&quot;https://link.jianshu.com/?t=https://github.com/nostra13/Android-Universal-Image-Loader&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;github地址 
+    
+    </summary>
+    
+      <category term="Android" scheme="maydaychen.github.io/categories/Android/"/>
+    
+    
+      <category term="ImageLoader" scheme="maydaychen.github.io/tags/ImageLoader/"/>
+    
+  </entry>
   
   <entry>
     <title>Android studio 3.0 填坑</title>
