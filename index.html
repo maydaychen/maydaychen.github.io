@@ -1751,7 +1751,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-10-17 10:34:06" itemprop="dateModified" datetime="2018-10-17T10:34:06+08:00">2018-10-17</time>
+                <time title="修改时间：2019-07-21 18:50:42" itemprop="dateModified" datetime="2019-07-21T18:50:42+08:00">2019-07-21</time>
               
             
           </span>
@@ -1803,20 +1803,99 @@
 
       
         
-          <p>此文章不定时更新，记录面试过程中遇到的相关问题</p>
-<h1 id="activity的启动模式有几种？分别是什么？"><a href="#activity的启动模式有几种？分别是什么？" class="headerlink" title="activity的启动模式有几种？分别是什么？"></a>activity的启动模式有几种？分别是什么？</h1><p>&nbsp; &nbsp; &nbsp; &nbsp; 4种</p>
-<p>&nbsp; &nbsp; &nbsp; &nbsp; standard：默认模式，可以不用写配置。在这个模式下，都会默认创建一个新的实例。因此，在这种模式下，可以有多个相同的实例，也允许多个相同Activity叠加。<br>&nbsp; &nbsp; &nbsp; &nbsp; singleTop：如果Activity在栈顶的时候，启动相同的Activity，不会创建新的实例，而会调用其onNewIntent方法。<br>&nbsp; &nbsp; &nbsp; &nbsp; singleTask：只有一个实例。在同一个应用程序中启动他的时候，若Activity不存在，则会在当前task创建一个新的实例，若存在，则会把task中在其之上的其它Activity destory掉并调用它的onNewIntent方法。如果是在别的应用程序中启动它，则会新建一个task，并在该task中启动这个Activity，singleTask允许别的Activity与其在一个task中共存，也就是说，如果我在这个singleTask的实例中再打开新的Activity，这个新的Activity还是会在singleTask的实例的task中。<br>&nbsp; &nbsp; &nbsp; &nbsp; singleInstance：只有一个实例，并且这个实例独立运行在一个task中，这个task只有这个实例，不允许有别的Activity存在。</p>
-<h2 id=""><a href="#" class="headerlink" title=""></a>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/05/09/Android相关面试题记录/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+          
+            <p>此文章不定时更新，记录面试过程中遇到的相关问题</p>
+<h1 id="Android相关"><a href="#Android相关" class="headerlink" title="Android相关"></a>Android相关</h1><h2 id="1-activity的启动模式有几种？分别是什么？"><a href="#1-activity的启动模式有几种？分别是什么？" class="headerlink" title="1.activity的启动模式有几种？分别是什么？"></a>1.activity的启动模式有几种？分别是什么？</h2><pre><code>    4种
+
+ standard：默认模式，可以不用写配置。在这个模式下，都会默认创建一个新的实例。因此，在这种模式下，可以有多个相同的实例，也允许多个相同Activity叠加。
+singleTop：如果Activity在栈顶的时候，启动相同的Activity，不会创建新的实例，而会调用其onNewIntent方法。
+singleTask：只有一个实例。在同一个应用程序中启动他的时候，若Activity不存在，则会在当前task创建一个新的实例，若存在，则会把task中在其之上的其它Activity destory掉并调用它的onNewIntent方法。如果是在别的应用程序中启动它，则会新建一个task，并在该task中启动这个Activity，singleTask允许别的Activity与其在一个task中共存，也就是说，如果我在这个singleTask的实例中再打开新的Activity，这个新的Activity还是会在singleTask的实例的task中。
+singleInstance：只有一个实例，并且这个实例独立运行在一个task中，这个task只有这个实例，不允许有别的Activity存在。
+</code></pre><h2 id="2-请用代码写出一个接口回调的例子"><a href="#2-请用代码写出一个接口回调的例子" class="headerlink" title="2.请用代码写出一个接口回调的例子"></a>2.请用代码写出一个接口回调的例子</h2> <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">A</span> <span class="keyword">implements</span> <span class="title">View</span>.<span class="title">OnClickListener</span></span>&#123;</div><div class="line">    <span class="keyword">private</span> OnRecyclerViewItemClickListener mOnItemClickListener = <span class="keyword">null</span>;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">OnRecyclerViewItemClickListener</span> </span>&#123;</div><div class="line">        <span class="function"><span class="keyword">void</span> <span class="title">onItemClick</span><span class="params">(View view, <span class="keyword">int</span> data)</span></span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (mOnItemClickListener != <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="comment">//注意这里使用getTag方法获取数据</span></div><div class="line">            mOnItemClickListener.onItemClick(v, (Integer) v.getTag());</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setOnItemClickListener</span><span class="params">(OnRecyclerViewItemClickListener listener)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.mOnItemClickListener = listener;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>然后在B类中实现具体操作<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">B</span></span>&#123;</div><div class="line">    A a = <span class="keyword">new</span> A();</div><div class="line">    a.setOnItemClickListener()&#123;</div><div class="line">    <span class="comment">//各种噼里啪啦的操作</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="3-ScrollView嵌套RecyclerView会有什么问题？怎么解决？"><a href="#3-ScrollView嵌套RecyclerView会有什么问题？怎么解决？" class="headerlink" title="3.ScrollView嵌套RecyclerView会有什么问题？怎么解决？"></a>3.ScrollView嵌套RecyclerView会有什么问题？怎么解决？</h2><p>方法一：<br>    ScrollView中嵌套了几个RecyclerView，会导致滑动RecyclerView没有惯性效果<br>    解决办法：重写LayoutManager,设置canScrollVertically属性为false<br>    eg:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">layoutManager = <span class="keyword">new</span> GridLayoutManager(<span class="keyword">this</span>, <span class="number">2</span>, LinearLayoutManager.VERTICAL, <span class="keyword">false</span>)&#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">canScrollVertically</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>方法二：<br>建议实用NestedScrollView代替ScrollView，并且设置recyclerView.setNestedScrollingEnabled(false);<br>它是support-v4包提供的控件,继承至FrameLayout,<br>并实现了NestedScrollingParent,NestedScrollingChild, ScrollingView接口.<br>它的作用类似于android.widget.ScrollView,不同点在于NestedScrollView支持嵌套滑动.</p>
+<h2 id="4-Android5-0，6-0，7-0的特性"><a href="#4-Android5-0，6-0，7-0的特性" class="headerlink" title="4.Android5.0，6.0，7.0的特性"></a>4.Android5.0，6.0，7.0的特性</h2><p>###Android 5.0：<br>    Material Design；<br>    Dalvik改为ART，提高启动效率<br>在程序运行过程中Dalvik虚拟机不断的进行将字节码转换为机器码的工作。<br>而Art引入了AOT这种预编译技术，在应用程序的安装过程中已经将所有的字节码编译为了机器码，在运行的时候直接调用。Art极大的提高了程序的运行效率，同时减少了手机的耗电量，在垃圾回收机制上也有很大的优化，但是Art模式下应用程序的安装需要消耗更多的时间，同时也需要跟多的安装空间。<br>Dalvik 是Android4.4及以下平台的虚拟机。<br>Art 是在Android4.4以上平台使用的虚拟机。</p>
+<h3 id="Android-6-0："><a href="#Android-6-0：" class="headerlink" title="Android 6.0："></a>Android 6.0：</h3><pre><code>TextInputLayout新控件；
+Android pay
+运行权限管理（！！）；
+指纹支持
+增加大量动画；
+支持raw格式照片
+用httpURLConnection来替代httpclient
+</code></pre><h3 id="Android-7-0："><a href="#Android-7-0：" class="headerlink" title="Android 7.0："></a>Android 7.0：</h3><pre><code>Java8支持
+分屏多任务
+通知栏快速回复
+</code></pre><h2 id="5-内存泄漏跟内存溢出的区别"><a href="#5-内存泄漏跟内存溢出的区别" class="headerlink" title="5.内存泄漏跟内存溢出的区别"></a>5.内存泄漏跟内存溢出的区别</h2><p>内存溢出 out of memory，是指程序在申请内存时，没有足够的内存空间供其使用，出现out of memory；比如申请了一个integer,但给它存了long才能存下的数，那就是内存溢出。</p>
+<p>内存泄露 memory leak，是指程序在申请内存后，无法释放已申请的内存空间，一次内存泄露危害可以忽略，但内存泄露堆积后果很严重，无论多少内存,迟早会被占光。</p>
+<p>memory leak会最终会导致out of memory！</p>
+<h2 id="6-Activity与Service通信"><a href="#6-Activity与Service通信" class="headerlink" title="6. Activity与Service通信"></a>6. Activity与Service通信</h2><p>通过startService()启动服务后，活动与服务基本就没有关系了，活动无法控制服务的逻辑<br>若想进行交互，只能通过bindService()方法<br>具体：<br>1.在service中添加一个类继承Binder类<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">class DownloadBinder extends Binder &#123;</div><div class="line">    public void startDownload() &#123;</div><div class="line">        Log.i(TAG, &quot;startDownload: &quot;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public int getProgress() &#123;</div><div class="line">        Log.i(TAG, &quot;getProgress: &quot;);</div><div class="line">        return 0;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>2.在service的onBind()方法中返回上述类的实体对象<br>3.在activity中添加<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">private ServiceConnection mConnection = new ServiceConnection() &#123;</div><div class="line">    @Override</div><div class="line">    public void onServiceConnected(ComponentName componentName, IBinder iBinder) &#123;</div><div class="line">        mDownloadBinder = (MyService.DownloadBinder) iBinder;</div><div class="line">        mDownloadBinder.startDownload();</div><div class="line">        mDownloadBinder.getProgress();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void onServiceDisconnected(ComponentName componentName) &#123;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>4.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Intent bindIntent = new Intent(this, MyService.class);</div><div class="line">bindService(bindIntent, mConnection, BIND_AUTO_CREATE);</div></pre></td></tr></table></figure></p>
+<p>方法二：<br>通过broadcast进行交互</p>
+<h2 id="7-Android性能优化"><a href="#7-Android性能优化" class="headerlink" title="7. Android性能优化"></a>7. Android性能优化</h2><h2 id="8-Handler"><a href="#8-Handler" class="headerlink" title="8. Handler"></a>8. Handler</h2><p>Handler包括四个角色：</p>
+<p>Handler：负责发送消息处理消息。<br>Message：消息实体对象，handler通过sendMessage将实体放到消息队列中。<br>MessageQueQue:存放消息的队列。<br>Looper：消息轮询器，不停的从消息队列中取出消息交给handler处理。</p>
+<p>在主线程创建Handler，在需要发送消息的地方创建一个Message，通过handler发送。这个消息回到MessageQueQue中，然后Looper会将这个消息取出交给handler处理。<br>Handler可以有多个，但是在同一线程中Looper和MessageQueQue只能有一个。</p>
+<h2 id="9-Activity以窗口模式展示"><a href="#9-Activity以窗口模式展示" class="headerlink" title="9. Activity以窗口模式展示"></a>9. Activity以窗口模式展示</h2><p>方法一：<br>在Manifest下将对应的activity的主题设置成android：Theme=”@android:style/Theme.Dialog”完成这一步我们就将activity设置成窗口模式了。</p>
+<p>方法二：<br>在你的styles.xml文件中可以新建一个style继承android:style/Theme.Dialog<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;style name=&quot;Theme.FloatActivity&quot; parent=&quot;android:style/Theme.Dialog&quot;&gt;</div><div class="line">      &lt;!-- float_box为我们定义的窗口背景 ，这个不是必须的--&gt;</div><div class="line">      &lt;item name=&quot;android:windowBackground&quot;&gt;@drawable/float_box&lt;/item&gt;</div><div class="line">  &lt;/style&gt;</div></pre></td></tr></table></figure></p>
+<p>并在Manifest中设置activity主题为刚新建的style</p>
+<h2 id="10-请介绍一下ContentProvider是如何实现数据共享的。"><a href="#10-请介绍一下ContentProvider是如何实现数据共享的。" class="headerlink" title="10.请介绍一下ContentProvider是如何实现数据共享的。"></a>10.请介绍一下ContentProvider是如何实现数据共享的。</h2><p>Android提供了ContentProvider，一个程序可以通过实现一个ContentProvider的抽象接口将自己的数据完全暴露出去，而且ContentProvicer是以类似数据库中表的方式将数据暴露。也就是说ContentProvider就像一个“数据库”。那么外界获取其提供的数据，也就应该与从数据库中获取数据的操作基本一样，只不过是采用URI来表示外界需要访问的“数据库”。外部访问通过ContentResolver去访问并操作这些被暴露的数据。</p>
+<h2 id="11-Serializable-和Parcelable-的区别"><a href="#11-Serializable-和Parcelable-的区别" class="headerlink" title="11.Serializable 和Parcelable 的区别"></a>11.Serializable 和Parcelable 的区别</h2><p>在Android上应该尽量采用Parcelable，它效率更高。<br>Parcelabe代码比Serializable多一些。<br>Parcelabe比Serializable速度高十倍以上。<br>Serializable只需要对某个类以及它的属性实现Serializable接口即可，无需实现方法。缺点是使用的反射，序列化的过程较慢，这种机制会在序列化的时候创建许多的临时对象。容易触发GC。<br>Parcable方法实现的原理是将一根完整的对象进行分解，而分解后的每一部分都是Intent所支持的数据类型，这样也就实现传递对象的功能。</p>
+<h2 id="12"><a href="#12" class="headerlink" title="12."></a>12.</h2><h1 id="Java相关"><a href="#Java相关" class="headerlink" title="Java相关"></a>Java相关</h1><h2 id="Math-round-11-5-与Math-round-11-5"><a href="#Math-round-11-5-与Math-round-11-5" class="headerlink" title="Math.round(11.5)与Math.round(-11.5)"></a>Math.round(11.5)与Math.round(-11.5)</h2><p>round方法，它表示“四舍五入”，算法为Math.floor(x+0.5)，即将原来的数字加上0.5后再向下取整，所以，Math.round(11.5)的结果为12，Math.round(-11.5)的结果为-11。（正数小数点后大于5则进位；负数小数点后小于以及等于5都舍去，大于5的则进位）</p>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><h2 id="1-服务器响应码相关"><a href="#1-服务器响应码相关" class="headerlink" title="1.服务器响应码相关"></a>1.服务器响应码相关</h2><table>
+<thead>
+<tr>
+<th>状态码</th>
+<th>响应类别</th>
+<th>原因短语</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1XX</td>
+<td>信息性状态码（Informational）</td>
+<td>服务器正在处理请求</td>
+</tr>
+<tr>
+<td>2XX</td>
+<td>成功状态码（Success）</td>
+<td>请求已正常处理完毕</td>
+</tr>
+<tr>
+<td>3XX</td>
+<td>重定向状态码（Redirection）</td>
+<td>需要进行额外操作以完成请求</td>
+</tr>
+<tr>
+<td>4XX</td>
+<td>客户端错误状态码（Client Error）</td>
+<td>客户端原因导致服务器无法处理请求</td>
+</tr>
+<tr>
+<td>5XX</td>
+<td>服务器错误状态码（Server Error）</td>
+<td>服务器原因导致处理请求出错</td>
+</tr>
+</tbody>
+</table>
+<p>常见错误码<br>200 OK<br>请求正常处理完毕</p>
+<p>204 No Content<br>请求成功处理，没有实体的主体返回</p>
+<p>206 Partial Content<br>GET范围请求已成功处理</p>
+<p>301 Moved Permanently<br>永久重定向，资源已永久分配新URI</p>
+<p>302 Found<br>临时重定向，资源已临时分配新URI</p>
+<p>303 See Other<br>临时重定向，期望使用GET定向获取</p>
+<p>304 Not Modified<br>发送的附带条件请求未满足</p>
+<p>307 Temporary Redirect<br>临时重定向，POST不会变成GET</p>
+<p>400 Bad Request<br>请求报文语法错误或参数错误</p>
+<p>401 Unauthorized<br>需要通过HTTP认证，或认证失败</p>
+<p>403 Forbidden<br>请求资源被拒绝</p>
+<p>404 Not Found<br>无法找到请求资源（服务器无理由拒绝）</p>
+<p>500 Internal Server Error<br>服务器故障或Web应用故障</p>
+<p>503 Service Unavailable<br>服务器超负载或停机维护</p>
+          
         
       
-    </h2></div>
+    </div>
 
     
 
@@ -2205,7 +2284,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>
