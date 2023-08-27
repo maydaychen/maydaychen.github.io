@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Hexotest</title>
+  
+  <subtitle>hei</subtitle>
+  <link href="https://maydaychen.github.io/atom.xml" rel="self"/>
+  
+  <link href="https://maydaychen.github.io/"/>
+  <updated>2023-08-27T10:19:52.923Z</updated>
+  <id>https://maydaychen.github.io/</id>
+  
+  <author>
+    <name>Maydaychen</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Docker入门(1)--Docker概述</title>
+    <link href="https://maydaychen.github.io/2023/08/27/Docker%E5%85%A5%E9%97%A8-1-Docker%E6%A6%82%E8%BF%B0/"/>
+    <id>https://maydaychen.github.io/2023/08/27/Docker%E5%85%A5%E9%97%A8-1-Docker%E6%A6%82%E8%BF%B0/</id>
+    <published>2023-08-27T09:49:33.000Z</published>
+    <updated>2023-08-27T10:19:52.923Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="Docker与虚拟机的对比"><a href="#Docker与虚拟机的对比" class="headerlink" title="Docker与虚拟机的对比"></a>Docker与虚拟机的对比</h2><p>虚拟机技术缺点：</p><ul><li>资源占用十分多</li><li>冗余步骤多（比如开机等）</li><li>启动很慢</li></ul><p>Docker和传统虚拟机的不同： </p><ul><li>传统虚拟机需要虚拟出一个硬件，运行一整个操作系统，然后在系统上安装和运行软件</li><li>容器内的应用直接运行在宿主机，容器没有自己的内核的， 也没有虚拟硬件，所以很轻便</li><li>每个容器之间互相隔离，每个容器内都有一个属于自己的文件系统，互不影响</li></ul><h2 id="Docker组成"><a href="#Docker组成" class="headerlink" title="Docker组成"></a>Docker组成</h2><h3 id="镜像Image："><a href="#镜像Image：" class="headerlink" title="镜像Image："></a>镜像Image：</h3><p>就好比一个模版，可以通过模版来创建容器服务</p><p>通过镜像可以创建多个容器（最终服务&#x2F;项目运行就在容器中）</p><h3 id="容器Container："><a href="#容器Container：" class="headerlink" title="容器Container："></a>容器Container：</h3><p>Docker利用容器技术，独立运行一个或一组应用，通过镜像来创建</p><p>基本命令：启动，停止，删除</p><p>目前可以把容器理解为一个简易的Linux系统</p><h3 id="仓库Registry-远程仓库"><a href="#仓库Registry-远程仓库" class="headerlink" title="仓库Registry: 远程仓库"></a>仓库Registry: 远程仓库</h3><p>存放镜像的地方，就好比代码放git</p><p>仓库分为公有仓库和私有仓库</p><p>如Docker Hub(默认都是国内的，需要配置镜像加速)</p><p>云服务商都有容器服务器</p><h2 id="Docker是怎么工作的"><a href="#Docker是怎么工作的" class="headerlink" title="Docker是怎么工作的"></a>Docker是怎么工作的</h2><p>Docker是一个Client-Server架构的系统，Docker的守护进程运行在主机上，通过Socket从客户端访问</p><p>DockerServer接收到DockerClient的指令，就会执行这个指令</p><h2 id="Docker为什么比VM快"><a href="#Docker为什么比VM快" class="headerlink" title="Docker为什么比VM快"></a>Docker为什么比VM快</h2><p>Docker有着比VM更少的抽象层</p><p>Docker利用的是宿主机的内核，但VM需要加载一个分钟级别的Guest OS</p><p>所以说，新建一个容器的时候，docker不需要像VM一样重新加载一个OS的内核，省略了加载Guest OS的过程，所以会很快</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;Docker与虚拟机的对比&quot;&gt;&lt;a href=&quot;#Docker与虚拟机的对比&quot; class=&quot;headerlink&quot; title=&quot;Docker与虚拟机的对比&quot;&gt;&lt;/a&gt;Docker与虚拟机的对比&lt;/h2&gt;&lt;p&gt;虚拟机技术缺点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;资源占用</summary>
+      
+    
+    
+    
+    <category term="Docker相关" scheme="https://maydaychen.github.io/categories/Docker%E7%9B%B8%E5%85%B3/"/>
+    
+    
+    <category term="Docker" scheme="https://maydaychen.github.io/tags/Docker/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Hello World</title>
+    <link href="https://maydaychen.github.io/2023/08/12/hello-world/"/>
+    <id>https://maydaychen.github.io/2023/08/12/hello-world/</id>
+    <published>2023-08-12T01:34:30.754Z</published>
+    <updated>2023-08-12T01:34:30.754Z</updated>
+    
+    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.io/docs/&quot;&gt;documentation&lt;/a&gt; for</summary>
+      
+    
+    
+    
+    
+  </entry>
+  
+</feed>
