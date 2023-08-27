@@ -6,7 +6,7 @@
   <link href="https://maydaychen.github.io/atom.xml" rel="self"/>
   
   <link href="https://maydaychen.github.io/"/>
-  <updated>2023-08-27T10:19:52.923Z</updated>
+  <updated>2023-08-27T14:12:50.029Z</updated>
   <id>https://maydaychen.github.io/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>hexo g报错 Cannot read properties of undefined (reading &#39;count&#39;)</title>
+    <link href="https://maydaychen.github.io/2023/08/27/hexo-g%E6%8A%A5%E9%94%99-Cannot-read-properties-of-undefined-reading-count/"/>
+    <id>https://maydaychen.github.io/2023/08/27/hexo-g%E6%8A%A5%E9%94%99-Cannot-read-properties-of-undefined-reading-count/</id>
+    <published>2023-08-27T14:07:18.000Z</published>
+    <updated>2023-08-27T14:12:50.029Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>在编译博客的时候，发现了一个问题</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">hexo g</span><br><span class="line">INFO  Validating config</span><br><span class="line">INFO  Start processing</span><br><span class="line">FATAL Something<span class="string">&#x27;s wrong. Maybe you can find the solution here: https://hexo.io/docs/troubleshooting.html</span></span><br><span class="line"><span class="string">TypeError: Cannot read properties of undefined (reading &#x27;</span>count<span class="string">&#x27;)</span></span><br><span class="line"><span class="string">    at module.exports (/Users/xxx/Documents/blog/node_modules/hexo-baidu-url-submit/lib/generator.js:4:41)</span></span><br><span class="line"><span class="string">    at Hexo.tryCatcher (/Users/xxx/Documents/blog/node_modules/bluebird/js/release/util.js:16:23)</span></span><br><span class="line"><span class="string">    at Hexo.&lt;anonymous&gt; (/Users/xxx/Documents/blog/node_modules/bluebird/js/release/method.js:15:34)</span></span><br><span class="line"><span class="string">    at /Users/xxx/Documents/blog/node_modules/hexo/lib/hexo/index.js:407:22</span></span><br><span class="line"><span class="string">    at tryCatcher (/Users/xxx/Documents/blog/node_modules/bluebird/js/release/util.js:16:23)</span></span><br><span class="line"><span class="string">    at MappingPromiseArray._promiseFulfilled (/Users/xxx/Documents/blog/node_modules/bluebird/js/release/map.js:68:38)</span></span><br><span class="line"><span class="string">    at PromiseArray._iterate (/Users/xxx/Documents/blog/node_modules/bluebird/js/release/promise_array.js:115:31)</span></span><br><span class="line"><span class="string">    at MappingPromiseArray.init (/Users/xxx/Documents/blog/node_modules/bluebird/js/release/promise_array.js:79:10)</span></span><br><span class="line"><span class="string">    at MappingPromiseArray._asyncInit (/Users/xxx/Documents/blog/node_modules/bluebird/js/release/map.js:37:10)</span></span><br><span class="line"><span class="string">    at _drainQueueStep (/Users/xxx/Documents/blog/node_modules/bluebird/js/release/async.js:97:12)</span></span><br><span class="line"><span class="string">    at _drainQueue (/Users/xxx/Documents/blog/node_modules/bluebird/js/release/async.js:86:9)</span></span><br><span class="line"><span class="string">    at Async._drainQueues (/Users/xxx/Documents/blog/node_modules/bluebird/js/release/async.js:102:5)</span></span><br><span class="line"><span class="string">    at Async.drainQueues [as _onImmediate] (/Users/xxx/Documents/blog/node_modules/bluebird/js/release/async.js:15:14)</span></span><br><span class="line"><span class="string">    at process.processImmediate (node:internal/timers:476:21)</span></span><br></pre></td></tr></table></figure><h2 id="排查问题"><a href="#排查问题" class="headerlink" title="排查问题"></a>排查问题</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo g --debug</span><br></pre></td></tr></table></figure><p>通过debug模式查看问题所在，发现问题所在</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">14:02:48.751 DEBUG Generator: post</span><br><span class="line">14:02:48.753 DEBUG Generator: archive</span><br><span class="line">14:02:48.753 DEBUG Generator: index</span><br><span class="line">14:02:48.754 DEBUG Generator: atom</span><br><span class="line">14:02:48.762 DEBUG Generator: baidu_url_generator</span><br><span class="line">14:02:48.763 FATAL Something<span class="string">&#x27;s wrong. Maybe you can find the solution here: https://hexo.io/docs/troubleshooting.html</span></span><br></pre></td></tr></table></figure><h2 id="Issue-Link"><a href="#Issue-Link" class="headerlink" title="Issue Link"></a>Issue Link</h2><p><a href="https://github.com/hexojs/hexo/issues/2402">https://github.com/hexojs/hexo/issues/2402</a></p><h2 id="该插件的相关文档"><a href="#该插件的相关文档" class="headerlink" title="该插件的相关文档"></a>该插件的相关文档</h2><p><a href="https://hui-wang.info/2016/10/23/Hexo%E6%8F%92%E4%BB%B6%E4%B9%8B%E7%99%BE%E5%BA%A6%E4%B8%BB%E5%8A%A8%E6%8F%90%E4%BA%A4%E9%93%BE%E6%8E%A5/">https://hui-wang.info/2016/10/23/Hexo插件之百度主动提交链接/</a></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;问题&quot;&gt;&lt;a href=&quot;#问题&quot; class=&quot;headerlink&quot; title=&quot;问题&quot;&gt;&lt;/a&gt;问题&lt;/h2&gt;&lt;p&gt;在编译博客的时候，发现了一个问题&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td cla</summary>
+      
+    
+    
+    
+    <category term="博客相关" scheme="https://maydaychen.github.io/categories/%E5%8D%9A%E5%AE%A2%E7%9B%B8%E5%85%B3/"/>
+    
+    
+    <category term="Hexo" scheme="https://maydaychen.github.io/tags/Hexo/"/>
+    
+    <category term="插件" scheme="https://maydaychen.github.io/tags/%E6%8F%92%E4%BB%B6/"/>
+    
+  </entry>
   
   <entry>
     <title>Docker入门(1)--Docker概述</title>
