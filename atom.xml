@@ -6,7 +6,7 @@
   <link href="https://maydaychen.github.io/atom.xml" rel="self"/>
   
   <link href="https://maydaychen.github.io/"/>
-  <updated>2023-11-01T07:13:10.176Z</updated>
+  <updated>2023-11-06T05:21:38.050Z</updated>
   <id>https://maydaychen.github.io/</id>
   
   <author>
@@ -21,9 +21,9 @@
     <link href="https://maydaychen.github.io/2023/11/01/Nginx%E9%85%8D%E7%BD%AE%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E6%97%B6%E5%87%BA%E7%8E%B0%E7%9A%8413-Permission-denied-while-connecting-to-upstream-client-127-0-0-1/"/>
     <id>https://maydaychen.github.io/2023/11/01/Nginx%E9%85%8D%E7%BD%AE%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E6%97%B6%E5%87%BA%E7%8E%B0%E7%9A%8413-Permission-denied-while-connecting-to-upstream-client-127-0-0-1/</id>
     <published>2023-11-01T07:09:12.000Z</published>
-    <updated>2023-11-01T07:13:10.176Z</updated>
+    <updated>2023-11-06T05:21:38.050Z</updated>
     
-    <content type="html"><![CDATA[<ol><li>条件不允许的情况下（不能随意重启计算机）执行下列代码：</li></ol><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">setsebool -P httpd_can_network_connect <span class="number">1</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2.</span></span><br></pre></td></tr></table></figure><ol><li>其他情况下获取root权限</li></ol><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/selinux/config</span><br><span class="line"></span><br><span class="line"><span class="variable constant_">SELINUX</span>=enforcing</span><br><span class="line">改为</span><br><span class="line"><span class="variable constant_">SELINUX</span>=disabled</span><br><span class="line"></span><br><span class="line">重启服务器</span><br></pre></td></tr></table></figure>]]></content>
+    <content type="html"><![CDATA[<ol><li>条件不允许的情况下（不能随意重启计算机）执行下列代码：</li></ol><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setsebool -P httpd_can_network_connect <span class="number">1</span></span><br></pre></td></tr></table></figure><ol start="2"><li>其他情况下, 可以获取root权限，通过root修改&#x2F;etc&#x2F;selinux&#x2F;config</li></ol><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">sudo su</span><br><span class="line"></span><br><span class="line">vim /etc/selinux/config</span><br><span class="line"></span><br><span class="line"><span class="variable constant_">SELINUX</span>=enforcing</span><br><span class="line">改为</span><br><span class="line"><span class="variable constant_">SELINUX</span>=disabled</span><br><span class="line"></span><br><span class="line">重启服务器</span><br></pre></td></tr></table></figure>]]></content>
     
     
       
