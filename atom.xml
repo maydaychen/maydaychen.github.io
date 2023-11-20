@@ -6,7 +6,7 @@
   <link href="https://maydaychen.github.io/atom.xml" rel="self"/>
   
   <link href="https://maydaychen.github.io/"/>
-  <updated>2023-11-14T05:39:11.887Z</updated>
+  <updated>2023-11-20T14:05:57.731Z</updated>
   <id>https://maydaychen.github.io/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>小翼管家获取电信光猫超密教程</title>
+    <link href="https://maydaychen.github.io/2023/11/20/%E5%B0%8F%E7%BF%BC%E7%AE%A1%E5%AE%B6%E8%8E%B7%E5%8F%96%E7%94%B5%E4%BF%A1%E5%85%89%E7%8C%AB%E8%B6%85%E5%AF%86%E6%95%99%E7%A8%8B/"/>
+    <id>https://maydaychen.github.io/2023/11/20/%E5%B0%8F%E7%BF%BC%E7%AE%A1%E5%AE%B6%E8%8E%B7%E5%8F%96%E7%94%B5%E4%BF%A1%E5%85%89%E7%8C%AB%E8%B6%85%E5%AF%86%E6%95%99%E7%A8%8B/</id>
+    <published>2023-11-20T14:03:14.000Z</published>
+    <updated>2023-11-20T14:05:57.731Z</updated>
+    
+    <content type="html"><![CDATA[<p>转自<a href="https://www.bilibili.com/read/cv22351257/">https://www.bilibili.com/read/cv22351257/</a><br>自用，侵删</p><p>方法一：苹果手机（最简单）</p><p>苹果手机在App Store下载抓包软件stream，及小翼管家（绑定光猫）。连接光猫WiFi</p><p> </p><p>stream软件打开HTTMS抓包，安装CA证书并信任</p><p> </p><p>点击开始抓包，打开小翼管家，点击网关设置，然后随便点击（比如指示灯，不点也可以）。</p><p>回到stream，停止抓包。点击抓包历史。全部请求找到任意一个含有token&#x3D;的POST网址并点击进去（不行就多试几个POST网址），点击右上角向上的箭头，弹出更多操作，点击编辑重放请求。</p><p> </p><p>点击最下面的请求体最下面一行，点击原始数据，删除清空并粘贴以下代码并点击存储：（注意格式）</p><p> </p><p> </p><p>{ “Params”: [], “MethodName”: “GetTAPasswd”, “RPCMethod”: “CallMethod”, “ObjectPath”: “&#x2F;com&#x2F;ctc&#x2F;igd1&#x2F;Telecom&#x2F;System”, “InterfaceName”: “com.ctc.igd1.SysCmd”, “ServiceName”: “com.ctc.igd1” }</p><p> </p><p> </p><p>最后点击右上角开始按钮，点击响应最下面的BODY即可看到（如果结果返回错误，原因是以上的代码格式不正确或者是POST网址没找对）</p><p> </p><p>注：密码格式：telecomadmin12345678，账号默认是telecomadmin。</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;转自&lt;a href=&quot;https://www.bilibili.com/read/cv22351257/&quot;&gt;https://www.bilibili.com/read/cv22351257/&lt;/a&gt;&lt;br&gt;自用，侵删&lt;/p&gt;
+&lt;p&gt;方法一：苹果手机（最简单）&lt;/p&gt;
+&lt;p&gt;</summary>
+      
+    
+    
+    
+    
+    <category term="NAS" scheme="https://maydaychen.github.io/tags/NAS/"/>
+    
+  </entry>
   
   <entry>
     <title>Linux系统盘扩容</title>
