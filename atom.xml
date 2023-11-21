@@ -6,7 +6,7 @@
   <link href="https://maydaychen.github.io/atom.xml" rel="self"/>
   
   <link href="https://maydaychen.github.io/"/>
-  <updated>2023-11-20T14:05:57.731Z</updated>
+  <updated>2023-11-21T05:35:38.051Z</updated>
   <id>https://maydaychen.github.io/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Ansible笔记--获取当前日期时间</title>
+    <link href="https://maydaychen.github.io/2023/11/21/Ansible%E7%AC%94%E8%AE%B0-%E8%8E%B7%E5%8F%96%E5%BD%93%E5%89%8D%E6%97%A5%E6%9C%9F%E6%97%B6%E9%97%B4/"/>
+    <id>https://maydaychen.github.io/2023/11/21/Ansible%E7%AC%94%E8%AE%B0-%E8%8E%B7%E5%8F%96%E5%BD%93%E5%89%8D%E6%97%A5%E6%9C%9F%E6%97%B6%E9%97%B4/</id>
+    <published>2023-11-21T05:34:45.000Z</published>
+    <updated>2023-11-21T05:35:38.051Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="获取当前日期"><a href="#获取当前日期" class="headerlink" title="获取当前日期"></a>获取当前日期</h2><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- <span class="attr">name</span>: <span class="title class_">Display</span> current date and time</span><br><span class="line">  ansible.<span class="property">builtin</span>.<span class="property">debug</span>:</span><br><span class="line">    <span class="attr">msg</span>: <span class="string">&quot;Current date and time is &#123;&#123; ansible_date_time.date &#125;&#125;&quot;</span></span><br></pre></td></tr></table></figure><p>获取到的日期格式是YYYY-MM-DD, 如果想改成其他格式，可以使用正则获取年月日</p><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- <span class="attr">name</span>: <span class="title class_">Format</span> current date</span><br><span class="line">  ansible.<span class="property">builtin</span>.<span class="property">debug</span>:</span><br><span class="line">    <span class="attr">msg</span>: <span class="string">&quot;Formatted date: &#123;&#123; ansible_date_time.date | regex_replace(&#x27;^(\\d&#123;4&#125;)-(\\d&#123;2&#125;)-(\\d&#123;2&#125;)$&#x27;, &#x27;\\3/\\2/\\1&#x27;) &#125;&#125;&quot;</span></span><br></pre></td></tr></table></figure><p>\1 - 年</p><p>\2 - 月</p><p>\3 - 日</p><h2 id="获取当前时间"><a href="#获取当前时间" class="headerlink" title="获取当前时间"></a>获取当前时间</h2><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- <span class="attr">name</span>: <span class="title class_">Display</span> current date and time</span><br><span class="line">  ansible.<span class="property">builtin</span>.<span class="property">debug</span>:</span><br><span class="line">    <span class="attr">msg</span>: <span class="string">&quot;Current date and time is &#123;&#123; ansible_date_time.time &#125;&#125;&quot;</span></span><br></pre></td></tr></table></figure><h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>‘ansible_date_time’ is undefined</p><p>解决方案：</p><p><code>ansible_date_time</code>是事实的一部分，所以需要设置</p><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">gather_facts</span>: <span class="literal">true</span></span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;获取当前日期&quot;&gt;&lt;a href=&quot;#获取当前日期&quot; class=&quot;headerlink&quot; title=&quot;获取当前日期&quot;&gt;&lt;/a&gt;获取当前日期&lt;/h2&gt;&lt;figure class=&quot;highlight jsx&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutte</summary>
+      
+    
+    
+    
+    
+    <category term="Ansible" scheme="https://maydaychen.github.io/tags/Ansible/"/>
+    
+  </entry>
   
   <entry>
     <title>小翼管家获取电信光猫超密教程</title>
@@ -150,10 +172,10 @@
     <title>Hello World</title>
     <link href="https://maydaychen.github.io/2023/08/12/hello-world/"/>
     <id>https://maydaychen.github.io/2023/08/12/hello-world/</id>
-    <published>2023-08-12T01:34:30.754Z</published>
-    <updated>2023-08-12T01:34:30.754Z</updated>
+    <published>2023-08-12T01:34:30.000Z</published>
+    <updated>2023-11-20T09:40:45.580Z</updated>
     
-    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
+    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a> </p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
     
     
       

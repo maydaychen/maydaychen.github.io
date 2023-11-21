@@ -17,19 +17,21 @@
   <meta http-equiv="window-target" content="_top" />
   
   
-  <title>归档: 2023/11 | Maydaychen Station</title>
-  <meta name="description" content="ha">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Hexotest">
-<meta property="og:url" content="https://maydaychen.github.io/archives/2023/11/index.html">
+  <title>Ansible笔记--获取当前日期时间 | Maydaychen Station</title>
+  <meta name="description" content="获取当前日期123- name: Display current date and time  ansible.builtin.debug:    msg: &quot;Current date and time is &amp;#123;&amp;#123; ansible_date_time.date &amp;#125;&amp;#125;&quot;  获取到的日期格式是YYYY-MM-DD, 如果想改成其他格式，可以使">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ansible笔记--获取当前日期时间">
+<meta property="og:url" content="https://maydaychen.github.io/2023/11/21/Ansible%E7%AC%94%E8%AE%B0-%E8%8E%B7%E5%8F%96%E5%BD%93%E5%89%8D%E6%97%A5%E6%9C%9F%E6%97%B6%E9%97%B4/index.html">
 <meta property="og:site_name" content="Hexotest">
-<meta property="og:description" content="ha">
+<meta property="og:description" content="获取当前日期123- name: Display current date and time  ansible.builtin.debug:    msg: &quot;Current date and time is &amp;#123;&amp;#123; ansible_date_time.date &amp;#125;&amp;#125;&quot;  获取到的日期格式是YYYY-MM-DD, 如果想改成其他格式，可以使">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-11-21T05:34:45.000Z">
+<meta property="article:modified_time" content="2023-11-21T05:35:38.051Z">
 <meta property="article:author" content="Maydaychen">
-<meta property="article:tag" content="Blog">
+<meta property="article:tag" content="Ansible">
 <meta name="twitter:card" content="summary">
   <!-- Canonical links -->
-  <link rel="canonical" href="https://maydaychen.github.io/archives/2023/11/index.html">
+  <link rel="canonical" href="https://maydaychen.github.io/2023/11/21/Ansible%E7%AC%94%E8%AE%B0-%E8%8E%B7%E5%8F%96%E5%BD%93%E5%89%8D%E6%97%A5%E6%9C%9F%E6%97%B6%E9%97%B4/index.html">
   
     <link rel="alternate" href="/atom.xml" title="Hexotest" type="application/atom+xml">
   
@@ -325,78 +327,185 @@
   
   
 <main class="main" role="main">
-  	<article class="content article article-archives article-type-list" itemscope="">
-	    <header class="article-header">
-	      <h1 itemprop="title">归档: 2023/11</h1>
-	      <p class="text-muted">共 7 篇文章</p>
-	    </header>
-	    <div class="article-body">
-	      
+  <div class="content">
+  <article id="post-Ansible笔记-获取当前日期时间" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
   
+    <h1 class="article-title" itemprop="name">
+      Ansible笔记--获取当前日期时间
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2023/11/21/Ansible%E7%AC%94%E8%AE%B0-%E8%8E%B7%E5%8F%96%E5%BD%93%E5%89%8D%E6%97%A5%E6%9C%9F%E6%97%B6%E9%97%B4/" class="article-date">
+	  <time datetime="2023-11-21T05:34:45.000Z" itemprop="datePublished">2023-11-21</time>
+	</a>
+</span>
+        
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/Ansible/" rel="tag">Ansible</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2023/11/21/Ansible%E7%AC%94%E8%AE%B0-%E8%8E%B7%E5%8F%96%E5%BD%93%E5%89%8D%E6%97%A5%E6%9C%9F%E6%97%B6%E9%97%B4/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h2 id="获取当前日期"><a href="#获取当前日期" class="headerlink" title="获取当前日期"></a>获取当前日期</h2><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- <span class="attr">name</span>: <span class="title class_">Display</span> current date and time</span><br><span class="line">  ansible.<span class="property">builtin</span>.<span class="property">debug</span>:</span><br><span class="line">    <span class="attr">msg</span>: <span class="string">&quot;Current date and time is &#123;&#123; ansible_date_time.date &#125;&#125;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>获取到的日期格式是YYYY-MM-DD, 如果想改成其他格式，可以使用正则获取年月日</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- <span class="attr">name</span>: <span class="title class_">Format</span> current date</span><br><span class="line">  ansible.<span class="property">builtin</span>.<span class="property">debug</span>:</span><br><span class="line">    <span class="attr">msg</span>: <span class="string">&quot;Formatted date: &#123;&#123; ansible_date_time.date | regex_replace(&#x27;^(\\d&#123;4&#125;)-(\\d&#123;2&#125;)-(\\d&#123;2&#125;)$&#x27;, &#x27;\\3/\\2/\\1&#x27;) &#125;&#125;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>\1 - 年</p>
+<p>\2 - 月</p>
+<p>\3 - 日</p>
+<h2 id="获取当前时间"><a href="#获取当前时间" class="headerlink" title="获取当前时间"></a>获取当前时间</h2><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- <span class="attr">name</span>: <span class="title class_">Display</span> current date and time</span><br><span class="line">  ansible.<span class="property">builtin</span>.<span class="property">debug</span>:</span><br><span class="line">    <span class="attr">msg</span>: <span class="string">&quot;Current date and time is &#123;&#123; ansible_date_time.time &#125;&#125;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>‘ansible_date_time’ is undefined</p>
+<p>解决方案：</p>
+<p><code>ansible_date_time</code>是事实的一部分，所以需要设置</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">gather_facts</span>: <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://maydaychen.github.io/2023/11/21/Ansible%E7%AC%94%E8%AE%B0-%E8%8E%B7%E5%8F%96%E5%BD%93%E5%89%8D%E6%97%A5%E6%9C%9F%E6%97%B6%E9%97%B4/" title="Ansible笔记--获取当前日期时间" target="_blank" rel="external">https://maydaychen.github.io/2023/11/21/Ansible笔记-获取当前日期时间/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/maydaychen" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/maydaychen" target="_blank"><span class="text-dark">Maydaychen</span><small class="ml-1x">Developer &amp; Infra engineer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
   
     
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
     
-      
-      
-      <section class="panel panel-default b-no">
-        <div class="panel-heading" role="tab">
-          <h3 class="panel-title">
-            <a data-toggle="collapse" href="#collapse2023" aria-expanded="true">
-              <i class="icon icon-calendar-plus text-active"></i><i class="icon icon-calendar-minus text"></i>
-              2023
-            </a>
-            <!-- <a href="/archives/2023" class="archive-year">2023</a> -->
-          </h3>
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    
+    <li class="next">
+      <a href="/2023/11/20/%E5%B0%8F%E7%BF%BC%E7%AE%A1%E5%AE%B6%E8%8E%B7%E5%8F%96%E7%94%B5%E4%BF%A1%E5%85%89%E7%8C%AB%E8%B6%85%E5%AF%86%E6%95%99%E7%A8%8B/" title="小翼管家获取电信光猫超密教程"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
         </div>
-        <div id="collapse2023" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading2023">
-        <div class="panel-body">
-          <div class="collection">
-    
-    
-<a href="/2023/11/21/Ansible%E7%AC%94%E8%AE%B0-%E8%8E%B7%E5%8F%96%E5%BD%93%E5%89%8D%E6%97%A5%E6%9C%9F%E6%97%B6%E9%97%B4/" class="collection-item"   itemprop="url">
-  <time datetime="2023-11-21T05:34:45.000Z" itemprop="datePublished">2023-11-21</time>
-  <span>&nbsp;&nbsp;&nbsp;</span> Ansible笔记--获取当前日期时间
-</a>
+      </div>
+    </div>
+  </div>
+</div>
 
 
-  
-    
-    
-    
-<a href="/2023/11/20/%E5%B0%8F%E7%BF%BC%E7%AE%A1%E5%AE%B6%E8%8E%B7%E5%8F%96%E7%94%B5%E4%BF%A1%E5%85%89%E7%8C%AB%E8%B6%85%E5%AF%86%E6%95%99%E7%A8%8B/" class="collection-item"   itemprop="url">
-  <time datetime="2023-11-20T14:03:14.000Z" itemprop="datePublished">2023-11-20</time>
-  <span>&nbsp;&nbsp;&nbsp;</span> 小翼管家获取电信光猫超密教程
-</a>
 
-
-  
-    
-    
-    
-<a href="/2023/11/13/Linux%E7%B3%BB%E7%BB%9F%E7%9B%98%E6%89%A9%E5%AE%B9/" class="collection-item"   itemprop="url">
-  <time datetime="2023-11-13T11:13:57.000Z" itemprop="datePublished">2023-11-13</time>
-  <span>&nbsp;&nbsp;&nbsp;</span> Linux系统盘扩容
-</a>
-
-
-  
-    
-    
-    
-<a href="/2023/11/01/Nginx%E9%85%8D%E7%BD%AE%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E6%97%B6%E5%87%BA%E7%8E%B0%E7%9A%8413-Permission-denied-while-connecting-to-upstream-client-127-0-0-1/" class="collection-item"   itemprop="url">
-  <time datetime="2023-11-01T07:09:12.000Z" itemprop="datePublished">2023-11-01</time>
-  <span>&nbsp;&nbsp;&nbsp;</span> Nginx配置反向代理时出现的13: Permission denied) while connecting to upstream, client: 127.0.0.1
-</a>
-
-
-  
-  
-    </div></div></div></section>
-  
-
-	    </div>
-  	</article>
-  	 	
 </main>
 
   <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
@@ -459,6 +568,39 @@ window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
 
 
 
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: 'OuQL4I4f4sMcJNdmnzlZp6mE-9Nh9j0Va',
+    appKey: 'ANG2E0CawTLIoDKMsXb9XZpy',
+    placeholder: '如果爱，请深爱，如果喷，请轻喷',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
 
 
 
