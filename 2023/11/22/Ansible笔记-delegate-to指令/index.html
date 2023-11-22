@@ -17,21 +17,21 @@
   <meta http-equiv="window-target" content="_top" />
   
   
-  <title>友情链接 | Maydaychen Station</title>
-  <meta name="description" content="ha">
-<meta property="og:type" content="website">
-<meta property="og:title" content="友情链接">
-<meta property="og:url" content="https://maydaychen.github.io/links/index.html">
+  <title>Ansible笔记-delegate_to指令 | Maydaychen Station</title>
+  <meta name="description" content="场景介绍目前执行Ansible的过程中，遇到这么一个需求，在远程服务器上执行一系列操作，但是这个操作需要用到一组数据，该数据存在于Ansible服务器中的一个文件中，但是远程服务器无法读取到该文件，所以查到了这个指令，Ansible 的任务委派功能（delegate_to）。 使用 delegate_to 关键字可以委派任务到指定的机器上运行。 在 playbook 的操作如下： 12345678">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ansible笔记-delegate_to指令">
+<meta property="og:url" content="https://maydaychen.github.io/2023/11/22/Ansible%E7%AC%94%E8%AE%B0-delegate-to%E6%8C%87%E4%BB%A4/index.html">
 <meta property="og:site_name" content="Hexotest">
-<meta property="og:description" content="ha">
+<meta property="og:description" content="场景介绍目前执行Ansible的过程中，遇到这么一个需求，在远程服务器上执行一系列操作，但是这个操作需要用到一组数据，该数据存在于Ansible服务器中的一个文件中，但是远程服务器无法读取到该文件，所以查到了这个指令，Ansible 的任务委派功能（delegate_to）。 使用 delegate_to 关键字可以委派任务到指定的机器上运行。 在 playbook 的操作如下： 12345678">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-08-12T03:09:18.642Z">
-<meta property="article:modified_time" content="2023-08-12T02:08:42.447Z">
+<meta property="article:published_time" content="2023-11-22T02:22:08.000Z">
+<meta property="article:modified_time" content="2023-11-22T02:22:40.344Z">
 <meta property="article:author" content="Maydaychen">
-<meta property="article:tag" content="Blog">
+<meta property="article:tag" content="Ansible">
 <meta name="twitter:card" content="summary">
   <!-- Canonical links -->
-  <link rel="canonical" href="https://maydaychen.github.io/links/index.html">
+  <link rel="canonical" href="https://maydaychen.github.io/2023/11/22/Ansible%E7%AC%94%E8%AE%B0-delegate-to%E6%8C%87%E4%BB%A4/index.html">
   
     <link rel="alternate" href="/atom.xml" title="Hexotest" type="application/atom+xml">
   
@@ -48,7 +48,7 @@
 <meta name="generator" content="Hexo 6.3.0"></head>
 
 
-<body class="main-center no-sidebar" itemscope itemtype="http://schema.org/WebPage">
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
   <header class="header" itemscope itemtype="http://schema.org/WPHeader">
   <div class="slimContent">
     <div class="navbar-header">
@@ -325,66 +325,199 @@
 </aside>
 
   
-  <main class="main" role="main">
-  <article class="article article-links article-type-list" itemscope="">
-  <header class="article-header">
-    <h1 itemprop="title">友情链接</h1>
-    <p class="text-muted">
-      欢迎交换链接，可在当前页面留言
-    </p>
-  </header>
-  <div class="article-body">
-    <div class="row">
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-Ansible笔记-delegate-to指令" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
       
         
-          <div class="col-sm-6 col-md-4">
-            <div class="panel panel-default hover-shadow hover-grow">
-              <figure class="media media-middle">
-                <div class="media-left pr-no">
-                  <a href="http://chuangzaoshi.com/" target="_blank" class="img-burn thumb-md media-middle">
-                    <img src="/images/favatar/chuangzaoshi-logo.png" class="w-full" alt="">
-                  </a>
-                </div>
-                <div class="media-body p-0x">
-                  <h4 class="media-heading"><a href="http://chuangzaoshi.com/" target="_blank"><span class="text-dark">创造狮</span></a></h4>
-                  <div class="text-muted">
-                    为创意工作者而设计
-                  </div>
-                </div>
-              </figure>
-            </div>
-          </div>
-          
-        
-          <div class="col-sm-6 col-md-4">
-            <div class="panel panel-default hover-shadow hover-grow">
-              <figure class="media media-middle">
-                <div class="media-left pr-no">
-                  <a href="http://idesign.qq.com/" target="_blank" class="img-burn thumb-md media-middle">
-                    <img src="/images/favatar/idesign-logo.png" class="w-full" alt="">
-                  </a>
-                </div>
-                <div class="media-body p-0x">
-                  <h4 class="media-heading"><a href="http://idesign.qq.com/" target="_blank"><span class="text-dark">腾讯设计导航</span></a></h4>
-                  <div class="text-muted">
-                    网罗全网高逼格的设计站点
-                  </div>
-                </div>
-              </figure>
-            </div>
-          </div>
-          
-    </div>
-  </div>
-</article>
-
   
+    <h1 class="article-title" itemprop="name">
+      Ansible笔记-delegate_to指令
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2023/11/22/Ansible%E7%AC%94%E8%AE%B0-delegate-to%E6%8C%87%E4%BB%A4/" class="article-date">
+	  <time datetime="2023-11-22T02:22:08.000Z" itemprop="datePublished">2023-11-22</time>
+	</a>
+</span>
+        
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/Ansible/" rel="tag">Ansible</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2023/11/22/Ansible%E7%AC%94%E8%AE%B0-delegate-to%E6%8C%87%E4%BB%A4/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h2 id="场景介绍"><a href="#场景介绍" class="headerlink" title="场景介绍"></a>场景介绍</h2><p>目前执行Ansible的过程中，遇到这么一个需求，在远程服务器上执行一系列操作，但是这个操作需要用到一组数据，该数据存在于Ansible服务器中的一个文件中，但是远程服务器无法读取到该文件，所以查到了这个指令，Ansible 的任务委派功能（delegate_to）。</p>
+<p>使用 delegate_to 关键字可以委派任务到指定的机器上运行。</p>
+<p>在 playbook 的操作如下：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">## 读取指定的localhost上的文件并定义为变量</span><br><span class="line">- <span class="attr">name</span>: read</span><br><span class="line">  <span class="attr">read_csv</span>:</span><br><span class="line">      <span class="attr">path</span>: <span class="string">&quot;&#123;&#123; csv_tmp_path &#125;&#125;&quot;</span></span><br><span class="line">      <span class="attr">delimiter</span>: <span class="string">&#x27;,&#x27;</span></span><br><span class="line">  <span class="attr">register</span>: file_list</span><br><span class="line">  <span class="attr">changed_when</span>: <span class="literal">false</span></span><br><span class="line">  <span class="attr">delegate_to</span>: localhost</span><br></pre></td></tr></table></figure>
+
+<p>任务委派功能还可以用于以下场景：</p>
+<ul>
+<li>在部署之前将一个主机从一个负载均衡集群中删除；</li>
+<li>当你要对一个主机做改变之前去掉相应 dns 的记录；</li>
+<li>当在一个存储设备上创建 iscsi 卷的时候；</li>
+<li>当使用外的主机来检测网络出口是否正常的时候。</li>
+</ul>
+<h2 id="委托（delegate）"><a href="#委托（delegate）" class="headerlink" title="委托（delegate）"></a>委托（delegate）</h2><p>通过”delegate_to”, 用户可以把某一个任务放在委托的机器上执行.</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">hosts</span>: webservers</span><br><span class="line"><span class="attr">serial</span>: <span class="number">5</span></span><br><span class="line"></span><br><span class="line"><span class="attr">tasks</span>:</span><br><span class="line">    - <span class="attr">name</span>: take out <span class="keyword">of</span> load balancer pool</span><br><span class="line">		  <span class="attr">command</span>: <span class="regexp">/usr/</span>bin/take_out_of_pool &#123;&#123; inventory_hostname &#125;&#125;</span><br><span class="line">			<span class="attr">delegate_to</span>: <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span></span><br></pre></td></tr></table></figure>
+
+<p>无论定义了hosts是什么，上面的这个task都只会在localhost(即ansible运行的机器)上执行,</p>
+<p>如果只是想在本地执行，<code>“delegate_to: 127.0.0.1” 也可以用local_action来代替</code></p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">tasks</span>:</span><br><span class="line">    - <span class="attr">name</span>: take out <span class="keyword">of</span> load balancer pool</span><br><span class="line">      <span class="attr">local_action</span>: command /usr/bin/take_out_of_pool &#123;&#123; inventory_hostname &#125;&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="委托者的facts"><a href="#委托者的facts" class="headerlink" title="委托者的facts"></a><strong>委托者的facts</strong></h3><p>默认情况下, 委托任务的facts是<code>inventory_hostname</code>中主机的<code>facts</code>, 而不是被委托机器的facts. 在ansible 2.0 中, 设置<code>delegate_facts</code>为true可以让任务去收集被委托机器的facts.</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- <span class="attr">hosts</span>: app_servers</span><br><span class="line">  <span class="attr">tasks</span>:</span><br><span class="line">    - <span class="attr">name</span>: gather facts <span class="keyword">from</span> db servers</span><br><span class="line">      <span class="attr">setup</span>:</span><br><span class="line">      <span class="attr">delegate_to</span>: <span class="string">&quot;&#123;&#123;item&#125;&#125;&quot;</span></span><br><span class="line">      <span class="attr">delegate_facts</span>: <span class="title class_">True</span></span><br><span class="line">      <span class="attr">with_items</span>: <span class="string">&quot;&#123;&#123;groups[&#x27;dbservers&#x27;&#125;&#125;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>该例子会收集dbservers的facts并分配给这些机器, 而不会去收集app_servers的facts</p>
+<h2 id="run-once"><a href="#run-once" class="headerlink" title="run_once"></a><strong><strong>run_once</strong></strong></h2><p>通过<code>run_once: true</code>来指定该task只能在某一台机器上执行一次. 可以和<code>delegate_to</code> 结合使用</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- <span class="attr">command</span>: <span class="regexp">/opt/</span>application/upgrade_db.<span class="property">py</span></span><br><span class="line">  <span class="attr">run_once</span>: <span class="literal">true</span></span><br><span class="line">  <span class="attr">delegate_to</span>: web01.<span class="property">example</span>.<span class="property">org</span></span><br></pre></td></tr></table></figure>
+
+<p>指定在”web01.example.org”上执行这个task</p>
+<p>如果没有delegate_to, 那么这个task只会在当前主机组的第一台机器上执行</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://maydaychen.github.io/2023/11/22/Ansible%E7%AC%94%E8%AE%B0-delegate-to%E6%8C%87%E4%BB%A4/" title="Ansible笔记-delegate_to指令" target="_blank" rel="external">https://maydaychen.github.io/2023/11/22/Ansible笔记-delegate-to指令/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/maydaychen" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/maydaychen" target="_blank"><span class="text-dark">Maydaychen</span><small class="ml-1x">Developer &amp; Infra engineer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
   <section id="comments">
   	
       <div id="vcomments"></div>
     
   </section>
 
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    
+    <li class="next">
+      <a href="/2023/11/21/Ansible%E7%AC%94%E8%AE%B0-%E8%8E%B7%E5%8F%96%E5%BD%93%E5%89%8D%E6%97%A5%E6%9C%9F%E6%97%B6%E9%97%B4/" title="Ansible笔记--获取当前日期时间"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 
@@ -447,6 +580,12 @@ window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
 <script src="/js/insight.js"></script>
 
 
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 
 
