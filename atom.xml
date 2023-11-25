@@ -6,7 +6,7 @@
   <link href="https://maydaychen.github.io/atom.xml" rel="self"/>
   
   <link href="https://maydaychen.github.io/"/>
-  <updated>2023-11-22T08:13:47.000Z</updated>
+  <updated>2023-11-25T10:33:04.784Z</updated>
   <id>https://maydaychen.github.io/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>homeassistant笔记--更换iOS Themes主题</title>
+    <link href="https://maydaychen.github.io/2023/11/25/homeassistant%E6%9B%B4%E6%8D%A2iOS-Themes%E4%B8%BB%E9%A2%98/"/>
+    <id>https://maydaychen.github.io/2023/11/25/homeassistant%E6%9B%B4%E6%8D%A2iOS-Themes%E4%B8%BB%E9%A2%98/</id>
+    <published>2023-11-24T23:58:37.000Z</published>
+    <updated>2023-11-25T10:33:04.784Z</updated>
+    
+    <content type="html"><![CDATA[<p>主题链接：<br><a href="https://github.com/basnijholt/lovelace-ios-themes">https://github.com/basnijholt/lovelace-ios-themes</a></p><h2 id="配置过程"><a href="#配置过程" class="headerlink" title="配置过程"></a>配置过程</h2><ol><li><p>主题需要在HACS中安装，搜索iOS应该就能看到</p></li><li><p>配置中加入:</p> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">文件名： /config/configuration.yaml</span><br><span class="line"></span><br><span class="line"># Load frontend themes from the themes folder</span><br><span class="line">frontend:</span><br><span class="line">  themes: !include_dir_merge_named themes</span><br><span class="line"></span><br></pre></td></tr></table></figure></li><li><p>把主题放置在themes下<br>themes文件夹在docker中HA的根目录下</p></li><li><p>建www目录存放图片资源</p><p>注意：www文件夹与themes文件夹同一层级</p><p>在www目录中建立跟themes目录中一样的文件夹名称，例如这里叫做<code>ios-themes</code></p></li><li><p>在www的插件文件夹中，修改ios-themes.yaml</p> <figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">主要是这边的修改：</span><br><span class="line">把www改为local，路径更改</span><br><span class="line"></span><br><span class="line">background-<span class="attr">image</span>: <span class="string">&quot;center / cover no-repeat fixed url(&#x27;/hacsfiles/themes/homekit-bg-dark-green.jp</span></span><br><span class="line"><span class="string">g&#x27;)&quot;</span></span><br><span class="line"></span><br><span class="line">改成</span><br><span class="line"></span><br><span class="line">background-<span class="attr">image</span>: <span class="string">&quot;center / cover no-repeat fixed url(&#x27;/local/ios-themes/homeki</span></span><br><span class="line"><span class="string">t-bg-dark-green.jpg&#x27;)&quot;</span></span><br></pre></td></tr></table></figure><p>local文件夹其实就是值得www文件夹（注意不是把www文件夹改名成local文件夹）</p><p>如果不改的话，系统会找不到这个图片，导致首页不会修改背景图</p></li><li><p>重启HA</p></li></ol>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;主题链接：&lt;br&gt;&lt;a href=&quot;https://github.com/basnijholt/lovelace-ios-themes&quot;&gt;https://github.com/basnijholt/lovelace-ios-themes&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;配置</summary>
+      
+    
+    
+    
+    
+    <category term="HA" scheme="https://maydaychen.github.io/tags/HA/"/>
+    
+  </entry>
   
   <entry>
     <title>Ansible笔记--delegate_to指令</title>
