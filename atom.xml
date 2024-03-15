@@ -6,7 +6,7 @@
   <link href="https://maydaychen.github.io/atom.xml" rel="self"/>
   
   <link href="https://maydaychen.github.io/"/>
-  <updated>2024-03-15T16:27:56.994Z</updated>
+  <updated>2024-03-15T16:45:49.638Z</updated>
   <id>https://maydaychen.github.io/</id>
   
   <author>
@@ -17,11 +17,61 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Mac Terminal终端没有ll命令解决办法</title>
+    <title>Zabbix-监控的目标主机默认只显示20条图形(zabbix显示/不全/缺失)</title>
+    <link href="https://maydaychen.github.io/2024/03/16/Zabbix-%E7%9B%91%E6%8E%A7%E7%9A%84%E7%9B%AE%E6%A0%87%E4%B8%BB%E6%9C%BA%E9%BB%98%E8%AE%A4%E5%8F%AA%E6%98%BE%E7%A4%BA20%E6%9D%A1%E5%9B%BE%E5%BD%A2-zabbix%E6%98%BE%E7%A4%BA-%E4%B8%8D%E5%85%A8-%E7%BC%BA%E5%A4%B1/"/>
+    <id>https://maydaychen.github.io/2024/03/16/Zabbix-%E7%9B%91%E6%8E%A7%E7%9A%84%E7%9B%AE%E6%A0%87%E4%B8%BB%E6%9C%BA%E9%BB%98%E8%AE%A4%E5%8F%AA%E6%98%BE%E7%A4%BA20%E6%9D%A1%E5%9B%BE%E5%BD%A2-zabbix%E6%98%BE%E7%A4%BA-%E4%B8%8D%E5%85%A8-%E7%BC%BA%E5%A4%B1/</id>
+    <published>2024-03-15T16:45:32.000Z</published>
+    <updated>2024-03-15T16:45:49.638Z</updated>
+    
+    <content type="html"><![CDATA[<p>监控的目标主机默认只显示20条图形 ( zabbix 显示 不全 缺失)</p><p>解决方法：sudo vi &#x2F;usr&#x2F;share&#x2F;zabbix&#x2F;include&#x2F;defines.inc.php 修改文件</p><p><code>ZBX_MAX_GRAPHS_P ER_PAGE</code>  这个变量默认是20，把它改成60</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;监控的目标主机默认只显示20条图形 ( zabbix 显示 不全 缺失)&lt;/p&gt;
+&lt;p&gt;解决方法：sudo vi &amp;#x2F;usr&amp;#x2F;share&amp;#x2F;zabbix&amp;#x2F;include&amp;#x2F;defines.inc.php 修改文件&lt;/p&gt;
+&lt;p&gt;&lt;</summary>
+      
+    
+    
+    
+    <category term="Linux" scheme="https://maydaychen.github.io/categories/Linux/"/>
+    
+    
+    <category term="Zabbix" scheme="https://maydaychen.github.io/tags/Zabbix/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Grafana-Origin not allowed</title>
+    <link href="https://maydaychen.github.io/2024/03/16/Grafana-Origin-not-allowed/"/>
+    <id>https://maydaychen.github.io/2024/03/16/Grafana-Origin-not-allowed/</id>
+    <published>2024-03-15T16:44:22.000Z</published>
+    <updated>2024-03-15T16:45:04.466Z</updated>
+    
+    <content type="html"><![CDATA[<p>上周 Grafana 工作没有任何问题，但更新到 8.3.5 后我无法再登录。<br>在登录屏幕中，输入我的用户名和密码后，会出现一条消息：“Origin not allowed”。 在 grafana.log 文件中，我看到一行：<br>lvl&#x3D;eror msg&#x3D;”无法根据 cookie 查找用户” logger&#x3D;context error&#x3D;”未找到用户令牌”</p><h1 id="解决方案："><a href="#解决方案：" class="headerlink" title="解决方案："></a>解决方案：</h1><p>在nginx的conf.d文件中，有一个grafana.conf的文件，需要在配置文件中增加</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">proxy_set_header Host $http_host; //added after upgrade from 8.1 to 8.4.1 for origin not allowed error</span><br></pre></td></tr></table></figure><p>但是发现还是不行，看到说可以把$http_host改成自己的domain，于是尝试下</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">proxy_set_header Host domain.com</span><br></pre></td></tr></table></figure><p>最后重启nginx</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl restart nginx</span><br><span class="line">sudo systemctl status nginx</span><br></pre></td></tr></table></figure><p>然后刷新页面，登录，可以进去了</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;上周 Grafana 工作没有任何问题，但更新到 8.3.5 后我无法再登录。&lt;br&gt;在登录屏幕中，输入我的用户名和密码后，会出现一条消息：“Origin not allowed”。 在 grafana.log 文件中，我看到一行：&lt;br&gt;lvl&amp;#x3D;eror msg</summary>
+      
+    
+    
+    
+    <category term="Linux" scheme="https://maydaychen.github.io/categories/Linux/"/>
+    
+    
+    <category term="Grafana" scheme="https://maydaychen.github.io/tags/Grafana/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Mac-Terminal终端没有ll命令解决办法</title>
     <link href="https://maydaychen.github.io/2024/03/16/Mac-Terminal%E7%BB%88%E7%AB%AF%E6%B2%A1%E6%9C%89ll%E5%91%BD%E4%BB%A4%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/"/>
     <id>https://maydaychen.github.io/2024/03/16/Mac-Terminal%E7%BB%88%E7%AB%AF%E6%B2%A1%E6%9C%89ll%E5%91%BD%E4%BB%A4%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/</id>
     <published>2024-03-15T16:26:52.000Z</published>
-    <updated>2024-03-15T16:27:56.994Z</updated>
+    <updated>2024-03-15T16:40:36.736Z</updated>
     
     <content type="html"><![CDATA[<ol><li><p>首先在 ~&#x2F;.bash_profile 文件中加入如下命令(如果没有就touch一个)<br><code>alias ll=&#39;ls -alF&#39;</code></p></li><li><p>随后执行<br><code>source ~/.bash_profile</code><br>命令，使修改生效</p></li></ol><p>这样就可以使用 ll 命令了，但是这样有一个问题，每次新开的终端 ll 命令都会失效</p><hr><p>以下是解决方案</p><ol><li><p>在 ～&#x2F;.zshrc 文件中加入如下命令<br><code>source ~/.bash_profile</code><br>如果找不到.zshrc 文件，跟上面一样touch一个就完事了</p></li><li><p>执行<br><code>source ~/.zshrc</code><br>使文件生效，之后的每次ll就都会起作用了</p></li></ol>]]></content>
     
