@@ -41,11 +41,11 @@
   </entry>
   
   <entry>
-    <title>git配置代理</title>
-    <link href="https://maydaychen.github.io/2024/03/14/git%E9%85%8D%E7%BD%AE%E4%BB%A3%E7%90%86/"/>
-    <id>https://maydaychen.github.io/2024/03/14/git%E9%85%8D%E7%BD%AE%E4%BB%A3%E7%90%86/</id>
+    <title>Git配置代理</title>
+    <link href="https://maydaychen.github.io/2024/03/14/Git%E9%85%8D%E7%BD%AE%E4%BB%A3%E7%90%86/"/>
+    <id>https://maydaychen.github.io/2024/03/14/Git%E9%85%8D%E7%BD%AE%E4%BB%A3%E7%90%86/</id>
     <published>2024-03-13T23:05:42.000Z</published>
-    <updated>2024-03-15T09:46:50.183Z</updated>
+    <updated>2024-03-15T09:58:22.679Z</updated>
     
     <content type="html"><![CDATA[<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a><a href="https://www.cnblogs.com/cscshi/p/15705045.html#21-%E9%92%88%E5%AF%B9%E6%89%80%E6%9C%89%E5%9F%9F%E5%90%8D%E7%9A%84-git-%E4%BB%93%E5%BA%93">参考文章</a></h2><p>文章写的很棒，我就是参考这个</p><h2 id="配置git代理（带用户名）"><a href="#配置git代理（带用户名）" class="headerlink" title="配置git代理（带用户名）"></a>配置git代理（带用户名）</h2><p>git config –global http.proxy <a href="http://username:pass@server:port">http://username:pass@server:port</a><br>git config –global https.proxy <a href="https://username:pass@server:port">https://username:pass@server:port</a></p><h2 id="打开git配置文件"><a href="#打开git配置文件" class="headerlink" title="打开git配置文件"></a>打开git配置文件</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">open ~/.gitconfig</span><br></pre></td></tr></table></figure>]]></content>
     
@@ -88,11 +88,35 @@
   </entry>
   
   <entry>
-    <title>homeassistant笔记--更换iOS Themes主题</title>
-    <link href="https://maydaychen.github.io/2023/11/25/homeassistant%E6%9B%B4%E6%8D%A2iOS-Themes%E4%B8%BB%E9%A2%98/"/>
-    <id>https://maydaychen.github.io/2023/11/25/homeassistant%E6%9B%B4%E6%8D%A2iOS-Themes%E4%B8%BB%E9%A2%98/</id>
+    <title>Nginx代理端口</title>
+    <link href="https://maydaychen.github.io/2024/01/25/Nginx%E4%BB%A3%E7%90%86%E7%AB%AF%E5%8F%A3/"/>
+    <id>https://maydaychen.github.io/2024/01/25/Nginx%E4%BB%A3%E7%90%86%E7%AB%AF%E5%8F%A3/</id>
+    <published>2024-01-25T06:57:07.000Z</published>
+    <updated>2024-03-15T09:58:22.687Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="Nginx-安装"><a href="#Nginx-安装" class="headerlink" title="Nginx 安装"></a>Nginx 安装</h2><p>参照这个链接就好了<br><a href="http://nginx.org/en/linux_packages.html#RHEL">http://nginx.org/en/linux_packages.html#RHEL</a><br>使用nginx -V， 看到如下界面，就OK了<br><img src="https://upload-images.jianshu.io/upload_images/1987727-2018f8d16677a872.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p><h2 id="Nginx配置"><a href="#Nginx配置" class="headerlink" title="Nginx配置"></a>Nginx配置</h2><p>在&#x2F;etc&#x2F;nginx&#x2F;nginx.conf最下面加入如下代码<br><code>shell stream &#123; upstream ssh&#123; server 127.0.0.1:22; &#125; server &#123; listen 8022; proxy_connect_timeout 1h; proxy_timeout 1h; proxy_pass ssh; &#125; &#125; </code></p><h2 id="重载配置"><a href="#重载配置" class="headerlink" title="重载配置"></a>重载配置</h2><p><code>systemctl reload nginx</code><br>然后就可以用8022端口去连接服务器啦</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;Nginx-安装&quot;&gt;&lt;a href=&quot;#Nginx-安装&quot; class=&quot;headerlink&quot; title=&quot;Nginx 安装&quot;&gt;&lt;/a&gt;Nginx 安装&lt;/h2&gt;&lt;p&gt;参照这个链接就好了&lt;br&gt;&lt;a href=&quot;http://nginx.org/en/linu</summary>
+      
+    
+    
+    
+    <category term="Linux" scheme="https://maydaychen.github.io/categories/Linux/"/>
+    
+    
+    <category term="Nginx" scheme="https://maydaychen.github.io/tags/Nginx/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>HomeAssistant笔记--更换iOS Themes主题</title>
+    <link href="https://maydaychen.github.io/2023/11/25/HomeAssistant%E6%9B%B4%E6%8D%A2iOS-Themes%E4%B8%BB%E9%A2%98/"/>
+    <id>https://maydaychen.github.io/2023/11/25/HomeAssistant%E6%9B%B4%E6%8D%A2iOS-Themes%E4%B8%BB%E9%A2%98/</id>
     <published>2023-11-24T23:58:37.000Z</published>
-    <updated>2023-11-25T10:33:04.784Z</updated>
+    <updated>2024-03-15T09:58:22.685Z</updated>
     
     <content type="html"><![CDATA[<p>主题链接：<br><a href="https://github.com/basnijholt/lovelace-ios-themes">https://github.com/basnijholt/lovelace-ios-themes</a></p><h2 id="配置过程"><a href="#配置过程" class="headerlink" title="配置过程"></a>配置过程</h2><ol><li><p>主题需要在HACS中安装，搜索iOS应该就能看到</p></li><li><p>配置中加入:</p> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">文件名： /config/configuration.yaml</span><br><span class="line"></span><br><span class="line"># Load frontend themes from the themes folder</span><br><span class="line">frontend:</span><br><span class="line">  themes: !include_dir_merge_named themes</span><br><span class="line"></span><br></pre></td></tr></table></figure></li><li><p>把主题放置在themes下<br>themes文件夹在docker中HA的根目录下</p></li><li><p>建www目录存放图片资源</p><p>注意：www文件夹与themes文件夹同一层级</p><p>在www目录中建立跟themes目录中一样的文件夹名称，例如这里叫做<code>ios-themes</code></p></li><li><p>在www的插件文件夹中，修改ios-themes.yaml</p> <figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">主要是这边的修改：</span><br><span class="line">把www改为local，路径更改</span><br><span class="line"></span><br><span class="line">background-<span class="attr">image</span>: <span class="string">&quot;center / cover no-repeat fixed url(&#x27;/hacsfiles/themes/homekit-bg-dark-green.jp</span></span><br><span class="line"><span class="string">g&#x27;)&quot;</span></span><br><span class="line"></span><br><span class="line">改成</span><br><span class="line"></span><br><span class="line">background-<span class="attr">image</span>: <span class="string">&quot;center / cover no-repeat fixed url(&#x27;/local/ios-themes/homeki</span></span><br><span class="line"><span class="string">t-bg-dark-green.jpg&#x27;)&quot;</span></span><br></pre></td></tr></table></figure><p>local文件夹其实就是值得www文件夹（注意不是把www文件夹改名成local文件夹）</p><p>如果不改的话，系统会找不到这个图片，导致首页不会修改背景图</p></li><li><p>重启HA</p></li></ol>]]></content>
     
