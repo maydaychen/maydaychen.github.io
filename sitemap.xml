@@ -2,6 +2,24 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://maydaychen.github.io/2023/10/12/%E9%80%9A%E8%BF%87hexo%E6%9B%B4%E6%96%B0github-pages%E5%8D%9A%E5%AE%A2/</loc>
+    
+    <lastmod>2024-03-15</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://maydaychen.github.io/2024/03/15/Alfred-%E6%94%AF%E6%8C%81edge%E6%B5%8F%E8%A7%88%E5%99%A8%E4%B9%A6%E7%AD%BE/</loc>
+    
+    <lastmod>2024-03-15</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://maydaychen.github.io/2023/11/25/homeassistant%E6%9B%B4%E6%8D%A2iOS-Themes%E4%B8%BB%E9%A2%98/</loc>
     
     <lastmod>2023-11-25</lastmod>
@@ -139,7 +157,7 @@
 
   <url>
     <loc>https://maydaychen.github.io/</loc>
-    <lastmod>2023-11-25</lastmod>
+    <lastmod>2024-03-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -147,56 +165,63 @@
   
   <url>
     <loc>https://maydaychen.github.io/tags/Docker/</loc>
-    <lastmod>2023-11-25</lastmod>
+    <lastmod>2024-03-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://maydaychen.github.io/tags/Hexo/</loc>
-    <lastmod>2023-11-25</lastmod>
+    <lastmod>2024-03-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://maydaychen.github.io/tags/%E6%8F%92%E4%BB%B6/</loc>
-    <lastmod>2023-11-25</lastmod>
+    <lastmod>2024-03-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://maydaychen.github.io/tags/Nginx/</loc>
-    <lastmod>2023-11-25</lastmod>
+    <lastmod>2024-03-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://maydaychen.github.io/tags/Linux/</loc>
-    <lastmod>2023-11-25</lastmod>
+    <lastmod>2024-03-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://maydaychen.github.io/tags/NAS/</loc>
-    <lastmod>2023-11-25</lastmod>
+    <lastmod>2024-03-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://maydaychen.github.io/tags/Ansible/</loc>
-    <lastmod>2023-11-25</lastmod>
+    <lastmod>2024-03-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://maydaychen.github.io/tags/HA/</loc>
-    <lastmod>2023-11-25</lastmod>
+    <lastmod>2024-03-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://maydaychen.github.io/tags/Alfred/</loc>
+    <lastmod>2024-03-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -205,14 +230,21 @@
   
   <url>
     <loc>https://maydaychen.github.io/categories/Docker%E7%9B%B8%E5%85%B3/</loc>
-    <lastmod>2023-11-25</lastmod>
+    <lastmod>2024-03-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://maydaychen.github.io/categories/%E5%8D%9A%E5%AE%A2%E7%9B%B8%E5%85%B3/</loc>
-    <lastmod>2023-11-25</lastmod>
+    <lastmod>2024-03-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://maydaychen.github.io/categories/Tools/</loc>
+    <lastmod>2024-03-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>

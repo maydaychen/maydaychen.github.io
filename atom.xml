@@ -6,7 +6,7 @@
   <link href="https://maydaychen.github.io/atom.xml" rel="self"/>
   
   <link href="https://maydaychen.github.io/"/>
-  <updated>2023-11-25T10:33:04.784Z</updated>
+  <updated>2024-03-15T09:38:52.855Z</updated>
   <id>https://maydaychen.github.io/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Alfred 支持edge浏览器书签</title>
+    <link href="https://maydaychen.github.io/2024/03/15/Alfred-%E6%94%AF%E6%8C%81edge%E6%B5%8F%E8%A7%88%E5%99%A8%E4%B9%A6%E7%AD%BE/"/>
+    <id>https://maydaychen.github.io/2024/03/15/Alfred-%E6%94%AF%E6%8C%81edge%E6%B5%8F%E8%A7%88%E5%99%A8%E4%B9%A6%E7%AD%BE/</id>
+    <published>2024-03-15T09:37:26.000Z</published>
+    <updated>2024-03-15T09:38:52.855Z</updated>
+    
+    <content type="html"><![CDATA[<p>众所周知，在Alfred上只有Safari跟Chrome浏览器的支持，甚至都不可以选择别的浏览器<br>在Alfred 社区里，开发者也是直接说了这两个是mac上的用的人最多的浏览器，目前没有添加其他浏览器书签支持的计划，所以我们只能自己摸索<br>但是说实在的，edge浏览器在国内有着先天的优势，各种同步功能的正常使用已经让它在国内越来越受欢迎，所以加入一个edge浏览器的支持个人认为还是很有必要的</p><h2 id="低效方法："><a href="#低效方法：" class="headerlink" title="低效方法："></a>低效方法：</h2><p>装一个Chrome, 然后把edge书签导入过去</p><p>好了，不开玩笑了，下面记录一个在社区看到的很好用的方法</p><h2 id="正经记录"><a href="#正经记录" class="headerlink" title="正经记录"></a>正经记录</h2><p>step 1. 还是需要一个chrome浏览器，所以还是装一个吧<br>step 2. link edge’s bookmarks to chrome<br><code>cd ~/Library/Application\ Support/Google/Chrome/Default</code><br><code>//这一步如果新安装的chrome是不需要的，因为没有这个文件 mv Bookmarks  Bookmarks_233.bak</code><br><code>ln -s  ~/Library/Application\ Support/Microsoft\ Edge/Default/Bookmarks  ./Bookmarks</code><br>贴一个ln -s命令详解<br><a href="https://blog.csdn.net/qianxuedegushi/article/details/108145547">https://blog.csdn.net/qianxuedegushi/article/details/108145547</a></p><p>然后再用alfred试一下，可以显示edge的书签了</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;众所周知，在Alfred上只有Safari跟Chrome浏览器的支持，甚至都不可以选择别的浏览器&lt;br&gt;在Alfred 社区里，开发者也是直接说了这两个是mac上的用的人最多的浏览器，目前没有添加其他浏览器书签支持的计划，所以我们只能自己摸索&lt;br&gt;但是说实在的，edge浏</summary>
+      
+    
+    
+    
+    <category term="Tools" scheme="https://maydaychen.github.io/categories/Tools/"/>
+    
+    
+    <category term="Alfred" scheme="https://maydaychen.github.io/tags/Alfred/"/>
+    
+  </entry>
   
   <entry>
     <title>homeassistant笔记--更换iOS Themes主题</title>
@@ -157,6 +181,33 @@
     <category term="Nginx" scheme="https://maydaychen.github.io/tags/Nginx/"/>
     
     <category term="Linux" scheme="https://maydaychen.github.io/tags/Linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>通过hexo更新github pages博客</title>
+    <link href="https://maydaychen.github.io/2023/10/12/%E9%80%9A%E8%BF%87hexo%E6%9B%B4%E6%96%B0github-pages%E5%8D%9A%E5%AE%A2/"/>
+    <id>https://maydaychen.github.io/2023/10/12/%E9%80%9A%E8%BF%87hexo%E6%9B%B4%E6%96%B0github-pages%E5%8D%9A%E5%AE%A2/</id>
+    <published>2023-10-12T07:23:01.000Z</published>
+    <updated>2024-03-15T09:40:42.319Z</updated>
+    
+    <content type="html"><![CDATA[<p>#文件生成及编辑</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new &quot;文章标题&quot;</span><br></pre></td></tr></table></figure><p>通过该命令行，可以在 “博客所在路径\source_posts\”下生成一个md文件，文件名称为上面命令行所输入的文章标题</p><p>由于生成的是markdown格式的文件，所以建议使用一个markdown编写完成后，复制粘贴到该md文件中。</p><p>#文件发布<br>编辑完成后，在命令行输入</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo g</span><br></pre></td></tr></table></figure><p>文章就会发布到本地，然后通过</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure><p>将文件变化发布到本地环境，此时可以通过访问localhost:4000，查看自己博客相关变化</p><p>#同步到GitHub</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo d</span><br></pre></td></tr></table></figure><p>成功同步到GitHub（前提是跟GitHub已经配对）！</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;#文件生成及编辑&lt;/p&gt;
+&lt;figure class=&quot;highlight plaintext&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;</summary>
+      
+    
+    
+    
+    <category term="博客相关" scheme="https://maydaychen.github.io/categories/%E5%8D%9A%E5%AE%A2%E7%9B%B8%E5%85%B3/"/>
+    
+    
+    <category term="Hexo" scheme="https://maydaychen.github.io/tags/Hexo/"/>
+    
+    <category term="插件" scheme="https://maydaychen.github.io/tags/%E6%8F%92%E4%BB%B6/"/>
     
   </entry>
   
