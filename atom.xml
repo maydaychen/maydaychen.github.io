@@ -6,7 +6,7 @@
   <link href="https://maydaychen.github.io/atom.xml" rel="self"/>
   
   <link href="https://maydaychen.github.io/"/>
-  <updated>2024-03-15T09:38:52.855Z</updated>
+  <updated>2024-03-15T16:27:56.994Z</updated>
   <id>https://maydaychen.github.io/</id>
   
   <author>
@@ -15,6 +15,54 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Mac Terminal终端没有ll命令解决办法</title>
+    <link href="https://maydaychen.github.io/2024/03/16/Mac-Terminal%E7%BB%88%E7%AB%AF%E6%B2%A1%E6%9C%89ll%E5%91%BD%E4%BB%A4%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/"/>
+    <id>https://maydaychen.github.io/2024/03/16/Mac-Terminal%E7%BB%88%E7%AB%AF%E6%B2%A1%E6%9C%89ll%E5%91%BD%E4%BB%A4%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/</id>
+    <published>2024-03-15T16:26:52.000Z</published>
+    <updated>2024-03-15T16:27:56.994Z</updated>
+    
+    <content type="html"><![CDATA[<ol><li><p>首先在 ~&#x2F;.bash_profile 文件中加入如下命令(如果没有就touch一个)<br><code>alias ll=&#39;ls -alF&#39;</code></p></li><li><p>随后执行<br><code>source ~/.bash_profile</code><br>命令，使修改生效</p></li></ol><p>这样就可以使用 ll 命令了，但是这样有一个问题，每次新开的终端 ll 命令都会失效</p><hr><p>以下是解决方案</p><ol><li><p>在 ～&#x2F;.zshrc 文件中加入如下命令<br><code>source ~/.bash_profile</code><br>如果找不到.zshrc 文件，跟上面一样touch一个就完事了</p></li><li><p>执行<br><code>source ~/.zshrc</code><br>使文件生效，之后的每次ll就都会起作用了</p></li></ol>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;首先在 ~&amp;#x2F;.bash_profile 文件中加入如下命令(如果没有就touch一个)&lt;br&gt;&lt;code&gt;alias ll=&amp;#39;ls -alF&amp;#39;&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;随后执行&lt;br&gt;&lt;code&gt;sourc</summary>
+      
+    
+    
+    
+    <category term="Mac" scheme="https://maydaychen.github.io/categories/Mac/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Mac-Edge浏览器跟Chrome浏览器触控板无法右击的解决办法</title>
+    <link href="https://maydaychen.github.io/2024/03/16/Mac-Edge%E6%B5%8F%E8%A7%88%E5%99%A8%E8%B7%9FChrome%E6%B5%8F%E8%A7%88%E5%99%A8%E8%A7%A6%E6%8E%A7%E6%9D%BF%E6%97%A0%E6%B3%95%E5%8F%B3%E5%87%BB%E7%9A%84%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/"/>
+    <id>https://maydaychen.github.io/2024/03/16/Mac-Edge%E6%B5%8F%E8%A7%88%E5%99%A8%E8%B7%9FChrome%E6%B5%8F%E8%A7%88%E5%99%A8%E8%A7%A6%E6%8E%A7%E6%9D%BF%E6%97%A0%E6%B3%95%E5%8F%B3%E5%87%BB%E7%9A%84%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/</id>
+    <published>2024-03-15T16:25:55.000Z</published>
+    <updated>2024-03-15T16:27:40.227Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>不知道从什么时候开始，用mac的触控板，双指点击已经无法在浏览器上跳出右键的那个菜单了，实测edge跟chrome都一样</p><h2 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h2><p><img src="https://upload-images.jianshu.io/upload_images/1987727-90934d564fa2b916.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="插件截图"><br>经过各种测试，发现是因为我装了一个crxMouse插件，该插件会有一个Linux&#x2F;Mac选项，如果把它去掉勾选，问题解决，所以确定是因为这个<br>至于这是干嘛的，不太确定，不过毕竟现在已经不用鼠标，转投触控板，所以这个插件对我来说也没有什么用了</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;问题&quot;&gt;&lt;a href=&quot;#问题&quot; class=&quot;headerlink&quot; title=&quot;问题&quot;&gt;&lt;/a&gt;问题&lt;/h2&gt;&lt;p&gt;不知道从什么时候开始，用mac的触控板，双指点击已经无法在浏览器上跳出右键的那个菜单了，实测edge跟chrome都一样&lt;/p&gt;
+&lt;h2 i</summary>
+      
+    
+    
+    
+    <category term="Mac" scheme="https://maydaychen.github.io/categories/Mac/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>Alfred 支持edge浏览器书签</title>
@@ -113,10 +161,10 @@
   
   <entry>
     <title>HomeAssistant笔记--更换iOS Themes主题</title>
-    <link href="https://maydaychen.github.io/2023/11/25/HomeAssistant%E6%9B%B4%E6%8D%A2iOS-Themes%E4%B8%BB%E9%A2%98/"/>
-    <id>https://maydaychen.github.io/2023/11/25/HomeAssistant%E6%9B%B4%E6%8D%A2iOS-Themes%E4%B8%BB%E9%A2%98/</id>
+    <link href="https://maydaychen.github.io/2023/11/25/HomeAssistant%E6%9B%B4%E6%8D%A2iOS-Themes%E4%B8%BB%E9%A2%98_chenyideMacBook-Pro.local_Mar-15-211502-2024_CaseConflict/"/>
+    <id>https://maydaychen.github.io/2023/11/25/HomeAssistant%E6%9B%B4%E6%8D%A2iOS-Themes%E4%B8%BB%E9%A2%98_chenyideMacBook-Pro.local_Mar-15-211502-2024_CaseConflict/</id>
     <published>2023-11-24T23:58:37.000Z</published>
-    <updated>2024-03-15T09:58:22.685Z</updated>
+    <updated>2024-03-15T09:58:22.000Z</updated>
     
     <content type="html"><![CDATA[<p>主题链接：<br><a href="https://github.com/basnijholt/lovelace-ios-themes">https://github.com/basnijholt/lovelace-ios-themes</a></p><h2 id="配置过程"><a href="#配置过程" class="headerlink" title="配置过程"></a>配置过程</h2><ol><li><p>主题需要在HACS中安装，搜索iOS应该就能看到</p></li><li><p>配置中加入:</p> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">文件名： /config/configuration.yaml</span><br><span class="line"></span><br><span class="line"># Load frontend themes from the themes folder</span><br><span class="line">frontend:</span><br><span class="line">  themes: !include_dir_merge_named themes</span><br><span class="line"></span><br></pre></td></tr></table></figure></li><li><p>把主题放置在themes下<br>themes文件夹在docker中HA的根目录下</p></li><li><p>建www目录存放图片资源</p><p>注意：www文件夹与themes文件夹同一层级</p><p>在www目录中建立跟themes目录中一样的文件夹名称，例如这里叫做<code>ios-themes</code></p></li><li><p>在www的插件文件夹中，修改ios-themes.yaml</p> <figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">主要是这边的修改：</span><br><span class="line">把www改为local，路径更改</span><br><span class="line"></span><br><span class="line">background-<span class="attr">image</span>: <span class="string">&quot;center / cover no-repeat fixed url(&#x27;/hacsfiles/themes/homekit-bg-dark-green.jp</span></span><br><span class="line"><span class="string">g&#x27;)&quot;</span></span><br><span class="line"></span><br><span class="line">改成</span><br><span class="line"></span><br><span class="line">background-<span class="attr">image</span>: <span class="string">&quot;center / cover no-repeat fixed url(&#x27;/local/ios-themes/homeki</span></span><br><span class="line"><span class="string">t-bg-dark-green.jpg&#x27;)&quot;</span></span><br></pre></td></tr></table></figure><p>local文件夹其实就是值得www文件夹（注意不是把www文件夹改名成local文件夹）</p><p>如果不改的话，系统会找不到这个图片，导致首页不会修改背景图</p></li><li><p>重启HA</p></li></ol>]]></content>
     
@@ -284,8 +332,8 @@
   
   <entry>
     <title>hexo g报错 Cannot read properties of undefined (reading &#39;count&#39;)</title>
-    <link href="https://maydaychen.github.io/2023/08/27/hexo-g%E6%8A%A5%E9%94%99-Cannot-read-properties-of-undefined-reading-count/"/>
-    <id>https://maydaychen.github.io/2023/08/27/hexo-g%E6%8A%A5%E9%94%99-Cannot-read-properties-of-undefined-reading-count/</id>
+    <link href="https://maydaychen.github.io/2023/08/27/Hexo-g%E6%8A%A5%E9%94%99-Cannot-read-properties-of-undefined-reading-count_chenyideMacBook-Pro.local_Mar-15-233718-2024_CaseConflict/"/>
+    <id>https://maydaychen.github.io/2023/08/27/Hexo-g%E6%8A%A5%E9%94%99-Cannot-read-properties-of-undefined-reading-count_chenyideMacBook-Pro.local_Mar-15-233718-2024_CaseConflict/</id>
     <published>2023-08-27T14:07:18.000Z</published>
     <updated>2023-08-27T14:12:50.029Z</updated>
     
@@ -332,6 +380,54 @@
     
     
     <category term="Docker" scheme="https://maydaychen.github.io/tags/Docker/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>windows右键实现当前路径打开cmd</title>
+    <link href="https://maydaychen.github.io/2022/03/17/windows%E5%8F%B3%E9%94%AE%E5%AE%9E%E7%8E%B0%E5%BD%93%E5%89%8D%E8%B7%AF%E5%BE%84%E6%89%93%E5%BC%80cmd/"/>
+    <id>https://maydaychen.github.io/2022/03/17/windows%E5%8F%B3%E9%94%AE%E5%AE%9E%E7%8E%B0%E5%BD%93%E5%89%8D%E8%B7%AF%E5%BE%84%E6%89%93%E5%BC%80cmd/</id>
+    <published>2022-03-17T03:49:21.000Z</published>
+    <updated>2024-03-15T16:29:50.328Z</updated>
+    
+    <content type="html"><![CDATA[<p>转自<a href="https://blog.csdn.net/wx_assa/article/details/106880806">https://blog.csdn.net/wx_assa/article/details/106880806</a></p><p>##无管理员权限的cmd<br>新建一个txt文件，并重命名为xxx.reg，并将下放代码复制到文本中</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Windows Registry Editor Version 5.00</span><br><span class="line">[HKEY_CLASSES_ROOT\Directory\Background\shell\QOpencmd\command]</span><br><span class="line">&quot;&quot;=&quot;cmd.exe /s /k pushd \&quot;%V\&quot;&quot;</span><br></pre></td></tr></table></figure><p>运行该注册表文件，在右键菜单中会多出一项 QQOpencmd，即为打开cmd的选项</p><p>##有管理员权限的cmd<br>新建文件同上，代码复制下面的代码</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Windows Registry Editor Version 5.00</span><br><span class="line">[HKEY_CLASSES_ROOT\Directory\Background\shell\runas]</span><br><span class="line">&quot;ShowBasedOnVelocityId&quot;=dword:00639bc8</span><br><span class="line">[HKEY_CLASSES_ROOT\Directory\Background\shell\runas\command]</span><br><span class="line">@=&quot;cmd.exe /s /k pushd \&quot;%V\&quot;&quot;</span><br></pre></td></tr></table></figure><p>运行，在右键菜单中会多出一项 以管理员运行(A)，即为以管理员打开cmd的选项</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;转自&lt;a href=&quot;https://blog.csdn.net/wx_assa/article/details/106880806&quot;&gt;https://blog.csdn.net/wx_assa/article/details/106880806&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;##</summary>
+      
+    
+    
+    
+    <category term="Windows" scheme="https://maydaychen.github.io/categories/Windows/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>常用Windows软件总结</title>
+    <link href="https://maydaychen.github.io/2022/03/16/%E5%B8%B8%E7%94%A8Windows%E8%BD%AF%E4%BB%B6%E6%80%BB%E7%BB%93/"/>
+    <id>https://maydaychen.github.io/2022/03/16/%E5%B8%B8%E7%94%A8Windows%E8%BD%AF%E4%BB%B6%E6%80%BB%E7%BB%93/</id>
+    <published>2022-03-15T16:28:34.000Z</published>
+    <updated>2024-03-15T16:29:10.126Z</updated>
+    
+    <content type="html"><![CDATA[<p>为了每次重装电脑的时候不会遗漏相关软件，特写下此文章，提醒自己保持较高生产力</p><p>#服务器相关</p><ol><li>Xshell<br>远程连接服务器，执行相关操作<br><a href="https://www.netsarang.com/products/xsh_overview.html">https://www.netsarang.com/products/xsh_overview.html</a></li><li>FileZilla<br>服务器远程文件传输<br><a href="https://filezilla-project.org/">https://filezilla-project.org/</a></li></ol><p>#影音</p><ol><li><p>Listen1<br>支持网易云音乐&#x2F;QQ音乐&#x2F;虾米音乐三合一<br><a href="https://github.com/listen1/listen1_chrome_extension">https://github.com/listen1/listen1_chrome_extension</a></p></li><li><p>网易云音乐<br>以前很喜欢，可是现在- -版权实在太少，能听的不多，而且推荐算法工程师可能换人了……<br><a href="https://music.163.com/">https://music.163.com/</a></p></li><li><p>win10商店中的爱奇艺<br>没！有！广！告！</p></li></ol><p>#工具</p><ol><li><p>微软 To- Do<br>每日备忘记录提醒<br><a href="https://todo.microsoft.com/zh-cn">https://todo.microsoft.com/zh-cn</a></p></li><li><p>geek<br>很舒服的卸载工具<br><a href="https://geekuninstaller.com/">https://geekuninstaller.com/</a></p></li><li><p>TeamViewer<br>远程控制软件，work from home 必备<br><a href="https://www.teamviewer.com/zhCN/">https://www.teamviewer.com/zhCN/</a></p></li><li><p>notepad++<br>替代记事本良心直选<br><a href="https://notepad-plus-plus.org/">https://notepad-plus-plus.org/</a></p></li><li><p>QuickLook<br>实现mac上的预览功能<br><a href="https://github.com/QL-Win/QuickLook/releases">https://github.com/QL-Win/QuickLook/releases</a></p></li><li><p>wox<br><a href="https://www.jianshu.com/p/8fd212f5c01f">感觉写的好的一篇文章</a></p></li></ol><p><a href="https://github.com/Wox-launcher/Wox/releases">https://github.com/Wox-launcher/Wox/releases</a></p><ol start="7"><li>Q-Dir<br>同时显示四个资源管理器<br><a href="https://q-dir.en.softonic.com/">https://q-dir.en.softonic.com/</a></li></ol><hr><p>持续更新ing……</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;为了每次重装电脑的时候不会遗漏相关软件，特写下此文章，提醒自己保持较高生产力&lt;/p&gt;
+&lt;p&gt;#服务器相关&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Xshell&lt;br&gt;远程连接服务器，执行相关操作&lt;br&gt;&lt;a href=&quot;https://www.netsarang.com/products</summary>
+      
+    
+    
+    
+    <category term="Windows" scheme="https://maydaychen.github.io/categories/Windows/"/>
+    
     
   </entry>
   
