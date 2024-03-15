@@ -41,6 +41,53 @@
   </entry>
   
   <entry>
+    <title>git配置代理</title>
+    <link href="https://maydaychen.github.io/2024/03/14/git%E9%85%8D%E7%BD%AE%E4%BB%A3%E7%90%86/"/>
+    <id>https://maydaychen.github.io/2024/03/14/git%E9%85%8D%E7%BD%AE%E4%BB%A3%E7%90%86/</id>
+    <published>2024-03-13T23:05:42.000Z</published>
+    <updated>2024-03-15T09:46:50.183Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a><a href="https://www.cnblogs.com/cscshi/p/15705045.html#21-%E9%92%88%E5%AF%B9%E6%89%80%E6%9C%89%E5%9F%9F%E5%90%8D%E7%9A%84-git-%E4%BB%93%E5%BA%93">参考文章</a></h2><p>文章写的很棒，我就是参考这个</p><h2 id="配置git代理（带用户名）"><a href="#配置git代理（带用户名）" class="headerlink" title="配置git代理（带用户名）"></a>配置git代理（带用户名）</h2><p>git config –global http.proxy <a href="http://username:pass@server:port">http://username:pass@server:port</a><br>git config –global https.proxy <a href="https://username:pass@server:port">https://username:pass@server:port</a></p><h2 id="打开git配置文件"><a href="#打开git配置文件" class="headerlink" title="打开git配置文件"></a>打开git配置文件</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">open ~/.gitconfig</span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;参考文章&quot;&gt;&lt;a href=&quot;#参考文章&quot; class=&quot;headerlink&quot; title=&quot;参考文章&quot;&gt;&lt;/a&gt;&lt;a href=&quot;https://www.cnblogs.com/cscshi/p/15705045.html#21-%E9%92%88%E5%AF</summary>
+      
+    
+    
+    
+    <category term="Tools" scheme="https://maydaychen.github.io/categories/Tools/"/>
+    
+    
+    <category term="Git" scheme="https://maydaychen.github.io/tags/Git/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>linux相关简易操作汇总</title>
+    <link href="https://maydaychen.github.io/2024/02/15/linux%E7%9B%B8%E5%85%B3%E7%AE%80%E6%98%93%E6%93%8D%E4%BD%9C%E6%B1%87%E6%80%BB/"/>
+    <id>https://maydaychen.github.io/2024/02/15/linux%E7%9B%B8%E5%85%B3%E7%AE%80%E6%98%93%E6%93%8D%E4%BD%9C%E6%B1%87%E6%80%BB/</id>
+    <published>2024-02-15T07:22:23.000Z</published>
+    <updated>2024-03-15T09:47:07.331Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="Ubuntu获取root权限"><a href="#Ubuntu获取root权限" class="headerlink" title="Ubuntu获取root权限"></a>Ubuntu获取root权限</h2><ol><li><p>输入命令：sudo su;</p></li><li><p>屏幕上会回显要求输入当前用户密码的提示，输入密码即可获得管理员权限;</p></li><li><p>若想退出管理员权限可输入命令：su 用户名.</p></li></ol><h2 id="Ubuntu-vim显示行数"><a href="#Ubuntu-vim显示行数" class="headerlink" title="Ubuntu vim显示行数"></a>Ubuntu vim显示行数</h2><ol><li><p>进入终端，在命令行中输入cd  &#x2F;etc&#x2F;vim 后敲回车，进入&#x2F;etc&#x2F;vim目录；</p></li><li><p>进入etc&#x2F;vim目录后，找到vimrc文件（vim的初始化文件），使用cp命令对其进行备份，命令为：cp  vimrc  vimrc.bak（必须要有管理员权限，否则无法成功）</p></li><li><p>用管理员权限打开vimrc，命令为：sudo  vi  vimrc</p></li><li><p>打开后，在vimrc文件最后加入一行命令：set  nu;</p></li><li><p>加完后，写入，退出，（esc -&gt; :wq），重新使用vim打开任意文件即可发现有行号的标示。</p></li></ol><h2 id="navicat-for-MySQL无法连接Linux服务器中的MySQL-1130错误"><a href="#navicat-for-MySQL无法连接Linux服务器中的MySQL-1130错误" class="headerlink" title="navicat for MySQL无法连接Linux服务器中的MySQL  1130错误"></a>navicat for MySQL无法连接Linux服务器中的MySQL  1130错误</h2><ol><li><p>输入mysql  -p进入MySQL，输入密码</p></li><li><p>mysql&gt; grant all privileges on <em>.</em> to root@”%” identified by “root”;<br>结果如下：Query OK, 0 rows affected, 1 warning (0.00 sec)</p></li><li><p>退出数据库mysql&gt; exit</p></li><li><p>将&#x2F;etc&#x2F;mysql&#x2F;my.cnf文件中bind-address&#x3D;127.0.0.1 这句话注释掉</p></li><li><p>sudo &#x2F;etc&#x2F;init.d&#x2F;mysql restart 重启MySQL服务<br>成功！此时navicat客户端已可连接服务器MySQL</p></li></ol>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;Ubuntu获取root权限&quot;&gt;&lt;a href=&quot;#Ubuntu获取root权限&quot; class=&quot;headerlink&quot; title=&quot;Ubuntu获取root权限&quot;&gt;&lt;/a&gt;Ubuntu获取root权限&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;输入命令：sudo su;</summary>
+      
+    
+    
+    
+    <category term="Linux" scheme="https://maydaychen.github.io/categories/Linux/"/>
+    
+    
+  </entry>
+  
+  <entry>
     <title>homeassistant笔记--更换iOS Themes主题</title>
     <link href="https://maydaychen.github.io/2023/11/25/homeassistant%E6%9B%B4%E6%8D%A2iOS-Themes%E4%B8%BB%E9%A2%98/"/>
     <id>https://maydaychen.github.io/2023/11/25/homeassistant%E6%9B%B4%E6%8D%A2iOS-Themes%E4%B8%BB%E9%A2%98/</id>

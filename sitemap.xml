@@ -2,6 +2,24 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://maydaychen.github.io/2024/02/15/linux%E7%9B%B8%E5%85%B3%E7%AE%80%E6%98%93%E6%93%8D%E4%BD%9C%E6%B1%87%E6%80%BB/</loc>
+    
+    <lastmod>2024-03-15</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://maydaychen.github.io/2024/03/14/git%E9%85%8D%E7%BD%AE%E4%BB%A3%E7%90%86/</loc>
+    
+    <lastmod>2024-03-15</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://maydaychen.github.io/2023/10/12/%E9%80%9A%E8%BF%87hexo%E6%9B%B4%E6%96%B0github-pages%E5%8D%9A%E5%AE%A2/</loc>
     
     <lastmod>2024-03-15</lastmod>
@@ -226,6 +244,13 @@
     <priority>0.2</priority>
   </url>
   
+  <url>
+    <loc>https://maydaychen.github.io/tags/Git/</loc>
+    <lastmod>2024-03-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
 
   
   <url>
@@ -244,6 +269,13 @@
   
   <url>
     <loc>https://maydaychen.github.io/categories/Tools/</loc>
+    <lastmod>2024-03-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://maydaychen.github.io/categories/Linux/</loc>
     <lastmod>2024-03-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
