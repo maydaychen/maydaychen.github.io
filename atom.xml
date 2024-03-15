@@ -6,7 +6,7 @@
   <link href="https://maydaychen.github.io/atom.xml" rel="self"/>
   
   <link href="https://maydaychen.github.io/"/>
-  <updated>2024-03-15T16:45:49.638Z</updated>
+  <updated>2024-03-15T16:59:13.464Z</updated>
   <id>https://maydaychen.github.io/</id>
   
   <author>
@@ -15,6 +15,52 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Linux-scp到服务器时报错Permissions 0644 for &#39;xx.pem&#39; are too open</title>
+    <link href="https://maydaychen.github.io/2024/03/16/Linux-scp%E5%88%B0%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%97%B6%E6%8A%A5%E9%94%99Permissions-0644-for-xx-pem-are-too-open/"/>
+    <id>https://maydaychen.github.io/2024/03/16/Linux-scp%E5%88%B0%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%97%B6%E6%8A%A5%E9%94%99Permissions-0644-for-xx-pem-are-too-open/</id>
+    <published>2024-03-15T16:58:52.000Z</published>
+    <updated>2024-03-15T16:59:13.464Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p><code>Permissions 0644 for &#39;xx.pem&#39; are too open. It is required that your private key files are NOT accessible by others. This private key will be ignored. Load key &quot;xx.pem&quot;: bad permissions ec2-user@35.77.46.6: Permission denied (publickey,gssapi-keyex,gssapi-with-mic). lost connection</code></p><h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><p>看日志报出的错误，”Permissions 0644 for ‘xx.pem’ are too open”，pen文件的权限太大太open了。<br>使用ll(ls -al)命令查看了私钥文件的权限，发现和错误一样，是644<br>所以需要使用chmod命令修改文件的权限</p><p><code>chmod 600 xx.pem</code><br>之后再尝试一遍，完美执行</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;问题&quot;&gt;&lt;a href=&quot;#问题&quot; class=&quot;headerlink&quot; title=&quot;问题&quot;&gt;&lt;/a&gt;问题&lt;/h1&gt;&lt;p&gt;&lt;code&gt;Permissions 0644 for &amp;#39;xx.pem&amp;#39; are too open. It is requir</summary>
+      
+    
+    
+    
+    <category term="Linux" scheme="https://maydaychen.github.io/categories/Linux/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Linux文件清空的几种方法</title>
+    <link href="https://maydaychen.github.io/2024/03/16/Linux%E6%96%87%E4%BB%B6%E6%B8%85%E7%A9%BA%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E6%B3%95/"/>
+    <id>https://maydaychen.github.io/2024/03/16/Linux%E6%96%87%E4%BB%B6%E6%B8%85%E7%A9%BA%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E6%B3%95/</id>
+    <published>2024-03-15T16:57:47.000Z</published>
+    <updated>2024-03-15T16:58:21.437Z</updated>
+    
+    <content type="html"><![CDATA[<ol><li><p>使用重定向的方法</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]# du -h test.txt </span><br><span class="line">4.0K    test.txt</span><br><span class="line">[root@centos7 ~]# &gt; test.txt </span><br><span class="line">[root@centos7 ~]# du -h test.txt </span><br><span class="line">0    test.txt</span><br></pre></td></tr></table></figure></li><li><p>使用true命令重定向清空文件</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]# du -h test.txt </span><br><span class="line">4.0K    test.txt</span><br><span class="line">[root@centos7 ~]# true &gt; test.txt </span><br><span class="line">[root@centos7 ~]# du -h test.txt </span><br><span class="line">0    test.txt</span><br></pre></td></tr></table></figure></li><li><p>使用cat&#x2F;cp&#x2F;dd命令及&#x2F;dev&#x2F;null设备来清空文件</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]# du -h test.txt </span><br><span class="line">4.0K    test.txt</span><br><span class="line">[root@centos7 ~]# cat /dev/null &gt;  test.txt </span><br><span class="line">[root@centos7 ~]# du -h test.txt </span><br><span class="line">0    test.txt</span><br><span class="line">###################################################</span><br><span class="line">[root@centos7 ~]# echo &quot;Hello World&quot; &gt; test.txt </span><br><span class="line">[root@centos7 ~]# du -h test.txt </span><br><span class="line">4.0K    test.txt</span><br><span class="line">[root@centos7 ~]# cp /dev/null test.txt </span><br><span class="line">cp：是否覆盖&quot;test.txt&quot;？ y</span><br><span class="line">[root@centos7 ~]# du -h test.txt </span><br><span class="line">0    test.txt</span><br><span class="line">##################################################</span><br><span class="line">[root@centos7 ~]# echo &quot;Hello World&quot; &gt; test.txt </span><br><span class="line">[root@centos7 ~]# du -h test.txt </span><br><span class="line">4.0K    test.txt</span><br><span class="line">[root@centos7 ~]# dd if=/dev/null of=test.txt </span><br><span class="line">记录了0+0 的读入</span><br><span class="line">记录了0+0 的写出</span><br><span class="line">0字节(0 B)已复制，0.000266781 秒，0.0 kB/秒</span><br><span class="line">[root@centos7 ~]# du -h test.txt </span><br><span class="line">0    test.txt</span><br></pre></td></tr></table></figure></li><li><p>使用echo命令清空文件</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]# echo &quot;Hello World&quot; &gt; test.txt </span><br><span class="line">[root@centos7 ~]# du -h test.txt </span><br><span class="line">4.0K    test.txt</span><br><span class="line">[root@centos7 ~]# echo -n &quot;&quot; &gt; test.txt    ==&gt;要加上&quot;-n&quot;参数，默认情况下会&quot;</span><br><span class="line">&quot;，也就是回车符</span><br><span class="line">[root@centos7 ~]# du -h test.txt  </span><br><span class="line">0    test.txt</span><br></pre></td></tr></table></figure></li><li><p>使用truncate命令清空文件</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]# du -h test.txt </span><br><span class="line">4.0K    test.txt</span><br><span class="line">[root@centos7 ~]# truncate -s 0 test.txt   -s参数用来设定文件的大小，清空文件，就设定为0；</span><br><span class="line">[root@centos7 ~]# du -h test.txt </span><br><span class="line">0    test.txt</span><br></pre></td></tr></table></figure></li></ol>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;使用重定向的方法&lt;/p&gt;
+&lt;figure class=&quot;highlight plaintext&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;</summary>
+      
+    
+    
+    
+    <category term="Linux" scheme="https://maydaychen.github.io/categories/Linux/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>Zabbix-监控的目标主机默认只显示20条图形(zabbix显示/不全/缺失)</title>
@@ -447,31 +493,6 @@
       
     <summary type="html">&lt;p&gt;转自&lt;a href=&quot;https://blog.csdn.net/wx_assa/article/details/106880806&quot;&gt;https://blog.csdn.net/wx_assa/article/details/106880806&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;##</summary>
-      
-    
-    
-    
-    <category term="Windows" scheme="https://maydaychen.github.io/categories/Windows/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>常用Windows软件总结</title>
-    <link href="https://maydaychen.github.io/2022/03/16/%E5%B8%B8%E7%94%A8Windows%E8%BD%AF%E4%BB%B6%E6%80%BB%E7%BB%93/"/>
-    <id>https://maydaychen.github.io/2022/03/16/%E5%B8%B8%E7%94%A8Windows%E8%BD%AF%E4%BB%B6%E6%80%BB%E7%BB%93/</id>
-    <published>2022-03-15T16:28:34.000Z</published>
-    <updated>2024-03-15T16:29:10.126Z</updated>
-    
-    <content type="html"><![CDATA[<p>为了每次重装电脑的时候不会遗漏相关软件，特写下此文章，提醒自己保持较高生产力</p><p>#服务器相关</p><ol><li>Xshell<br>远程连接服务器，执行相关操作<br><a href="https://www.netsarang.com/products/xsh_overview.html">https://www.netsarang.com/products/xsh_overview.html</a></li><li>FileZilla<br>服务器远程文件传输<br><a href="https://filezilla-project.org/">https://filezilla-project.org/</a></li></ol><p>#影音</p><ol><li><p>Listen1<br>支持网易云音乐&#x2F;QQ音乐&#x2F;虾米音乐三合一<br><a href="https://github.com/listen1/listen1_chrome_extension">https://github.com/listen1/listen1_chrome_extension</a></p></li><li><p>网易云音乐<br>以前很喜欢，可是现在- -版权实在太少，能听的不多，而且推荐算法工程师可能换人了……<br><a href="https://music.163.com/">https://music.163.com/</a></p></li><li><p>win10商店中的爱奇艺<br>没！有！广！告！</p></li></ol><p>#工具</p><ol><li><p>微软 To- Do<br>每日备忘记录提醒<br><a href="https://todo.microsoft.com/zh-cn">https://todo.microsoft.com/zh-cn</a></p></li><li><p>geek<br>很舒服的卸载工具<br><a href="https://geekuninstaller.com/">https://geekuninstaller.com/</a></p></li><li><p>TeamViewer<br>远程控制软件，work from home 必备<br><a href="https://www.teamviewer.com/zhCN/">https://www.teamviewer.com/zhCN/</a></p></li><li><p>notepad++<br>替代记事本良心直选<br><a href="https://notepad-plus-plus.org/">https://notepad-plus-plus.org/</a></p></li><li><p>QuickLook<br>实现mac上的预览功能<br><a href="https://github.com/QL-Win/QuickLook/releases">https://github.com/QL-Win/QuickLook/releases</a></p></li><li><p>wox<br><a href="https://www.jianshu.com/p/8fd212f5c01f">感觉写的好的一篇文章</a></p></li></ol><p><a href="https://github.com/Wox-launcher/Wox/releases">https://github.com/Wox-launcher/Wox/releases</a></p><ol start="7"><li>Q-Dir<br>同时显示四个资源管理器<br><a href="https://q-dir.en.softonic.com/">https://q-dir.en.softonic.com/</a></li></ol><hr><p>持续更新ing……</p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;为了每次重装电脑的时候不会遗漏相关软件，特写下此文章，提醒自己保持较高生产力&lt;/p&gt;
-&lt;p&gt;#服务器相关&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;Xshell&lt;br&gt;远程连接服务器，执行相关操作&lt;br&gt;&lt;a href=&quot;https://www.netsarang.com/products</summary>
       
     
     
