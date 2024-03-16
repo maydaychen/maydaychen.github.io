@@ -6,7 +6,7 @@
   <link href="https://maydaychen.github.io/atom.xml" rel="self"/>
   
   <link href="https://maydaychen.github.io/"/>
-  <updated>2024-03-15T16:59:13.464Z</updated>
+  <updated>2024-03-16T09:38:16.669Z</updated>
   <id>https://maydaychen.github.io/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Hexo-valine评论系统接口404问题解决</title>
+    <link href="https://maydaychen.github.io/2024/03/16/Hexo-valine%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%8E%A5%E5%8F%A3404%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
+    <id>https://maydaychen.github.io/2024/03/16/Hexo-valine%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%8E%A5%E5%8F%A3404%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/</id>
+    <published>2024-03-16T09:08:57.000Z</published>
+    <updated>2024-03-16T09:38:16.669Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>在配置valine评论系统时，突然发现评价无法查看，通过控制台发现是接口404了，很奇怪</p><h2 id="问题排查"><a href="#问题排查" class="headerlink" title="问题排查"></a>问题排查</h2><p><img src="http://pic.maydaychen.top/Snipaste_2024-03-16_17-19-48.png" alt="image.png"><br>通过F12可以看到，他调用的接口访问信息中是显示他需要访问的Class的，但是我们在LeanCloud中并没有这个Class，所以怀疑是缺少这个Class导致的问题</p><h2 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h2><p><img src="http://pic.maydaychen.top/Snipaste_2024-03-16_17-20-08.png" alt="image.png"><br>在LeanCloud的控制台中，在数据存储-&gt;结构化数据选项中，有一个创建Class的按钮，咱们需要手动创建一个叫做Comment的Class,在创建完成后，刷新博文页面，会发现已经可以查看评论了</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;问题描述&quot;&gt;&lt;a href=&quot;#问题描述&quot; class=&quot;headerlink&quot; title=&quot;问题描述&quot;&gt;&lt;/a&gt;问题描述&lt;/h2&gt;&lt;p&gt;在配置valine评论系统时，突然发现评价无法查看，通过控制台发现是接口404了，很奇怪&lt;/p&gt;
+&lt;h2 id=&quot;问题排查&quot;</summary>
+      
+    
+    
+    
+    <category term="博客相关" scheme="https://maydaychen.github.io/categories/%E5%8D%9A%E5%AE%A2%E7%9B%B8%E5%85%B3/"/>
+    
+    
+    <category term="Hexo" scheme="https://maydaychen.github.io/tags/Hexo/"/>
+    
+  </entry>
   
   <entry>
     <title>Linux-scp到服务器时报错Permissions 0644 for &#39;xx.pem&#39; are too open</title>
@@ -472,29 +497,6 @@
     
     
     <category term="Docker" scheme="https://maydaychen.github.io/tags/Docker/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>windows右键实现当前路径打开cmd</title>
-    <link href="https://maydaychen.github.io/2022/03/17/windows%E5%8F%B3%E9%94%AE%E5%AE%9E%E7%8E%B0%E5%BD%93%E5%89%8D%E8%B7%AF%E5%BE%84%E6%89%93%E5%BC%80cmd/"/>
-    <id>https://maydaychen.github.io/2022/03/17/windows%E5%8F%B3%E9%94%AE%E5%AE%9E%E7%8E%B0%E5%BD%93%E5%89%8D%E8%B7%AF%E5%BE%84%E6%89%93%E5%BC%80cmd/</id>
-    <published>2022-03-17T03:49:21.000Z</published>
-    <updated>2024-03-15T16:29:50.328Z</updated>
-    
-    <content type="html"><![CDATA[<p>转自<a href="https://blog.csdn.net/wx_assa/article/details/106880806">https://blog.csdn.net/wx_assa/article/details/106880806</a></p><p>##无管理员权限的cmd<br>新建一个txt文件，并重命名为xxx.reg，并将下放代码复制到文本中</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Windows Registry Editor Version 5.00</span><br><span class="line">[HKEY_CLASSES_ROOT\Directory\Background\shell\QOpencmd\command]</span><br><span class="line">&quot;&quot;=&quot;cmd.exe /s /k pushd \&quot;%V\&quot;&quot;</span><br></pre></td></tr></table></figure><p>运行该注册表文件，在右键菜单中会多出一项 QQOpencmd，即为打开cmd的选项</p><p>##有管理员权限的cmd<br>新建文件同上，代码复制下面的代码</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Windows Registry Editor Version 5.00</span><br><span class="line">[HKEY_CLASSES_ROOT\Directory\Background\shell\runas]</span><br><span class="line">&quot;ShowBasedOnVelocityId&quot;=dword:00639bc8</span><br><span class="line">[HKEY_CLASSES_ROOT\Directory\Background\shell\runas\command]</span><br><span class="line">@=&quot;cmd.exe /s /k pushd \&quot;%V\&quot;&quot;</span><br></pre></td></tr></table></figure><p>运行，在右键菜单中会多出一项 以管理员运行(A)，即为以管理员打开cmd的选项</p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;转自&lt;a href=&quot;https://blog.csdn.net/wx_assa/article/details/106880806&quot;&gt;https://blog.csdn.net/wx_assa/article/details/106880806&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;##</summary>
-      
-    
-    
-    
-    <category term="Windows" scheme="https://maydaychen.github.io/categories/Windows/"/>
-    
     
   </entry>
   

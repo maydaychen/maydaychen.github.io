@@ -1,3 +1,4 @@
+https://maydaychen.github.io/2024/03/16/Hexo-valine%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%8E%A5%E5%8F%A3404%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/
 https://maydaychen.github.io/about/index.html
 https://maydaychen.github.io/2023/10/12/%E9%80%9A%E8%BF%87hexo%E6%9B%B4%E6%96%B0github-pages%E5%8D%9A%E5%AE%A2/
 https://maydaychen.github.io/2023/08/27/Hexo-g%E6%8A%A5%E9%94%99-Cannot-read-properties-of-undefined-reading-count_chenyideMacBook-Pro.local_Mar-15-233718-2024_CaseConflict/
