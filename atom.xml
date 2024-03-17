@@ -6,7 +6,7 @@
   <link href="https://maydaychen.github.io/atom.xml" rel="self"/>
   
   <link href="https://maydaychen.github.io/"/>
-  <updated>2024-03-16T09:38:16.669Z</updated>
+  <updated>2024-03-17T07:59:38.082Z</updated>
   <id>https://maydaychen.github.io/</id>
   
   <author>
@@ -15,6 +15,52 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Android-LinearLayout设置selector并将状态传递到子view</title>
+    <link href="https://maydaychen.github.io/2024/03/17/Android-LinearLayout%E8%AE%BE%E7%BD%AEselector%E5%B9%B6%E5%B0%86%E7%8A%B6%E6%80%81%E4%BC%A0%E9%80%92%E5%88%B0%E5%AD%90view/"/>
+    <id>https://maydaychen.github.io/2024/03/17/Android-LinearLayout%E8%AE%BE%E7%BD%AEselector%E5%B9%B6%E5%B0%86%E7%8A%B6%E6%80%81%E4%BC%A0%E9%80%92%E5%88%B0%E5%AD%90view/</id>
+    <published>2024-03-17T07:57:02.000Z</published>
+    <updated>2024-03-17T07:59:38.082Z</updated>
+    
+    <content type="html"><![CDATA[<p>在LinearLayout中，如果同时为LinearLayout与子TextView设置selector，是可以实现的，代码如下</p><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"> <span class="tag">&lt;<span class="name">LinearLayout</span> <span class="attr">xmlns:android</span>=<span class="string">&quot;http://schemas.android.com/apk/res/android&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">&quot;@+id/ll_company&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">&quot;102dp&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_marginStart</span>=<span class="string">&quot;25dp&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_marginEnd</span>=<span class="string">&quot;25dp&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_marginBottom</span>=<span class="string">&quot;20dp&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:background</span>=<span class="string">&quot;@drawable/selector_company&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:clickable</span>=<span class="string">&quot;true&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:focusable</span>=<span class="string">&quot;true&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:focusableInTouchMode</span>=<span class="string">&quot;true&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">TextView</span></span></span><br><span class="line"><span class="tag">                <span class="attr">android:id</span>=<span class="string">&quot;@+id/tv_company_name&quot;</span></span></span><br><span class="line"><span class="tag">                <span class="attr">android:layout_width</span>=<span class="string">&quot;wrap_content&quot;</span></span></span><br><span class="line"><span class="tag">                <span class="attr">android:layout_height</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">                <span class="attr">android:layout_marginStart</span>=<span class="string">&quot;20dp&quot;</span></span></span><br><span class="line"><span class="tag">                <span class="attr">android:drawableStart</span>=<span class="string">&quot;@mipmap/company_uncheck&quot;</span></span></span><br><span class="line"><span class="tag">                <span class="attr">android:drawablePadding</span>=<span class="string">&quot;20dp&quot;</span></span></span><br><span class="line"><span class="tag">                <span class="attr">android:gravity</span>=<span class="string">&quot;center_vertical&quot;</span></span></span><br><span class="line"><span class="tag">                <span class="attr">android:text</span>=<span class="string">&quot;test&quot;</span></span></span><br><span class="line"><span class="tag">                <span class="attr">android:textColor</span>=<span class="string">&quot;@drawable/selector_company_text&quot;</span></span></span><br><span class="line"><span class="tag">                <span class="attr">android:textSize</span>=<span class="string">&quot;19sp&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></span><br></pre></td></tr></table></figure><p>selector文件为：<br>selector_company.xml：</p><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;utf-8&quot;</span>?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">selector</span> <span class="attr">xmlns:android</span>=<span class="string">&quot;http://schemas.android.com/apk/res/android&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">android:drawable</span>=<span class="string">&quot;@drawable/company_selected&quot;</span> <span class="attr">android:state_focused</span>=<span class="string">&quot;true&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">android:drawable</span>=<span class="string">&quot;@drawable/company_selected&quot;</span> <span class="attr">android:state_checked</span>=<span class="string">&quot;true&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">item</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">shape</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">corners</span> <span class="attr">android:radius</span>=<span class="string">&quot;15dp&quot;</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">solid</span> <span class="attr">android:color</span>=<span class="string">&quot;@color/white&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">shape</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">item</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">selector</span>&gt;</span></span><br></pre></td></tr></table></figure><p>selector_company_text.xml:</p><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;utf-8&quot;</span>?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">selector</span> <span class="attr">xmlns:android</span>=<span class="string">&quot;http://schemas.android.com/apk/res/android&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">android:state_focused</span>=<span class="string">&quot;true&quot;</span> <span class="attr">android:color</span>=<span class="string">&quot;@color/white&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">android:state_pressed</span>=<span class="string">&quot;true&quot;</span> <span class="attr">android:color</span>=<span class="string">&quot;@color/white&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">android:color</span>=<span class="string">&quot;@color/title&quot;</span> <span class="attr">android:state_checked</span>=<span class="string">&quot;false&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">selector</span>&gt;</span></span><br></pre></td></tr></table></figure><p>此时，textview可以响应pressed状态，但是！！</p><p>无法与LinearLayout一样保持focused状态<br>##解决办法：<br>为TextView加上</p><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">android:duplicateParentState=&quot;true&quot;</span><br></pre></td></tr></table></figure><p>android:duplicateParentState指的是当前控件是否跟随父控件的(点击、焦点等)状态<br><img src="/cdn.maydaychen.top/202403171557776.png" alt="image"></p><p>PS:网上有说用RadioGroup来实现，但是不适用于用RecyclerView展示的LinearLayout<br>PS2:尝试过使用CheckBox，但是重复点击会有checked跟unchecked状态重复切换，不适用</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;在LinearLayout中，如果同时为LinearLayout与子TextView设置selector，是可以实现的，代码如下&lt;/p&gt;
+&lt;figure class=&quot;highlight xml&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;sp</summary>
+      
+    
+    
+    
+    <category term="Android" scheme="https://maydaychen.github.io/categories/Android/"/>
+    
+    
+    <category term="事件传递" scheme="https://maydaychen.github.io/tags/%E4%BA%8B%E4%BB%B6%E4%BC%A0%E9%80%92/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>IDEA全家桶 搜索项目中所有中文字符</title>
+    <link href="https://maydaychen.github.io/2024/03/17/IDEA%E5%85%A8%E5%AE%B6%E6%A1%B6%E6%90%9C%E7%B4%A2%E9%A1%B9%E7%9B%AE%E4%B8%AD%E6%89%80%E6%9C%89%E4%B8%AD%E6%96%87%E5%AD%97%E7%AC%A6/"/>
+    <id>https://maydaychen.github.io/2024/03/17/IDEA%E5%85%A8%E5%AE%B6%E6%A1%B6%E6%90%9C%E7%B4%A2%E9%A1%B9%E7%9B%AE%E4%B8%AD%E6%89%80%E6%9C%89%E4%B8%AD%E6%96%87%E5%AD%97%E7%AC%A6/</id>
+    <published>2024-03-17T07:51:23.000Z</published>
+    <updated>2024-03-17T07:55:18.505Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>在很多国际性项目中，我们有时候有要求不能出现中文的注释等，全局都要使用英文</p><p>但是在开发过程中，为了让自己舒服，肯定是优先选择中文注释，等到正式提交了才会把他们改成英文</p><p>那么，这种需求怎么实现呢？</p><h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>打开全局搜索<br>Edit -&gt; Find -&gt; Find In Path<br>输入正则表达式：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">^((?!(\*|//)).)+[\u4e00-\u9fa5]</span><br></pre></td></tr></table></figure><p>即可搜索所有的中文，然后将他们改成英文</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;需求&quot;&gt;&lt;a href=&quot;#需求&quot; class=&quot;headerlink&quot; title=&quot;需求&quot;&gt;&lt;/a&gt;需求&lt;/h2&gt;&lt;p&gt;在很多国际性项目中，我们有时候有要求不能出现中文的注释等，全局都要使用英文&lt;/p&gt;
+&lt;p&gt;但是在开发过程中，为了让自己舒服，肯定是优先选择中</summary>
+      
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>Hexo-valine评论系统接口404问题解决</title>
@@ -282,8 +328,8 @@
   
   <entry>
     <title>HomeAssistant笔记--更换iOS Themes主题</title>
-    <link href="https://maydaychen.github.io/2023/11/25/HomeAssistant%E6%9B%B4%E6%8D%A2iOS-Themes%E4%B8%BB%E9%A2%98_chenyideMacBook-Pro.local_Mar-15-211502-2024_CaseConflict/"/>
-    <id>https://maydaychen.github.io/2023/11/25/HomeAssistant%E6%9B%B4%E6%8D%A2iOS-Themes%E4%B8%BB%E9%A2%98_chenyideMacBook-Pro.local_Mar-15-211502-2024_CaseConflict/</id>
+    <link href="https://maydaychen.github.io/2023/11/25/HomeAssistant%E6%9B%B4%E6%8D%A2iOS-Themes%E4%B8%BB%E9%A2%98/"/>
+    <id>https://maydaychen.github.io/2023/11/25/HomeAssistant%E6%9B%B4%E6%8D%A2iOS-Themes%E4%B8%BB%E9%A2%98/</id>
     <published>2023-11-24T23:58:37.000Z</published>
     <updated>2024-03-15T09:58:22.000Z</updated>
     
@@ -446,57 +492,6 @@
     
     
     <category term="Hexo" scheme="https://maydaychen.github.io/tags/Hexo/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>hexo g报错 Cannot read properties of undefined (reading &#39;count&#39;)</title>
-    <link href="https://maydaychen.github.io/2023/08/27/Hexo-g%E6%8A%A5%E9%94%99-Cannot-read-properties-of-undefined-reading-count_chenyideMacBook-Pro.local_Mar-15-233718-2024_CaseConflict/"/>
-    <id>https://maydaychen.github.io/2023/08/27/Hexo-g%E6%8A%A5%E9%94%99-Cannot-read-properties-of-undefined-reading-count_chenyideMacBook-Pro.local_Mar-15-233718-2024_CaseConflict/</id>
-    <published>2023-08-27T14:07:18.000Z</published>
-    <updated>2024-03-15T17:01:49.419Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>在编译博客的时候，发现了一个问题</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">hexo g</span><br><span class="line">INFO  Validating config</span><br><span class="line">INFO  Start processing</span><br><span class="line">FATAL Something<span class="string">&#x27;s wrong. Maybe you can find the solution here: https://hexo.io/docs/troubleshooting.html</span></span><br><span class="line"><span class="string">TypeError: Cannot read properties of undefined (reading &#x27;</span>count<span class="string">&#x27;)</span></span><br><span class="line"><span class="string">    at module.exports (/Users/xxx/Documents/blog/node_modules/hexo-baidu-url-submit/lib/generator.js:4:41)</span></span><br><span class="line"><span class="string">    at Hexo.tryCatcher (/Users/xxx/Documents/blog/node_modules/bluebird/js/release/util.js:16:23)</span></span><br><span class="line"><span class="string">    at Hexo.&lt;anonymous&gt; (/Users/xxx/Documents/blog/node_modules/bluebird/js/release/method.js:15:34)</span></span><br><span class="line"><span class="string">    at /Users/xxx/Documents/blog/node_modules/hexo/lib/hexo/index.js:407:22</span></span><br><span class="line"><span class="string">    at tryCatcher (/Users/xxx/Documents/blog/node_modules/bluebird/js/release/util.js:16:23)</span></span><br><span class="line"><span class="string">    at MappingPromiseArray._promiseFulfilled (/Users/xxx/Documents/blog/node_modules/bluebird/js/release/map.js:68:38)</span></span><br><span class="line"><span class="string">    at PromiseArray._iterate (/Users/xxx/Documents/blog/node_modules/bluebird/js/release/promise_array.js:115:31)</span></span><br><span class="line"><span class="string">    at MappingPromiseArray.init (/Users/xxx/Documents/blog/node_modules/bluebird/js/release/promise_array.js:79:10)</span></span><br><span class="line"><span class="string">    at MappingPromiseArray._asyncInit (/Users/xxx/Documents/blog/node_modules/bluebird/js/release/map.js:37:10)</span></span><br><span class="line"><span class="string">    at _drainQueueStep (/Users/xxx/Documents/blog/node_modules/bluebird/js/release/async.js:97:12)</span></span><br><span class="line"><span class="string">    at _drainQueue (/Users/xxx/Documents/blog/node_modules/bluebird/js/release/async.js:86:9)</span></span><br><span class="line"><span class="string">    at Async._drainQueues (/Users/xxx/Documents/blog/node_modules/bluebird/js/release/async.js:102:5)</span></span><br><span class="line"><span class="string">    at Async.drainQueues [as _onImmediate] (/Users/xxx/Documents/blog/node_modules/bluebird/js/release/async.js:15:14)</span></span><br><span class="line"><span class="string">    at process.processImmediate (node:internal/timers:476:21)</span></span><br></pre></td></tr></table></figure><h2 id="排查问题"><a href="#排查问题" class="headerlink" title="排查问题"></a>排查问题</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo g --debug</span><br></pre></td></tr></table></figure><p>通过debug模式查看问题所在，发现问题所在</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">14:02:48.751 DEBUG Generator: post</span><br><span class="line">14:02:48.753 DEBUG Generator: archive</span><br><span class="line">14:02:48.753 DEBUG Generator: index</span><br><span class="line">14:02:48.754 DEBUG Generator: atom</span><br><span class="line">14:02:48.762 DEBUG Generator: baidu_url_generator</span><br><span class="line">14:02:48.763 FATAL Something<span class="string">&#x27;s wrong. Maybe you can find the solution here: https://hexo.io/docs/troubleshooting.html</span></span><br></pre></td></tr></table></figure><h2 id="Issue-Link"><a href="#Issue-Link" class="headerlink" title="Issue Link"></a>Issue Link</h2><p><a href="https://github.com/hexojs/hexo/issues/2402">https://github.com/hexojs/hexo/issues/2402</a></p><h2 id="该插件的相关文档"><a href="#该插件的相关文档" class="headerlink" title="该插件的相关文档"></a>该插件的相关文档</h2><p><a href="https://hui-wang.info/2016/10/23/Hexo%E6%8F%92%E4%BB%B6%E4%B9%8B%E7%99%BE%E5%BA%A6%E4%B8%BB%E5%8A%A8%E6%8F%90%E4%BA%A4%E9%93%BE%E6%8E%A5/">https://hui-wang.info/2016/10/23/Hexo插件之百度主动提交链接/</a></p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h2 id=&quot;问题&quot;&gt;&lt;a href=&quot;#问题&quot; class=&quot;headerlink&quot; title=&quot;问题&quot;&gt;&lt;/a&gt;问题&lt;/h2&gt;&lt;p&gt;在编译博客的时候，发现了一个问题&lt;/p&gt;
-&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td cla</summary>
-      
-    
-    
-    
-    <category term="博客相关" scheme="https://maydaychen.github.io/categories/%E5%8D%9A%E5%AE%A2%E7%9B%B8%E5%85%B3/"/>
-    
-    
-    <category term="Hexo" scheme="https://maydaychen.github.io/tags/Hexo/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Docker入门(1)--Docker概述</title>
-    <link href="https://maydaychen.github.io/2023/08/27/Docker%E5%85%A5%E9%97%A8-1-Docker%E6%A6%82%E8%BF%B0/"/>
-    <id>https://maydaychen.github.io/2023/08/27/Docker%E5%85%A5%E9%97%A8-1-Docker%E6%A6%82%E8%BF%B0/</id>
-    <published>2023-08-27T09:49:33.000Z</published>
-    <updated>2023-08-27T10:19:52.923Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="Docker与虚拟机的对比"><a href="#Docker与虚拟机的对比" class="headerlink" title="Docker与虚拟机的对比"></a>Docker与虚拟机的对比</h2><p>虚拟机技术缺点：</p><ul><li>资源占用十分多</li><li>冗余步骤多（比如开机等）</li><li>启动很慢</li></ul><p>Docker和传统虚拟机的不同： </p><ul><li>传统虚拟机需要虚拟出一个硬件，运行一整个操作系统，然后在系统上安装和运行软件</li><li>容器内的应用直接运行在宿主机，容器没有自己的内核的， 也没有虚拟硬件，所以很轻便</li><li>每个容器之间互相隔离，每个容器内都有一个属于自己的文件系统，互不影响</li></ul><h2 id="Docker组成"><a href="#Docker组成" class="headerlink" title="Docker组成"></a>Docker组成</h2><h3 id="镜像Image："><a href="#镜像Image：" class="headerlink" title="镜像Image："></a>镜像Image：</h3><p>就好比一个模版，可以通过模版来创建容器服务</p><p>通过镜像可以创建多个容器（最终服务&#x2F;项目运行就在容器中）</p><h3 id="容器Container："><a href="#容器Container：" class="headerlink" title="容器Container："></a>容器Container：</h3><p>Docker利用容器技术，独立运行一个或一组应用，通过镜像来创建</p><p>基本命令：启动，停止，删除</p><p>目前可以把容器理解为一个简易的Linux系统</p><h3 id="仓库Registry-远程仓库"><a href="#仓库Registry-远程仓库" class="headerlink" title="仓库Registry: 远程仓库"></a>仓库Registry: 远程仓库</h3><p>存放镜像的地方，就好比代码放git</p><p>仓库分为公有仓库和私有仓库</p><p>如Docker Hub(默认都是国内的，需要配置镜像加速)</p><p>云服务商都有容器服务器</p><h2 id="Docker是怎么工作的"><a href="#Docker是怎么工作的" class="headerlink" title="Docker是怎么工作的"></a>Docker是怎么工作的</h2><p>Docker是一个Client-Server架构的系统，Docker的守护进程运行在主机上，通过Socket从客户端访问</p><p>DockerServer接收到DockerClient的指令，就会执行这个指令</p><h2 id="Docker为什么比VM快"><a href="#Docker为什么比VM快" class="headerlink" title="Docker为什么比VM快"></a>Docker为什么比VM快</h2><p>Docker有着比VM更少的抽象层</p><p>Docker利用的是宿主机的内核，但VM需要加载一个分钟级别的Guest OS</p><p>所以说，新建一个容器的时候，docker不需要像VM一样重新加载一个OS的内核，省略了加载Guest OS的过程，所以会很快</p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h2 id=&quot;Docker与虚拟机的对比&quot;&gt;&lt;a href=&quot;#Docker与虚拟机的对比&quot; class=&quot;headerlink&quot; title=&quot;Docker与虚拟机的对比&quot;&gt;&lt;/a&gt;Docker与虚拟机的对比&lt;/h2&gt;&lt;p&gt;虚拟机技术缺点：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;资源占用</summary>
-      
-    
-    
-    
-    <category term="Docker相关" scheme="https://maydaychen.github.io/categories/Docker%E7%9B%B8%E5%85%B3/"/>
-    
-    
-    <category term="Docker" scheme="https://maydaychen.github.io/tags/Docker/"/>
     
   </entry>
   
