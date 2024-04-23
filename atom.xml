@@ -6,7 +6,7 @@
   <link href="https://maydaychen.github.io/atom.xml" rel="self"/>
   
   <link href="https://maydaychen.github.io/"/>
-  <updated>2024-03-17T07:59:38.082Z</updated>
+  <updated>2024-04-23T15:13:33.495Z</updated>
   <id>https://maydaychen.github.io/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Teams通过Webhook实现mention某人及踩坑记录</title>
+    <link href="https://maydaychen.github.io/2024/04/23/Teams%E9%80%9A%E8%BF%87Webhook%E5%AE%9E%E7%8E%B0@%E6%9F%90%E4%BA%BA%E5%8F%8A%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95/"/>
+    <id>https://maydaychen.github.io/2024/04/23/Teams%E9%80%9A%E8%BF%87Webhook%E5%AE%9E%E7%8E%B0@%E6%9F%90%E4%BA%BA%E5%8F%8A%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95/</id>
+    <published>2024-04-23T15:02:27.000Z</published>
+    <updated>2024-04-23T15:13:33.495Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>我们在使用MS Teams进行沟通的时候，肯定会用到webhook进行消息的自动化发送，但是现在有一个需求，有一些消息需要指定@某些人，而不是单纯的发送消息</p><h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>前面我们说了怎么通过python代码进行通知发送，这次只需要改一些代码</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> urllib3</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line">http = urllib3.PoolManager()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">lambda_handler</span>(<span class="params">event, context</span>):</span><br><span class="line">    <span class="comment"># 这是webhook地址</span></span><br><span class="line">    url = <span class="string">&quot;https://xxx.webhook.office.com/webhookb2/xxxxxx&quot;</span></span><br><span class="line">    msg = &#123;</span><br><span class="line">   <span class="string">&quot;type&quot;</span>:<span class="string">&quot;message&quot;</span>,</span><br><span class="line">   <span class="string">&quot;attachments&quot;</span>:[</span><br><span class="line">      &#123;</span><br><span class="line">         <span class="string">&quot;contentType&quot;</span>:<span class="string">&quot;application/vnd.microsoft.card.adaptive&quot;</span>,</span><br><span class="line">         <span class="string">&quot;contentUrl&quot;</span>:<span class="string">&#x27;&#x27;</span>,</span><br><span class="line">         <span class="string">&quot;content&quot;</span>:&#123;</span><br><span class="line">            <span class="string">&quot;$schema&quot;</span>:<span class="string">&quot;http://adaptivecards.io/schemas/adaptive-card.json&quot;</span>,</span><br><span class="line">            <span class="string">&quot;type&quot;</span>:<span class="string">&quot;AdaptiveCard&quot;</span>,</span><br><span class="line">            <span class="string">&quot;version&quot;</span>:<span class="string">&quot;1.2&quot;</span>,</span><br><span class="line">            <span class="string">&quot;body&quot;</span>: [</span><br><span class="line">              &#123;</span><br><span class="line">                <span class="string">&quot;type&quot;</span>: <span class="string">&quot;TextBlock&quot;</span>,</span><br><span class="line">                <span class="string">&quot;text&quot;</span>: <span class="string">&quot;Hi &lt;at&gt;Adele UPN&lt;/at&gt;, &lt;at&gt;Adele Microsoft Entra ID&lt;/at&gt;&quot;</span></span><br><span class="line">              &#125;</span><br><span class="line">            ],</span><br><span class="line">            <span class="string">&quot;msteams&quot;</span>: &#123;</span><br><span class="line">                <span class="string">&quot;entities&quot;</span>: [</span><br><span class="line">                  &#123;</span><br><span class="line">                    <span class="string">&quot;type&quot;</span>: <span class="string">&quot;mention&quot;</span>,</span><br><span class="line">                    <span class="string">&quot;text&quot;</span>: <span class="string">&quot;&lt;at&gt;Adele UPN&lt;/at&gt;&quot;</span>,</span><br><span class="line">                    <span class="string">&quot;mentioned&quot;</span>: &#123;</span><br><span class="line">                      <span class="string">&quot;id&quot;</span>: <span class="string">&quot;AdeleV@contoso.onmicrosoft.com&quot;</span>,</span><br><span class="line">                      <span class="string">&quot;name&quot;</span>: <span class="string">&quot;Adele Vance&quot;</span></span><br><span class="line">                    &#125;</span><br><span class="line">                  &#125;,</span><br><span class="line">                  &#123;</span><br><span class="line">                    <span class="string">&quot;type&quot;</span>: <span class="string">&quot;mention&quot;</span>,</span><br><span class="line">                    <span class="string">&quot;text&quot;</span>: <span class="string">&quot;&lt;at&gt;Adele Microsoft Entra ID&lt;/at&gt;&quot;</span>,</span><br><span class="line">                    <span class="string">&quot;mentioned&quot;</span>: &#123;</span><br><span class="line">                      <span class="string">&quot;id&quot;</span>: <span class="string">&quot;87d349ed-44d7-43e1-9a83-5f2406dee5bd&quot;</span>,</span><br><span class="line">                      <span class="string">&quot;name&quot;</span>: <span class="string">&quot;Adele Vance&quot;</span></span><br><span class="line">                    &#125;</span><br><span class="line">                  &#125;</span><br><span class="line">                ]</span><br><span class="line">              &#125;</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   ]</span><br><span class="line">&#125;</span><br><span class="line">    encoded_msg = json.dumps(msg).encode(<span class="string">&quot;utf-8&quot;</span>)</span><br><span class="line">    resp = http.request(<span class="string">&quot;POST&quot;</span>, url, body=encoded_msg)</span><br><span class="line">    <span class="built_in">print</span>(</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="string">&quot;message&quot;</span>: event[<span class="string">&quot;Records&quot;</span>][<span class="number">0</span>][<span class="string">&quot;Sns&quot;</span>][<span class="string">&quot;Message&quot;</span>],</span><br><span class="line">            <span class="string">&quot;status_code&quot;</span>: resp.status,</span><br><span class="line">            <span class="string">&quot;response&quot;</span>: resp.data,</span><br><span class="line">        &#125;</span><br><span class="line">    )</span><br></pre></td></tr></table></figure><p>可以看到一下变更点</p><ol><li>body中的TextBlock添加了<at>Adele UPN</at> 字段，其中Adele UPN可以为用户名</li><li>添加msteams块，其中指定type为mention， id可以为UserId，也可以为用户邮箱，也可以为MS Entra Object ID,key都是id</li><li>name字段，可以把变更点1中的用户名改为别的字段，但是不影响@用户的效果</li></ol><h2 id="坑点"><a href="#坑点" class="headerlink" title="坑点"></a>坑点</h2><p>切记！@mention功能不支持Guest账户，也就是说只有在这个Teams中的用户才能被@！</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h2&gt;&lt;p&gt;我们在使用MS Teams进行沟通的时候，肯定会用到webhook进行消息的自动化发送，但是现在有一个需求，有一些消息需要指定@某些人，而不</summary>
+      
+    
+    
+    
+    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+    <category term="Teams" scheme="https://maydaychen.github.io/tags/Teams/"/>
+    
+  </entry>
   
   <entry>
     <title>Android-LinearLayout设置selector并将状态传递到子view</title>
@@ -56,6 +80,19 @@
     <summary type="html">&lt;h2 id=&quot;需求&quot;&gt;&lt;a href=&quot;#需求&quot; class=&quot;headerlink&quot; title=&quot;需求&quot;&gt;&lt;/a&gt;需求&lt;/h2&gt;&lt;p&gt;在很多国际性项目中，我们有时候有要求不能出现中文的注释等，全局都要使用英文&lt;/p&gt;
 &lt;p&gt;但是在开发过程中，为了让自己舒服，肯定是优先选择中</summary>
       
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Android studio 搜索项目中所有中文字符</title>
+    <link href="https://maydaychen.github.io/2024/03/17/Android-studio-%E6%90%9C%E7%B4%A2%E9%A1%B9%E7%9B%AE%E4%B8%AD%E6%89%80%E6%9C%89%E4%B8%AD%E6%96%87%E5%AD%97%E7%AC%A6/"/>
+    <id>https://maydaychen.github.io/2024/03/17/Android-studio-%E6%90%9C%E7%B4%A2%E9%A1%B9%E7%9B%AE%E4%B8%AD%E6%89%80%E6%9C%89%E4%B8%AD%E6%96%87%E5%AD%97%E7%AC%A6/</id>
+    <published>2024-03-17T07:51:23.000Z</published>
+    <updated>2024-03-17T07:51:23.000Z</updated>
+    
     
     
     
@@ -440,58 +477,6 @@
     
     <category term="Linux" scheme="https://maydaychen.github.io/categories/Linux/"/>
     
-    
-  </entry>
-  
-  <entry>
-    <title>Nginx配置反向代理时出现的13: Permission denied) while connecting to upstream, client: 127.0.0.1</title>
-    <link href="https://maydaychen.github.io/2023/11/01/Nginx%E9%85%8D%E7%BD%AE%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E6%97%B6%E5%87%BA%E7%8E%B0%E7%9A%8413-Permission-denied-while-connecting-to-upstream-client-127-0-0-1/"/>
-    <id>https://maydaychen.github.io/2023/11/01/Nginx%E9%85%8D%E7%BD%AE%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E6%97%B6%E5%87%BA%E7%8E%B0%E7%9A%8413-Permission-denied-while-connecting-to-upstream-client-127-0-0-1/</id>
-    <published>2023-11-01T07:09:12.000Z</published>
-    <updated>2024-03-15T10:00:04.758Z</updated>
-    
-    <content type="html"><![CDATA[<ol><li>条件不允许的情况下（不能随意重启计算机）执行下列代码：</li></ol><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setsebool -P httpd_can_network_connect <span class="number">1</span></span><br></pre></td></tr></table></figure><ol start="2"><li>其他情况下, 可以获取root权限，通过root修改&#x2F;etc&#x2F;selinux&#x2F;config</li></ol><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">sudo su</span><br><span class="line"></span><br><span class="line">vim /etc/selinux/config</span><br><span class="line"></span><br><span class="line"><span class="variable constant_">SELINUX</span>=enforcing</span><br><span class="line">改为</span><br><span class="line"><span class="variable constant_">SELINUX</span>=disabled</span><br><span class="line"></span><br><span class="line">重启服务器</span><br></pre></td></tr></table></figure>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;ol&gt;
-&lt;li&gt;条件不允许的情况下（不能随意重启计算机）执行下列代码：&lt;/li&gt;
-&lt;/ol&gt;
-&lt;figure class=&quot;highlight jsx&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;</summary>
-      
-    
-    
-    
-    <category term="Linux" scheme="https://maydaychen.github.io/categories/Linux/"/>
-    
-    
-    <category term="Nginx" scheme="https://maydaychen.github.io/tags/Nginx/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>通过hexo更新github pages博客</title>
-    <link href="https://maydaychen.github.io/2023/10/12/%E9%80%9A%E8%BF%87hexo%E6%9B%B4%E6%96%B0github-pages%E5%8D%9A%E5%AE%A2/"/>
-    <id>https://maydaychen.github.io/2023/10/12/%E9%80%9A%E8%BF%87hexo%E6%9B%B4%E6%96%B0github-pages%E5%8D%9A%E5%AE%A2/</id>
-    <published>2023-10-12T07:23:01.000Z</published>
-    <updated>2024-03-15T17:01:49.421Z</updated>
-    
-    <content type="html"><![CDATA[<p>#文件生成及编辑</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new &quot;文章标题&quot;</span><br></pre></td></tr></table></figure><p>通过该命令行，可以在 “博客所在路径\source_posts\”下生成一个md文件，文件名称为上面命令行所输入的文章标题</p><p>由于生成的是markdown格式的文件，所以建议使用一个markdown编写完成后，复制粘贴到该md文件中。</p><p>#文件发布<br>编辑完成后，在命令行输入</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo g</span><br></pre></td></tr></table></figure><p>文章就会发布到本地，然后通过</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure><p>将文件变化发布到本地环境，此时可以通过访问localhost:4000，查看自己博客相关变化</p><p>#同步到GitHub</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo d</span><br></pre></td></tr></table></figure><p>成功同步到GitHub（前提是跟GitHub已经配对）！</p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;#文件生成及编辑&lt;/p&gt;
-&lt;figure class=&quot;highlight plaintext&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;</summary>
-      
-    
-    
-    
-    <category term="博客相关" scheme="https://maydaychen.github.io/categories/%E5%8D%9A%E5%AE%A2%E7%9B%B8%E5%85%B3/"/>
-    
-    
-    <category term="Hexo" scheme="https://maydaychen.github.io/tags/Hexo/"/>
     
   </entry>
   
