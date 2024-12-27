@@ -6,7 +6,7 @@
   <link href="https://maydaychen.github.io/atom.xml" rel="self"/>
   
   <link href="https://maydaychen.github.io/"/>
-  <updated>2024-12-11T05:41:37.000Z</updated>
+  <updated>2024-12-27T03:06:33.865Z</updated>
   <id>https://maydaychen.github.io/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Zabbix监控K8S浅尝</title>
+    <link href="https://maydaychen.github.io/2024/12/26/Zabbix%E7%9B%91%E6%8E%A7K8S%E6%B5%85%E5%B0%9D/"/>
+    <id>https://maydaychen.github.io/2024/12/26/Zabbix%E7%9B%91%E6%8E%A7K8S%E6%B5%85%E5%B0%9D/</id>
+    <published>2024-12-26T08:41:05.000Z</published>
+    <updated>2024-12-27T03:06:33.865Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>由于项目中需要使用AWS EKS进行部署，传统的在服务器上安装zabbix agent的方法变得不再使用，还好Zabbix从6.0LTS开始就开始适配K8S，所以正好尝试一下</p><h2 id="为什么不用Prometheus"><a href="#为什么不用Prometheus" class="headerlink" title="为什么不用Prometheus"></a>为什么不用Prometheus</h2><p>诚然，在K8S监控领域，Prometheus可以说是绝对的主流，但是我主要有以下几点顾虑，仅为个人观点，欢迎讨论</p><ol><li>监控人员没有EKS manager服务器的权限，这就意味着，没法上服务器修改配置文件，每次有配置变更会很被动</li><li>监控人员需要有较强的K8S知识才能修改相关的配置，比如alertmanager，而Zabbix从界面上进行配置，会简单很多</li><li>Zabbix对各种自定义监控项的支持比较好，例如自定义shell，各种API health check等，而在prometheus中这些都需要自定义exporter，略显繁琐<br>综上所述，导致了我希望可以尝试用Zabbix去监控K8S中的各项指标，才有了这一次的尝试</li></ol><h2 id="尝试过程"><a href="#尝试过程" class="headerlink" title="尝试过程"></a>尝试过程</h2><p>321上链接 <a href="https://git.zabbix.com/projects/ZBX/repos/zabbix/browse/templates/app/kubernetes_http">https://git.zabbix.com/projects/ZBX/repos/zabbix/browse/templates/app/kubernetes_http</a><br>这个就是官方的步骤，跟着最下面的setup一步步做就行</p><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>Install the kubectl and helm tools following the instructions.</p><p>Clone the repository:</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd ~</span><br><span class="line">git clone https://git.zabbix.com/scm/zt/kubernetes-helm.git</span><br><span class="line">cd kubernetes-helm</span><br></pre></td></tr></table></figure><p>Export the default values of the chart helm-zabbix to the file $HOME&#x2F;zabbix_values.yaml:</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">helm show values . &gt; $HOME/zabbix_values.yaml</span><br></pre></td></tr></table></figure><p>Change the zabbixProxy.env.ZBX_SERVER_HOST environment variable value in the file $HOME&#x2F;zabbix_values.yaml to the address of the Zabbix server that is used for monitoring and which is reachable by the Zabbix proxy. Other values can be changed according to the environment if needed.</p><p>List the namespaces of the cluster.</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get namespaces</span><br></pre></td></tr></table></figure><p>Create the namespace monitoring if it does not exist in the cluster.</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create namespace monitoring</span><br></pre></td></tr></table></figure><p>Deploy the chart in the Kubernetes cluster (update the YAML files paths if necessary).</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">helm install zabbix . --dependency-update -f $HOME/zabbix_values.yaml -n monitoring</span><br></pre></td></tr></table></figure><p>Get the token automatically created for the service account.</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get secret zabbix-service-account -n monitoring -o jsonpath=&#123;.data.token&#125; | base64 -d</span><br></pre></td></tr></table></figure><h3 id="导入模版"><a href="#导入模版" class="headerlink" title="导入模版"></a>导入模版</h3><p>这一步其实没必要，新的zabbix都会自带这些模版，如果没有再下载导入即可</p><h3 id="获取token"><a href="#获取token" class="headerlink" title="获取token"></a>获取token</h3><p>就是上面的最后一步</p><h3 id="创建一个proxy"><a href="#创建一个proxy" class="headerlink" title="创建一个proxy"></a>创建一个proxy</h3><p>我们将转到Administration -&gt; Proxies来添加Proxy</p><img src="/2024/12/26/Zabbix%E7%9B%91%E6%8E%A7K8S%E6%B5%85%E5%B0%9D/proxy.png" class="" title="图片"><p>因为这默认是主动Proxy，所以我们只需要根据zabbix_values.yaml文件中的- name: ZBX_HOSTNAME字段填入对应的Proxy name，其他的保持默认即可<br>(默认名称为zabbix-proxy)</p><h3 id="创建一个监控node的host"><a href="#创建一个监控node的host" class="headerlink" title="创建一个监控node的host"></a>创建一个监控node的host</h3><p>我们需要创建一个主机，用来采集与监控Kubernetes节点相关的指标，并且我们将使用Zabbix低级别自动发现来发现节点并创建新主机</p><img src="/2024/12/26/Zabbix%E7%9B%91%E6%8E%A7K8S%E6%B5%85%E5%B0%9D/host.png" class="" title="图片"><p>给此主机命名Kubernetes Nodes,并关联模板kubernetes nodes by HTTP.<br>在这个模版里，有两个宏需要被修改</p><ol><li>{KUBE.API.ENDPOINT.URL}, 应该设置为Kubernetes API endpoint, 例如<a href="https://kubernetes.default.svc.cluster.local/">https://kubernetes.default.svc.cluster.local:443</a></li><li>{$KUBE.API.TOKEN}, 应该设置为我们之前获取的token<br>添加完主机几分钟后，我们就可以在host页面看到很多新的host，每个host都代表一个node</li></ol><h3 id="创建一个监控cluster的host"><a href="#创建一个监控cluster的host" class="headerlink" title="创建一个监控cluster的host"></a>创建一个监控cluster的host</h3><p>创建一个新的host，该host将代表通过Kubernetes API和kube-state-metrics端点可用的指标</p><ol><li>再次单击Create Host按钮，将此主机命名为k8s-cluster-host。 </li><li>同样选择之前创建的proxy </li><li>为该主机关联模板Kubernetes cluster state by HTTP </li><li>在Macro部分中，将kube.api.url更改为我们之前使用的相同内容，但这次在末尾省略&#x2F;api。简单地：default.svc.cluster.local:443。 </li><li>{$KUBE.API.TOKEN} 设置为同样的内容<img src="/2024/12/26/Zabbix%E7%9B%91%E6%8E%A7K8S%E6%B5%85%E5%B0%9D/cluster.png" class="" title="图片"></li></ol><h2 id="问题Todo"><a href="#问题Todo" class="headerlink" title="问题Todo"></a>问题Todo</h2><ol><li>Agent无法连接的问题<img src="/2024/12/26/Zabbix%E7%9B%91%E6%8E%A7K8S%E6%B5%85%E5%B0%9D/agent.png" class="" title="图片"></li><li>Agent照理来说应该是DaemonSet自动创建的，但是现在只有proxy服务器的一个agent，其他node没有agent，很奇怪</li><li>Prometheus数据接入，怎么对接prometheus的exporter</li></ol>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h2&gt;&lt;p&gt;由于项目中需要使用AWS EKS进行部署，传统的在服务器上安装zabbix agent的方法变得不再使用，还好Zabbix从6.0LTS开始</summary>
+      
+    
+    
+    
+    <category term="Linux" scheme="https://maydaychen.github.io/categories/Linux/"/>
+    
+    
+    <category term="Zabbix" scheme="https://maydaychen.github.io/tags/Zabbix/"/>
+    
+  </entry>
   
   <entry>
     <title>群晖DS224plusSHR转basic</title>
@@ -453,30 +477,6 @@
     
     
     <category term="Ansible" scheme="https://maydaychen.github.io/tags/Ansible/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>小翼管家获取电信光猫超密教程</title>
-    <link href="https://maydaychen.github.io/2023/11/20/%E5%B0%8F%E7%BF%BC%E7%AE%A1%E5%AE%B6%E8%8E%B7%E5%8F%96%E7%94%B5%E4%BF%A1%E5%85%89%E7%8C%AB%E8%B6%85%E5%AF%86%E6%95%99%E7%A8%8B/"/>
-    <id>https://maydaychen.github.io/2023/11/20/%E5%B0%8F%E7%BF%BC%E7%AE%A1%E5%AE%B6%E8%8E%B7%E5%8F%96%E7%94%B5%E4%BF%A1%E5%85%89%E7%8C%AB%E8%B6%85%E5%AF%86%E6%95%99%E7%A8%8B/</id>
-    <published>2023-11-20T14:03:14.000Z</published>
-    <updated>2024-03-15T10:00:37.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>转自<a href="https://www.bilibili.com/read/cv22351257/">https://www.bilibili.com/read/cv22351257/</a><br>自用，侵删</p><p>方法一：苹果手机（最简单）</p><p>苹果手机在App Store下载抓包软件stream，及小翼管家（绑定光猫）。连接光猫WiFi</p><p> </p><p>stream软件打开HTTMS抓包，安装CA证书并信任</p><p> </p><p>点击开始抓包，打开小翼管家，点击网关设置，然后随便点击（比如指示灯，不点也可以）。</p><p>回到stream，停止抓包。点击抓包历史。全部请求找到任意一个含有token&#x3D;的POST网址并点击进去（不行就多试几个POST网址），点击右上角向上的箭头，弹出更多操作，点击编辑重放请求。</p><p> </p><p>点击最下面的请求体最下面一行，点击原始数据，删除清空并粘贴以下代码并点击存储：（注意格式）</p><p> </p><p> </p><p>{ “Params”: [], “MethodName”: “GetTAPasswd”, “RPCMethod”: “CallMethod”, “ObjectPath”: “&#x2F;com&#x2F;ctc&#x2F;igd1&#x2F;Telecom&#x2F;System”, “InterfaceName”: “com.ctc.igd1.SysCmd”, “ServiceName”: “com.ctc.igd1” }</p><p> </p><p> </p><p>最后点击右上角开始按钮，点击响应最下面的BODY即可看到（如果结果返回错误，原因是以上的代码格式不正确或者是POST网址没找对）</p><p> </p><p>注：密码格式：telecomadmin12345678，账号默认是telecomadmin。</p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;转自&lt;a href=&quot;https://www.bilibili.com/read/cv22351257/&quot;&gt;https://www.bilibili.com/read/cv22351257/&lt;/a&gt;&lt;br&gt;自用，侵删&lt;/p&gt;
-&lt;p&gt;方法一：苹果手机（最简单）&lt;/p&gt;
-&lt;p&gt;</summary>
-      
-    
-    
-    
-    <category term="NAS" scheme="https://maydaychen.github.io/categories/NAS/"/>
-    
     
   </entry>
   
