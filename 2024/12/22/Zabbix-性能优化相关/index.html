@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>Zabbix-性能优化相关 | Maydaychen Station</title>
+  <meta name="description" content="Zabbix进程及其功能123456789101112131415161718192021报警器(alerter)                                该类型的进程是用来发送报警通知的；配置同步器(configuration syncer)               用于将配置文件中的配置信息同步到内存中缓存；数据发送器(data sender)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Zabbix-性能优化相关">
+<meta property="og:url" content="https://maydaychen.github.io/2024/12/22/Zabbix-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E7%9B%B8%E5%85%B3/index.html">
+<meta property="og:site_name" content="Hexotest">
+<meta property="og:description" content="Zabbix进程及其功能123456789101112131415161718192021报警器(alerter)                                该类型的进程是用来发送报警通知的；配置同步器(configuration syncer)               用于将配置文件中的配置信息同步到内存中缓存；数据发送器(data sender)">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-22T07:46:19.000Z">
+<meta property="article:modified_time" content="2024-12-27T08:03:18.000Z">
+<meta property="article:author" content="Maydaychen">
+<meta property="article:tag" content="监控">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://maydaychen.github.io/2024/12/22/Zabbix-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E7%9B%B8%E5%85%B3/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexotest" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/maydaychen" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Maydaychen</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Developer &amp; Infra engineer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Wuxi, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/maydaychen" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://weibo.com/maydaychen1" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/heychenyi" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>此站点仅作为日常记录与经验分享用途</br>十分期待各位精英的评论留言</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Tools/">Tools</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8D%9A%E5%AE%A2%E7%9B%B8%E5%85%B3/">博客相关</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%80%E5%8F%91/">开发</a><span class="category-list-count">21</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a><span class="category-list-count">25</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a><span class="tag-list-count">11</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ansible/" rel="tag">Ansible</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MacOS/" rel="tag">MacOS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NAS/" rel="tag">NAS</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/" rel="tag">Python</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9B%91%E6%8E%A7/" rel="tag">监控</a><span class="tag-list-count">16</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Android/" style="font-size: 13.8px;">Android</a> <a href="/tags/Ansible/" style="font-size: 13.2px;">Ansible</a> <a href="/tags/Docker/" style="font-size: 13px;">Docker</a> <a href="/tags/Git/" style="font-size: 13px;">Git</a> <a href="/tags/Hexo/" style="font-size: 13.4px;">Hexo</a> <a href="/tags/Linux/" style="font-size: 13.6px;">Linux</a> <a href="/tags/MacOS/" style="font-size: 13.2px;">MacOS</a> <a href="/tags/NAS/" style="font-size: 13.4px;">NAS</a> <a href="/tags/Python/" style="font-size: 13.2px;">Python</a> <a href="/tags/Windows/" style="font-size: 13.2px;">Windows</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 13.6px;">前端</a> <a href="/tags/%E7%9B%91%E6%8E%A7/" style="font-size: 14px;">监控</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/12/">十二月 2024</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/04/">四月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">三月 2024</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/02/">二月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">一月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">十一月 2023</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/10/">十月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">八月 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">二月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">九月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a>
+              </p>
+              <p class="item-title">
+                <a href="/2024/12/27/Zabbix-%E5%B0%8F%E7%9F%A5%E8%AF%86%E7%82%B9%E8%AE%B0%E5%BD%95-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/" class="title">Zabbix-小知识点记录(持续更新)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2024-12-27T08:27:15.000Z" itemprop="datePublished">2024-12-27</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a>
+              </p>
+              <p class="item-title">
+                <a href="/2024/12/26/Zabbix-K8S%E7%9B%91%E6%8E%A7%E6%B5%85%E5%B0%9D/" class="title">Zabbix-K8S监控浅尝</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2024-12-26T08:41:05.000Z" itemprop="datePublished">2024-12-26</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a>
+              </p>
+              <p class="item-title">
+                <a href="/2024/12/25/Zabbix-%E8%BF%9B%E7%A8%8B%E9%80%90%E4%B8%AA%E7%90%86%E8%A7%A3/" class="title">Zabbix-进程逐个理解</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2024-12-25T07:39:59.000Z" itemprop="datePublished">2024-12-25</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a>
+              </p>
+              <p class="item-title">
+                <a href="/2024/12/24/Zabbix-Proxy%E7%9B%B8%E5%85%B3/" class="title">Zabbix-Proxy相关</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2024-12-24T07:52:38.000Z" itemprop="datePublished">2024-12-24</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a>
+              </p>
+              <p class="item-title">
+                <a href="/2024/12/23/Zabbix-%E5%AF%86%E7%A0%81%E9%87%8D%E7%BD%AE/" class="title">Zabbix-密码重置</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2024-12-23T08:18:55.000Z" itemprop="datePublished">2024-12-23</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Zabbix%E8%BF%9B%E7%A8%8B%E5%8F%8A%E5%85%B6%E5%8A%9F%E8%83%BD"><span class="toc-number">1.</span> <span class="toc-text">Zabbix进程及其功能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%A7%A3%E6%9E%90"><span class="toc-number">2.</span> <span class="toc-text">配置文件解析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Zabbix-Server"><span class="toc-number">3.</span> <span class="toc-text">Zabbix Server</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BC%98%E5%8C%96"><span class="toc-number">4.</span> <span class="toc-text">数据库优化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E7%AB%AF%E9%85%8D%E7%BD%AE%E4%BC%98%E5%8C%96"><span class="toc-number">5.</span> <span class="toc-text">服务端配置优化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%97%AD%E6%9C%8D%E5%8A%A1%E7%AB%AF%E7%9A%84housekeep"><span class="toc-number">5.1.</span> <span class="toc-text">关闭服务端的housekeep</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%83%E6%95%B4%E7%9B%91%E6%8E%A7%E9%A1%B9"><span class="toc-number">5.2.</span> <span class="toc-text">调整监控项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E6%9E%9C%E4%B8%BB%E6%9C%BA%E6%95%B0%E9%87%8F%E5%A4%AA%E5%A4%9A%EF%BC%8C%E9%87%87%E7%94%A8%E4%BB%A3%E7%90%86"><span class="toc-number">5.3.</span> <span class="toc-text">如果主机数量太多，采用代理</span></a></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-Zabbix-性能优化相关" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Zabbix-性能优化相关
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2024/12/22/Zabbix-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E7%9B%B8%E5%85%B3/" class="article-date">
+	  <time datetime="2024-12-22T07:46:19.000Z" itemprop="datePublished">2024-12-22</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/%E7%9B%91%E6%8E%A7/" rel="tag">监控</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2024/12/22/Zabbix-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E7%9B%B8%E5%85%B3/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h2 id="Zabbix进程及其功能"><a href="#Zabbix进程及其功能" class="headerlink" title="Zabbix进程及其功能"></a>Zabbix进程及其功能</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">报警器(alerter)                                该类型的进程是用来发送报警通知的；</span><br><span class="line">配置同步器(configuration syncer)               用于将配置文件中的配置信息同步到内存中缓存；</span><br><span class="line">数据发送器(data sender)                        服务器代理节点用于发送数据的进程（服务器端没有这类进程）；</span><br><span class="line">数据库看门狗(db watchdog)                      该进程用于监视zabbix系统的数据库状态，当数据库状态变为不可用时，发送警告信息（服务器代理端不支持这类型进程）。</span><br><span class="line">自动发现器(discoverer)                         用于自动发现设备的进程；</span><br><span class="line">步骤(escalator)                               用于处理动作中的步骤的进程；</span><br><span class="line">心跳发送器(heartbeat sender)                   服务器代理端用于发送心跳信息（服务器端没有这类型的进程）；</span><br><span class="line">历史数据同步器(<span class="built_in">history</span> syncer)                 用于写历史数据表；</span><br><span class="line">管家(housekeeper)                             用于清理过期的历史数据的进程；</span><br><span class="line">HTTP 轮询器(http poller)                      用于轮询web类的监控项目；</span><br><span class="line">Ping检查器(icmp pinger)                       用于定期的进行ICMP PING检查；</span><br><span class="line">ipmi 轮询器（ipmi poller）                     用于定期进行ipmi监控项目的检查；</span><br><span class="line">java 轮询器(java poller)                      用于轮询java 监控项目；</span><br><span class="line">分布式节点看守器(node watcher)                  用于在不同的分布式节点发送历史数据和配置信息更新的进程；</span><br><span class="line">轮询器(poller)                                用于普通的被动监控项目的轮询；</span><br><span class="line">服务器代理轮询(proxy poller)                   用于服务器代理的被动轮询；</span><br><span class="line">自我监控(self-monitoring)                     用于收集Zabbix系统内部的监控信息；</span><br><span class="line">定时器(timer)                                 用于处理触发器中也时间相关的函数和维护模式的进程；</span><br><span class="line">陷入器(trapper)                               用于处理主动采集、陷入以及分布式节点间或服务器代理的通信；</span><br><span class="line">不可到达轮询器(unreachable poller)             用于轮询不可到达到的设备；</span><br><span class="line">vmware 收集器(vmware collector)               负责从vmware服务进程中收集数据（服务器代理端不支持这种类型的进程）；</span><br></pre></td></tr></table></figure>
+
+<h2 id="配置文件解析"><a href="#配置文件解析" class="headerlink" title="配置文件解析"></a>配置文件解析</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">StartTrappers=20                     Trappers初始子进程数</span><br><span class="line">StartPollers=20                      初始化时启动子进程数量，数量越多，则服务端吞吐能力越强，系统资源消耗越大</span><br><span class="line">StartIPMIPollers=1                   主要用于IPMI技术用于获取硬件状态场景，如果无相关监控项，建议设置为0</span><br><span class="line">StartDiscoverers=1                   用于设置自动发现主机的子进程数量</span><br><span class="line">StartPingers=10                      用于设置启用icmp协议PING主机方式启动子进程数量</span><br><span class="line">StartHTTPPollers=1                   HTTP主动监测的进程数</span><br><span class="line">StartProxyPollers=1                  启用多少子进程与代理端通信</span><br><span class="line">StartPollersUnreachable=10           默认情况下，zabbix会启动指定进程用于探测某些不可达主机（含IPMI场景）；若场景中含有代理端，建议使用默认，若直接agent较多，根据值调整</span><br><span class="line">StartDBSyncers=4                     DB同步进程数量</span><br></pre></td></tr></table></figure>
+
+<h2 id="Zabbix-Server"><a href="#Zabbix-Server" class="headerlink" title="Zabbix Server"></a>Zabbix Server</h2><p>配置详解： <a target="_blank" rel="noopener" href="http://t.zoukankan.com/Rohn-p-14788840.html">http://t.zoukankan.com/Rohn-p-14788840.html</a><br>下面是部分参数的展示</p>
+<table>
+<thead>
+<tr>
+<th>配置</th>
+<th>默认值</th>
+<th>推荐值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>StartDBSyncers</td>
+<td>4</td>
+<td>8，不宜太高，默认值已能处理4000 NVPS</td>
+</tr>
+<tr>
+<td>StartAlerters</td>
+<td>3</td>
+<td>6</td>
+</tr>
+<tr>
+<td>StartDiscoverers</td>
+<td>1</td>
+<td>3</td>
+</tr>
+<tr>
+<td>StartPollers</td>
+<td>5</td>
+<td>12</td>
+</tr>
+<tr>
+<td>StartPreprocessors</td>
+<td>3</td>
+<td>6</td>
+</tr>
+<tr>
+<td>StartProxyPollers</td>
+<td>1</td>
+<td>3</td>
+</tr>
+<tr>
+<td>StartTrappers</td>
+<td>5</td>
+<td>12</td>
+</tr>
+<tr>
+<td>StartLLDProcessors</td>
+<td>2</td>
+<td>3</td>
+</tr>
+<tr>
+<td>StartEscalators</td>
+<td>1</td>
+<td>1</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>CacheSize</th>
+<th>256M</th>
+<th>缓存大小, 单位为字节。 用于存储主机、监控项、触发器数据的共享内存大小。 Zabbix2.2.3以前的版本最大可配置值为2GB。</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CacheUpdateFrequency</td>
+<td>60</td>
+<td>Zabbix 配置缓存更新频率, 单位为秒</td>
+</tr>
+<tr>
+<td>DebugLevel</td>
+<td>3</td>
+<td>指定调试等级: 0 - Zabbix进程的起停基本信息 1 - 严重（Critical）信息 2 - 错误（Error）信息 3 - 警告（Warning）信息 4 - 调试（Debug）信息 (产生大量信息) 5 - 扩展调试 (产生更多信息)</td>
+</tr>
+<tr>
+<td>ExportFileSize</td>
+<td>1G</td>
+<td>每个导出文件的最大限制，单位为字节。仅当ExportDir参数设置后才使用，用于轮转生成导出的文件。 此参数从Zabbix 4.0.0开始支持。</td>
+</tr>
+<tr>
+<td>HistoryCacheSize</td>
+<td>128M</td>
+<td>历史缓存数据大小, 单位为字节。</td>
+</tr>
+<tr>
+<td>HistoryIndexCacheSize</td>
+<td>16M</td>
+<td>历史索引缓存大小, 单位为字节。缓存一个item大概需要大小为100字节的空间。 该参数从Zabbix 3.0.0开始支持。</td>
+</tr>
+<tr>
+<td>HistoryStorageDateIndex</td>
+<td>1</td>
+<td>启用历史数据预处理，可以将数据存储到不同的基于时间的索引: 0 - 禁止 1 - 允许</td>
+</tr>
+<tr>
+<td>HistoryStorageURL</td>
+<td>你的ES URL</td>
+<td>历史数据存储 HTTP[S] URL，用于把历史数据存储到ElasticSearch。 这个参数参考 <a target="_blank" rel="noopener" href="https://www.zabbix.com/documentation/5.0/manual/appendix/install/elastic_search_setup">Elasticsearch</a></td>
+</tr>
+<tr>
+<td>进行配置。</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>HistoryStorageTypes</td>
+<td>uint,dbl,str,log,text</td>
+<td>以逗号分隔的列表配置哪些类型的历史数据需要存储到Elasticsearch。 这个参数参考 <a target="_blank" rel="noopener" href="https://www.zabbix.com/documentation/5.0/manual/appendix/install/elastic_search_setup">Elasticsearch</a></td>
+</tr>
+<tr>
+<td>进行配置</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>HousekeepingFrequency</td>
+<td>3</td>
+<td>Zabbix 执行 housekeeping 的频率 (单位为小时)。 housekeeping负责从数据库中删除过期的信息。 <em>注意</em></td>
+</tr>
+<tr>
+<td>: 为了防止 housekeeper 负载过大 (例如, 当历史和趋势周期大大减小时), 对于每一个监控项，不会在一个housekeeping周期内删除超过4倍HousekeepingFrequency 的过期数据。 因此, 如果 HousekeepingFrequency 是 1小时, 一个周期内不会删除超过4小时的过期信息 (从最旧的数据开始) 。 <em>备注</em></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>: 为降低 server压力， housekeeping将在server启动以后，延迟30分钟执行。 因此, 如果 HousekeepingFrequency 是1小时,server启动30分后执行第一次 housekeeping , 然后按1小时为周期重复执行。从Zabbix 2.4.0以后有了这种延迟行为。 从Zabbix 3.0.0开始，可以设置HousekeepingFrequency为0来禁止自动housekeeping。 此时 housekeeping 只能通过 <em>housekeeper_execute</em></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>启动， 在一个housuekeeping周期内删除的过期信息时长为从最后一次housekeeping以来到配置周期的4倍,不少于4小时且不大于4天。 也可参见<a target="_blank" rel="noopener" href="https://www.zabbix.com/documentation/5.0/manual/concepts/server#server_process">运行控制</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>选项。</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>LogFile</td>
+<td></td>
+<td>日志文件名称。</td>
+</tr>
+<tr>
+<td>LogFileSize</td>
+<td>128</td>
+<td>日志文件大小，单位 MB。 0 - 禁止日志文件自动回滚. <em>注意</em></td>
+</tr>
+<tr>
+<td>: 如果日志文件达到限定的大小，文件回滚失败, 不管是什么原因, 现有的日志会被截断，并重新记录日志。</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>LogType</td>
+<td>file</td>
+<td>日志输出类型:</td>
+</tr>
+<tr>
+<td><em>file</em>  - 写入LogFile 参数指定的日志文件中,</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><em>system</em> - 写入syslog,</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><em>console</em> - 控制台输出. 从Zabbix 3.0.0开始支持该参数。</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>LogSlowQueries</td>
+<td>3000</td>
+<td>数据库查询消耗时间，大于该时间将会记入日志 (毫秒)。 0 - 不记录慢查询日志。 DebugLevel&#x3D;3时该选项可用。 从Zabbix 1.8.2开始支持该参数</td>
+</tr>
+<tr>
+<td>MaxHousekeeperDelete</td>
+<td>5000</td>
+<td>一个housekeeping周期内，一个任务删除的最大行数 （相应的表名，字段名，值）。 如果设置为0，不限制删除的行数，这种情况，你必须清楚这样做的影响! 从Zabbix 1.8.2 开始支持该参数，仅在对已经被删除的监控项进行历史和趋势数据删除操作时有效</td>
+</tr>
+<tr>
+<td>ProxyConfigFrequency</td>
+<td>180</td>
+<td>Zabbix server 多少秒向Zabbix proxy 发送一次配置数据，用于被动模式的proxy 。 从Zabbix 1.8.3开始支持该参数。</td>
+</tr>
+<tr>
+<td>ProxyDataFrequency</td>
+<td>1</td>
+<td>Zabbix server 多少秒向Zabbix proxy请求一次历史数据， 用于被动模式的proxy。从Zabbix 1.8.3开始支持该参数。</td>
+</tr>
+<tr>
+<td>StartDBSyncers</td>
+<td>8</td>
+<td>数据库进程的初始实例数量。 在版本1.8.5之前，上限是64。 这个参数从Zabbix 1.8.3开始得到了支持</td>
+</tr>
+<tr>
+<td>StartAlerters</td>
+<td>12</td>
+<td>报警进程的初始实例数量。 从Zabbix 3.4.0开始支持该参数</td>
+</tr>
+<tr>
+<td>StartDiscoverers</td>
+<td>12</td>
+<td>发现进程的初始实例数量。 在Zabbix 1.8.5版本之前，最大能设置为255。</td>
+</tr>
+<tr>
+<td>StartEscalators</td>
+<td>12</td>
+<td>escalators进程的初始实例数量。 从Zabbix 3.0.0开始支持该参数</td>
+</tr>
+<tr>
+<td>StartHTTPPollers</td>
+<td>6</td>
+<td>HTTP 轮询进程的初始实例数量</td>
+</tr>
+<tr>
+<td>. 在Zabbix 1.8.5版本之前，最大能设置为255。</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>StartIPMIPollers</td>
+<td>3</td>
+<td>IPMI 轮询进程的初始实例数量。 在Zabbix 1.8.5版本之前，最大能设置为255。</td>
+</tr>
+<tr>
+<td>StartJavaPollers</td>
+<td>6</td>
+<td>Java 轮询子进程的初始实例数量。</td>
+</tr>
+<tr>
+<td>. 从Zabbix 2.0.0开始支持该参数。</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>StartLLDProcessors</td>
+<td>2</td>
+<td>Number of pre-forked instances of low-level discovery (LLD) workers<a target="_blank" rel="noopener" href="https://www.zabbix.com/documentation/5.0/zh/manual/appendix/config/zabbix_server#footnotes"><strong>1</strong></a></td>
+</tr>
+<tr>
+<td>. The LLD manager process is automatically started when an LLD worker is started. This parameter is supported since Zabbix 4.2.0.</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>StartPingers</td>
+<td>12</td>
+<td>ICMP pingers进程的初始实例数量<a target="_blank" rel="noopener" href="https://www.zabbix.com/documentation/5.0/zh/manual/appendix/config/zabbix_server#footnotes"><strong>1</strong></a></td>
+</tr>
+<tr>
+<td>. 在Zabbix 1.8.5版本之前，最大能设置为255。</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>StartPollersUnreachable</td>
+<td>6</td>
+<td>不可达主机 (包括IPMI 和 Java)的轮询进程的初始实例数量。<a target="_blank" rel="noopener" href="https://www.zabbix.com/documentation/5.0/zh/manual/appendix/config/zabbix_server#footnotes"><strong>1</strong></a></td>
+</tr>
+<tr>
+<td>. 从Zabbix 2.4.0开始，如果IPMI或Java轮询器启动，那么至少有一个针对不可访问主机的轮询进程必须运行。 在Zabbix 1.8.5版本之前，最大能设置为255。 这个参数从Zabbix 1.8.3版本缺失。</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>StartPollers</td>
+<td>12</td>
+<td>轮询进程的初始实例数量。</td>
+</tr>
+<tr>
+<td>.<em>注意</em>如果要内部，聚合，计算的监控项能正常工作，这个参数值必须非0。</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>StartPreprocessors</td>
+<td>12</td>
+<td>预处理工作进程的初始实例数量。预处理管理进程将跟随预处理工作进程启动</td>
+</tr>
+<tr>
+<td>. 从Zabbix 3.4.0开始支持该参数。</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="数据库优化"><a href="#数据库优化" class="headerlink" title="数据库优化"></a>数据库优化</h2><p>如果数据库和zabbix在一台机器，可以使用socket连接，速度会提高。数据库zabbix来说，选择InnoDB引擎，效率是其它引擎的1.5倍</p>
+<p>对history类型的(history、history_uint等)大表进行拆分操作，关闭housekeeper禁止自动定期清除历史记录数据，因为对于数据库特别是对于InnoDB引擎大数据删除貌似很蛋疼。</p>
+<p>可以对数据库配置文件调优，因为都要提交到数据库中，当机器很多时，数据库压力会很大</p>
+<p>如果还是太多，可以考虑将mysql单独一台，并设置读写分离，可以用中间件实现。</p>
+<h2 id="服务端配置优化"><a href="#服务端配置优化" class="headerlink" title="服务端配置优化"></a>服务端配置优化</h2><h3 id="关闭服务端的housekeep"><a href="#关闭服务端的housekeep" class="headerlink" title="关闭服务端的housekeep"></a><strong>关闭服务端的housekeep</strong></h3><p>housekeep是清理历史的机制，配置文件中，默认是每小时启动一次，然后清除监控项设置之外的多余历史记录。比如mysql监控项默认保存90天，他会清除90天以外的，这会导致经常去清理，有时会报错：Zabbix housekeeper processes more than 75% busy</p>
+<h3 id="调整监控项"><a href="#调整监控项" class="headerlink" title="调整监控项"></a><strong>调整监控项</strong></h3><p>很多监控项都是无用的或者目前用不到的，像redis监控模板中的调阅&#x2F;发布监控项应该去掉。</p>
+<p>监控项的类型最好使用数字，尽量避免使用字符。字符在数据库中的存储空间使用较大，在设置trigger时也相对麻烦，并且zabbix本身处理数字的效率要相对高。如果业务需要字符类型的监控项，可以适当的降低数据采集的时间间隔以提高处理效率</p>
+<p>Trigger中，正则表达式函数last(),nodata()的速度最快，min()、max()、avg()的速度最慢。在使用过程中，尽量选择速度较快的函数。配置Trigger时，也应注意使用正确的逻辑，错误的逻辑可能导致数据库查询较慢的现象。</p>
+<p>item监控性默认大部分都是保留90d（天）或者1w（周）的历史数据，趋势图数据保留365天。</p>
+<p>其实有趋势图数据即可，历史数据保留7天足够了，采集频率，像磁盘，文件大小等很久才变化的，采集频率可以加大，以达到缓解压力和节省空间的作用</p>
+<h3 id="如果主机数量太多，采用代理"><a href="#如果主机数量太多，采用代理" class="headerlink" title="如果主机数量太多，采用代理"></a><strong>如果主机数量太多，采用代理</strong></h3><p>如果主机数量太多，可以考虑分机房，分业务，分组的方式来用代理中转。zabbix_proxy可以代替服务端收集数据和监控，但是监控结果还是发送到服务端汇总，代理是没有web界面的。</p>
+<p>如果机器太多，可以用主动模式，当前所有默认都是被动模式的，客户端启动10051端口，服务端需要去10051取数据。</p>
+<ul>
+<li>减少 history 保存时间</li>
+<li>减少 item 获取间隔时间</li>
+<li>减少不必要的监控项</li>
+</ul>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://maydaychen.github.io/2024/12/22/Zabbix-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E7%9B%B8%E5%85%B3/" title="Zabbix-性能优化相关" target="_blank" rel="external">https://maydaychen.github.io/2024/12/22/Zabbix-性能优化相关/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/maydaychen" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/maydaychen" target="_blank"><span class="text-dark">Maydaychen</span><small class="ml-1x">Developer &amp; Infra engineer</small></a></h3>
+        <div>前Android/Vue开发，现Infra从业人员，主营监控/AWS</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2024/12/23/Zabbix-%E5%AF%86%E7%A0%81%E9%87%8D%E7%BD%AE/" title="Zabbix-密码重置"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2024/12/21/Zabbix-Maintenance%E7%BB%B4%E6%8A%A4%E5%91%A8%E6%9C%9F/" title="Zabbix-Maintenance维护周期"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">    <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/maydaychen" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://weibo.com/maydaychen1" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/heychenyi" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2024 Maydaychen
+        
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: 'iQQzwxOn1A8OTubGOzrZ6HBx-gzGzoHsz',
+    appKey: '2cExUKFH9fnrzWbn0gIsHteF',
+    placeholder: '如果爱，请深爱，如果喷，请轻喷！',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>
