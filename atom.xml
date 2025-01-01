@@ -6,7 +6,7 @@
   <link href="https://maydaychen.github.io/atom.xml" rel="self"/>
   
   <link href="https://maydaychen.github.io/"/>
-  <updated>2024-12-30T15:50:29.013Z</updated>
+  <updated>2024-12-31T06:04:52.000Z</updated>
   <id>https://maydaychen.github.io/</id>
   
   <author>
@@ -15,6 +15,54 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Docker-把image上传到阿里云仓库并在国内服务器下载</title>
+    <link href="https://maydaychen.github.io/2024/12/31/Docker-%E6%8A%8Aimage%E4%B8%8A%E4%BC%A0%E5%88%B0%E9%98%BF%E9%87%8C%E4%BA%91%E4%BB%93%E5%BA%93%E5%B9%B6%E5%9C%A8%E5%9B%BD%E5%86%85%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8B%E8%BD%BD/"/>
+    <id>https://maydaychen.github.io/2024/12/31/Docker-%E6%8A%8Aimage%E4%B8%8A%E4%BC%A0%E5%88%B0%E9%98%BF%E9%87%8C%E4%BA%91%E4%BB%93%E5%BA%93%E5%B9%B6%E5%9C%A8%E5%9B%BD%E5%86%85%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8B%E8%BD%BD/</id>
+    <published>2024-12-31T03:17:02.000Z</published>
+    <updated>2024-12-31T06:04:52.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>由于众所周知的原因，目前国内的服务器拉docker镜像非常困难，基本可以说是完全没法用<br>因此，怎么把image下载下来成了很多人头疼的问题，这里分享一下一种解决办法，就是在已有该镜像的服务器上把镜像推给阿里云，然后再从阿里云上下载该镜像</p><h1 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h1><h2 id="进入容器镜像服务"><a href="#进入容器镜像服务" class="headerlink" title="进入容器镜像服务"></a>进入容器镜像服务</h2><p>在阿里云的控制台找到容器镜像服务</p><img src="/2024/12/31/Docker-%E6%8A%8Aimage%E4%B8%8A%E4%BC%A0%E5%88%B0%E9%98%BF%E9%87%8C%E4%BA%91%E4%BB%93%E5%BA%93%E5%B9%B6%E5%9C%A8%E5%9B%BD%E5%86%85%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8B%E8%BD%BD/1.png" class="" title="容器镜像服务"><h2 id="创建个人实例"><a href="#创建个人实例" class="headerlink" title="创建个人实例"></a>创建个人实例</h2><p>进入以后可以看到有个人实例跟企业实例选项，在这里我们选择个人实例</p><img src="/2024/12/31/Docker-%E6%8A%8Aimage%E4%B8%8A%E4%BC%A0%E5%88%B0%E9%98%BF%E9%87%8C%E4%BA%91%E4%BB%93%E5%BA%93%E5%B9%B6%E5%9C%A8%E5%9B%BD%E5%86%85%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8B%E8%BD%BD/2.png" class="" title="个人实例"><p>注意，在这边应该会选区域，请务必选择跟你服务器所在地一样的区域，否则无法连接</p><p>看了一下，个人实例有命名空间和镜像数量限制，但是对我们个人而言已经绰绰有余</p><img src="/2024/12/31/Docker-%E6%8A%8Aimage%E4%B8%8A%E4%BC%A0%E5%88%B0%E9%98%BF%E9%87%8C%E4%BA%91%E4%BB%93%E5%BA%93%E5%B9%B6%E5%9C%A8%E5%9B%BD%E5%86%85%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8B%E8%BD%BD/3.png" class="" title="个人实例"><h2 id="创建命名空间"><a href="#创建命名空间" class="headerlink" title="创建命名空间"></a>创建命名空间</h2><img src="/2024/12/31/Docker-%E6%8A%8Aimage%E4%B8%8A%E4%BC%A0%E5%88%B0%E9%98%BF%E9%87%8C%E4%BA%91%E4%BB%93%E5%BA%93%E5%B9%B6%E5%9C%A8%E5%9B%BD%E5%86%85%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8B%E8%BD%BD/4.png" class="" title="个人实例"><h2 id="创建镜像仓库"><a href="#创建镜像仓库" class="headerlink" title="创建镜像仓库"></a>创建镜像仓库</h2><img src="/2024/12/31/Docker-%E6%8A%8Aimage%E4%B8%8A%E4%BC%A0%E5%88%B0%E9%98%BF%E9%87%8C%E4%BA%91%E4%BB%93%E5%BA%93%E5%B9%B6%E5%9C%A8%E5%9B%BD%E5%86%85%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8B%E8%BD%BD/5.png" class="" title="个人实例"><p>镜像仓库 -&gt; 创建镜像仓库 -&gt; 填写相关内容<br>仓库名称：可以是image name<br>仓库类型：公有或者私有<br>填写完成后点击下一步</p><img src="/2024/12/31/Docker-%E6%8A%8Aimage%E4%B8%8A%E4%BC%A0%E5%88%B0%E9%98%BF%E9%87%8C%E4%BA%91%E4%BB%93%E5%BA%93%E5%B9%B6%E5%9C%A8%E5%9B%BD%E5%86%85%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8B%E8%BD%BD/6.png" class="" title="个人实例"><p>在这边你可以选择镜像的来源，比如GitHub或者本地，由于我在其他服务器上已经下载过了，所以我选择本地仓库</p><h2 id="上传-下载镜像"><a href="#上传-下载镜像" class="headerlink" title="上传&#x2F;下载镜像"></a>上传&#x2F;下载镜像</h2><p>这一段我直接复制官网的说法</p><ol><li><p>登录阿里云Docker Registry</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker login --username=xxxx*****@xx.com [公网地址]</span></span><br></pre></td></tr></table></figure><p>用于登录的用户名为阿里云账号全名，密码为开通服务时设置的密码。<br>(您可以在访问凭证页面修改凭证密码)</p></li><li><p>从Registry中拉取镜像</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker pull [公网地址]/maydaychen/postgres:[镜像版本号]</span></span><br></pre></td></tr></table></figure></li><li><p>将镜像推送到Registry</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker login --username=2458*****@qq.com [公网地址]</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker tag [ImageId] [公网地址]/maydaychen/postgres:[镜像版本号]</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker push [公网地址]/maydaychen/postgres:[镜像版本号]</span></span><br><span class="line">请根据实际镜像信息替换示例中的[ImageId]和[镜像版本号]参数。</span><br></pre></td></tr></table></figure></li><li><p>选择合适的镜像仓库地址<br>从ECS推送镜像时，可以选择使用镜像仓库内网地址。推送速度将得到提升并且将不会损耗您的公网流量。 如果您使用的机器位于VPC网络，请使用 [专有网络] 作为Registry的域名登录。</p></li><li><p>示例<br>使用”docker tag”命令重命名镜像，并将它通过专有网络地址推送至Registry。</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker images</span></span><br><span class="line">REPOSITORY                                                         TAG                 IMAGE ID            CREATED             VIRTUAL SIZE</span><br><span class="line">registry.aliyuncs.com/acs/agent                                    0.7-dfb6816         37bb9c63c8b2        7 days ago          37.89 MB</span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker tag 37bb9c63c8b2 [专有地址]/acs/agent:0.7-dfb6816</span></span><br></pre></td></tr></table></figure><p>使用 “docker push” 命令将该镜像推送至远程。</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker push [专有地址]/acs/agent:0.7-dfb6816</span></span><br></pre></td></tr></table></figure></li></ol>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;由于众所周知的原因，目前国内的服务器拉docker镜像非常困难，基本可以说是完全没法用&lt;br&gt;因此，怎么把image下载下来成了很多人头疼的</summary>
+      
+    
+    
+    
+    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+    <category term="Docker" scheme="https://maydaychen.github.io/tags/Docker/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>RockyLinux9安装docker及docker-compose</title>
+    <link href="https://maydaychen.github.io/2024/12/31/RockyLinux9%E5%AE%89%E8%A3%85docker%E5%8F%8Adocker-compose/"/>
+    <id>https://maydaychen.github.io/2024/12/31/RockyLinux9%E5%AE%89%E8%A3%85docker%E5%8F%8Adocker-compose/</id>
+    <published>2024-12-31T01:34:38.000Z</published>
+    <updated>2024-12-31T02:01:28.142Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Docker的安装"><a href="#Docker的安装" class="headerlink" title="Docker的安装"></a>Docker的安装</h1><p>如果是Rocky Linux9的话，目前使用podman而不是docker，所以命令变成了</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dnf install podman</span><br></pre></td></tr></table></figure><img src="/2024/12/31/RockyLinux9%E5%AE%89%E8%A3%85docker%E5%8F%8Adocker-compose/1.png" class="" title="Rocky"><p>如果不是用的Rocky而是别的操作系统的话，命令会有些许的不同，如下图</p><img src="/2024/12/31/RockyLinux9%E5%AE%89%E8%A3%85docker%E5%8F%8Adocker-compose/2.png" class="" title="AmazonLinux2023"><h2 id="启动并设置开机自启"><a href="#启动并设置开机自启" class="headerlink" title="启动并设置开机自启"></a>启动并设置开机自启</h2><p>启动 Docker 服务并设置 Docker 服务开机自启：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl start docker</span><br><span class="line">systemctl enable docker</span><br></pre></td></tr></table></figure><h1 id="Docker-compose"><a href="#Docker-compose" class="headerlink" title="Docker-compose"></a>Docker-compose</h1><h2 id="检查最新版本号"><a href="#检查最新版本号" class="headerlink" title="检查最新版本号"></a>检查最新版本号</h2><p>前往 <a href="https://github.com/docker/compose/releases%EF%BC%8C">https://github.com/docker/compose/releases，</a> 查看最新的release信息</p><img src="/2024/12/31/RockyLinux9%E5%AE%89%E8%A3%85docker%E5%8F%8Adocker-compose/3.png" class="" title="docker-compose"><h2 id="下载最新的release包"><a href="#下载最新的release包" class="headerlink" title="下载最新的release包"></a>下载最新的release包</h2><h3 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo curl -L &quot;https://github.com/docker/compose/releases/download/v[版本号]/docker-compose-$(uname -s)-$(uname -m)&quot; -o /usr/local/bin/docker-compose</span><br></pre></td></tr></table></figure><h3 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/bin/</span><br><span class="line">wget https://github.com/docker/compose/releases/download/v[版本号]/docker-compose-linux-x86_64</span><br></pre></td></tr></table></figure><h3 id="方法三"><a href="#方法三" class="headerlink" title="方法三"></a>方法三</h3><p>手动下载，通过SFTP发送到服务器</p><h2 id="设置可执行权限"><a href="#设置可执行权限" class="headerlink" title="设置可执行权限"></a>设置可执行权限</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo chmod +x /usr/local/bin/docker-compose</span><br></pre></td></tr></table></figure><h2 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose --version</span><br></pre></td></tr></table></figure><p>如果配置生效，就会显示docker compose的版本号</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;Docker的安装&quot;&gt;&lt;a href=&quot;#Docker的安装&quot; class=&quot;headerlink&quot; title=&quot;Docker的安装&quot;&gt;&lt;/a&gt;Docker的安装&lt;/h1&gt;&lt;p&gt;如果是Rocky Linux9的话，目前使用podman而不是docker，所以命令</summary>
+      
+    
+    
+    
+    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+    <category term="Linux" scheme="https://maydaychen.github.io/tags/Linux/"/>
+    
+  </entry>
   
   <entry>
     <title>食谱-鱼香肉丝非标准版</title>
@@ -463,56 +511,6 @@
     
     
     <category term="Hexo" scheme="https://maydaychen.github.io/tags/Hexo/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Linux-scp到服务器时报错Permissions 0644 for &#39;xx.pem&#39; are too open</title>
-    <link href="https://maydaychen.github.io/2024/03/16/Linux-scp%E5%88%B0%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%97%B6%E6%8A%A5%E9%94%99Permissions-0644-for-xx-pem-are-too-open/"/>
-    <id>https://maydaychen.github.io/2024/03/16/Linux-scp%E5%88%B0%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%97%B6%E6%8A%A5%E9%94%99Permissions-0644-for-xx-pem-are-too-open/</id>
-    <published>2024-03-15T16:58:52.000Z</published>
-    <updated>2024-12-27T05:11:15.000Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p><code>Permissions 0644 for &#39;xx.pem&#39; are too open. It is required that your private key files are NOT accessible by others. This private key will be ignored. Load key &quot;xx.pem&quot;: bad permissions ec2-user@35.77.46.6: Permission denied (publickey,gssapi-keyex,gssapi-with-mic). lost connection</code></p><h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><p>看日志报出的错误，”Permissions 0644 for ‘xx.pem’ are too open”，pen文件的权限太大太open了。<br>使用ll(ls -al)命令查看了私钥文件的权限，发现和错误一样，是644<br>所以需要使用chmod命令修改文件的权限</p><p><code>chmod 600 xx.pem</code><br>之后再尝试一遍，完美执行</p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h1 id=&quot;问题&quot;&gt;&lt;a href=&quot;#问题&quot; class=&quot;headerlink&quot; title=&quot;问题&quot;&gt;&lt;/a&gt;问题&lt;/h1&gt;&lt;p&gt;&lt;code&gt;Permissions 0644 for &amp;#39;xx.pem&amp;#39; are too open. It is requir</summary>
-      
-    
-    
-    
-    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-    <category term="Linux" scheme="https://maydaychen.github.io/tags/Linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Linux文件清空的几种方法</title>
-    <link href="https://maydaychen.github.io/2024/03/16/Linux%E6%96%87%E4%BB%B6%E6%B8%85%E7%A9%BA%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E6%B3%95/"/>
-    <id>https://maydaychen.github.io/2024/03/16/Linux%E6%96%87%E4%BB%B6%E6%B8%85%E7%A9%BA%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E6%B3%95/</id>
-    <published>2024-03-15T16:57:47.000Z</published>
-    <updated>2024-12-27T05:13:56.000Z</updated>
-    
-    <content type="html"><![CDATA[<ol><li><p>使用重定向的方法</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]# du -h test.txt </span><br><span class="line">4.0K    test.txt</span><br><span class="line">[root@centos7 ~]# &gt; test.txt </span><br><span class="line">[root@centos7 ~]# du -h test.txt </span><br><span class="line">0    test.txt</span><br></pre></td></tr></table></figure></li><li><p>使用true命令重定向清空文件</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]# du -h test.txt </span><br><span class="line">4.0K    test.txt</span><br><span class="line">[root@centos7 ~]# true &gt; test.txt </span><br><span class="line">[root@centos7 ~]# du -h test.txt </span><br><span class="line">0    test.txt</span><br></pre></td></tr></table></figure></li><li><p>使用cat&#x2F;cp&#x2F;dd命令及&#x2F;dev&#x2F;null设备来清空文件</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]# du -h test.txt </span><br><span class="line">4.0K    test.txt</span><br><span class="line">[root@centos7 ~]# cat /dev/null &gt;  test.txt </span><br><span class="line">[root@centos7 ~]# du -h test.txt </span><br><span class="line">0    test.txt</span><br><span class="line">###################################################</span><br><span class="line">[root@centos7 ~]# echo &quot;Hello World&quot; &gt; test.txt </span><br><span class="line">[root@centos7 ~]# du -h test.txt </span><br><span class="line">4.0K    test.txt</span><br><span class="line">[root@centos7 ~]# cp /dev/null test.txt </span><br><span class="line">cp：是否覆盖&quot;test.txt&quot;？ y</span><br><span class="line">[root@centos7 ~]# du -h test.txt </span><br><span class="line">0    test.txt</span><br><span class="line">##################################################</span><br><span class="line">[root@centos7 ~]# echo &quot;Hello World&quot; &gt; test.txt </span><br><span class="line">[root@centos7 ~]# du -h test.txt </span><br><span class="line">4.0K    test.txt</span><br><span class="line">[root@centos7 ~]# dd if=/dev/null of=test.txt </span><br><span class="line">记录了0+0 的读入</span><br><span class="line">记录了0+0 的写出</span><br><span class="line">0字节(0 B)已复制，0.000266781 秒，0.0 kB/秒</span><br><span class="line">[root@centos7 ~]# du -h test.txt </span><br><span class="line">0    test.txt</span><br></pre></td></tr></table></figure></li><li><p>使用echo命令清空文件</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]# echo &quot;Hello World&quot; &gt; test.txt </span><br><span class="line">[root@centos7 ~]# du -h test.txt </span><br><span class="line">4.0K    test.txt</span><br><span class="line">[root@centos7 ~]# echo -n &quot;&quot; &gt; test.txt    ==&gt;要加上&quot;-n&quot;参数，默认情况下会&quot;</span><br><span class="line">&quot;，也就是回车符</span><br><span class="line">[root@centos7 ~]# du -h test.txt  </span><br><span class="line">0    test.txt</span><br></pre></td></tr></table></figure></li><li><p>使用truncate命令清空文件</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]# du -h test.txt </span><br><span class="line">4.0K    test.txt</span><br><span class="line">[root@centos7 ~]# truncate -s 0 test.txt   -s参数用来设定文件的大小，清空文件，就设定为0；</span><br><span class="line">[root@centos7 ~]# du -h test.txt </span><br><span class="line">0    test.txt</span><br></pre></td></tr></table></figure></li></ol>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;使用重定向的方法&lt;/p&gt;
-&lt;figure class=&quot;highlight plaintext&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;</summary>
-      
-    
-    
-    
-    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-    <category term="Linux" scheme="https://maydaychen.github.io/tags/Linux/"/>
     
   </entry>
   
