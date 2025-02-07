@@ -6,7 +6,7 @@
   <link href="https://maydaychen.github.io/atom.xml" rel="self"/>
   
   <link href="https://maydaychen.github.io/"/>
-  <updated>2025-01-02T09:25:23.000Z</updated>
+  <updated>2025-02-05T15:01:06.571Z</updated>
   <id>https://maydaychen.github.io/</id>
   
   <author>
@@ -15,6 +15,100 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>AI-尝试使用Ollama本地部署DeepSeek-R1</title>
+    <link href="https://maydaychen.github.io/2025/02/03/AI-%E5%B0%9D%E8%AF%95%E4%BD%BF%E7%94%A8Ollama%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2DeepSeek-R1/"/>
+    <id>https://maydaychen.github.io/2025/02/03/AI-%E5%B0%9D%E8%AF%95%E4%BD%BF%E7%94%A8Ollama%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2DeepSeek-R1/</id>
+    <published>2025-02-03T14:16:11.000Z</published>
+    <updated>2025-02-05T15:01:06.571Z</updated>
+    
+    <content type="html"><![CDATA[<p>[Todo]</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;[Todo]&lt;/p&gt;
+</summary>
+      
+    
+    
+    
+    <category term="AI" scheme="https://maydaychen.github.io/categories/AI/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>AI-ollama常用命令记录</title>
+    <link href="https://maydaychen.github.io/2025/02/03/AI-Ollama%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E8%AE%B0%E5%BD%95/"/>
+    <id>https://maydaychen.github.io/2025/02/03/AI-Ollama%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E8%AE%B0%E5%BD%95/</id>
+    <published>2025-02-03T14:15:37.000Z</published>
+    <updated>2025-02-03T14:24:54.058Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="查看所有支持的模型"><a href="#查看所有支持的模型" class="headerlink" title="查看所有支持的模型"></a>查看所有支持的模型</h1><p>在<a href="https://ollama.com/search">这个地方</a>能看到所有支持的模型，并且点击对应的模型名称可以有详细的介绍和下载命令<br>   <img src="/AI-ollama%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E8%AE%B0%E5%BD%95/1.png" alt="图片"></p><h1 id="列出所有模型-list"><a href="#列出所有模型-list" class="headerlink" title="列出所有模型 (list)"></a>列出所有模型 (list)</h1><p>列出本地所有可用的模型,可以在这里查找模型名称。</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ollama list</span><br><span class="line">ollama ls</span><br></pre></td></tr></table></figure><h1 id="运行模型-run"><a href="#运行模型-run" class="headerlink" title="运行模型 (run)"></a>运行模型 (run)</h1><p>运行一个已安装的模型，执行某些任务。</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ollama run model_name</span><br></pre></td></tr></table></figure><h1 id="显示模型信息-show"><a href="#显示模型信息-show" class="headerlink" title="显示模型信息 (show)"></a>显示模型信息 (show)</h1><p>查看特定模型的详细信息，例如模型名称、版本等。</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ollama show model_name</span><br></pre></td></tr></table></figure><h1 id="删除模型-rm"><a href="#删除模型-rm" class="headerlink" title="删除模型 (rm)"></a>删除模型 (rm)</h1><p>删除一个已安装的模型。</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ollama rm model_name</span><br></pre></td></tr></table></figure><h1 id="查看版本-version"><a href="#查看版本-version" class="headerlink" title="查看版本 (version)"></a>查看版本 (version)</h1><p>显示当前 ollama 工具的版本信息。</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ollama -v</span><br><span class="line">ollama --version</span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;查看所有支持的模型&quot;&gt;&lt;a href=&quot;#查看所有支持的模型&quot; class=&quot;headerlink&quot; title=&quot;查看所有支持的模型&quot;&gt;&lt;/a&gt;查看所有支持的模型&lt;/h1&gt;&lt;p&gt;在&lt;a href=&quot;https://ollama.com/search&quot;&gt;这个地方&lt;</summary>
+      
+    
+    
+    
+    <category term="AI" scheme="https://maydaychen.github.io/categories/AI/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Zabbix-配置AWS-SES以发送邮件</title>
+    <link href="https://maydaychen.github.io/2025/01/22/Zabbix-%E9%85%8D%E7%BD%AEAWS-SES%E4%BB%A5%E5%8F%91%E9%80%81%E9%82%AE%E4%BB%B6/"/>
+    <id>https://maydaychen.github.io/2025/01/22/Zabbix-%E9%85%8D%E7%BD%AEAWS-SES%E4%BB%A5%E5%8F%91%E9%80%81%E9%82%AE%E4%BB%B6/</id>
+    <published>2025-01-22T07:47:16.000Z</published>
+    <updated>2025-02-03T14:15:00.894Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="配置SES"><a href="#配置SES" class="headerlink" title="配置SES"></a>配置SES</h1><p>略过，无非是配置这么几个</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">SMTP endpoint: //可以从AWS直接获取</span><br><span class="line">SMTP port: </span><br><span class="line">SMTP user name: //可以从AWS直接获取</span><br><span class="line">SMTP password: //可以从AWS直接获取</span><br><span class="line">SMTP domain: //AWS SES上有domain，前缀xxx@可以任意配置</span><br></pre></td></tr></table></figure><h1 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h1><h2 id="Protocol-“smtps”-not-supported-or-disabled-in-libcurl"><a href="#Protocol-“smtps”-not-supported-or-disabled-in-libcurl" class="headerlink" title="Protocol “smtps” not supported or disabled in libcurl"></a>Protocol “smtps” not supported or disabled in libcurl</h2><p>在Zabbix上配置完SES以后，在Test的时候出现上述错误<br>在check curl版本的时候，发现并不支持smtps</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl --version</span><br></pre></td></tr></table></figure><p>所以怀疑要升级curl以及它的类库</p><img src="/2025/01/22/Zabbix-%E9%85%8D%E7%BD%AEAWS-SES%E4%BB%A5%E5%8F%91%E9%80%81%E9%82%AE%E4%BB%B6/1.png" class="" title="图片"><h3 id="重新安装curl"><a href="#重新安装curl" class="headerlink" title="重新安装curl"></a>重新安装curl</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dnf install curl --allowerasing</span><br></pre></td></tr></table></figure><h3 id="重新安装libcurl"><a href="#重新安装libcurl" class="headerlink" title="重新安装libcurl"></a>重新安装libcurl</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dnf install libcurl --allowerasing</span><br></pre></td></tr></table></figure><p>之后再尝试一下，发现已经支持smtp&#x2F;smtps了，确实是版本的问题</p><h3 id="重新测试邮件发送功能"><a href="#重新测试邮件发送功能" class="headerlink" title="重新测试邮件发送功能"></a>重新测试邮件发送功能</h3>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;配置SES&quot;&gt;&lt;a href=&quot;#配置SES&quot; class=&quot;headerlink&quot; title=&quot;配置SES&quot;&gt;&lt;/a&gt;配置SES&lt;/h1&gt;&lt;p&gt;略过，无非是配置这么几个&lt;/p&gt;
+&lt;figure class=&quot;highlight plaintext&quot;&gt;&lt;tabl</summary>
+      
+    
+    
+    
+    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+    <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Zabbix-Nginx监控</title>
+    <link href="https://maydaychen.github.io/2025/01/09/Zabbix-Nginx%E7%9B%91%E6%8E%A7/"/>
+    <id>https://maydaychen.github.io/2025/01/09/Zabbix-Nginx%E7%9B%91%E6%8E%A7/</id>
+    <published>2025-01-09T07:01:16.000Z</published>
+    <updated>2025-01-09T07:48:35.366Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>在项目中使用Nginx之后，有时候我们需要知道Nginx具体的工作情况，这时候就需要使用zabbix进行Nginx的相关监控<br>这边我们有两种方法</p><ol><li>使用普通的http请求的方式获取基本信息</li><li>如果使用了Nginx Plus，就可以通过Nginx Plus的接口获取更多的信息</li></ol><h1 id="普通方式"><a href="#普通方式" class="headerlink" title="普通方式"></a>普通方式</h1><p>参考链接： <a href="https://www.zabbix.com/integrations/nginx#nginx_agent">https://www.zabbix.com/integrations/nginx#nginx_agent</a></p><h2 id="确认nginx是否开启with-http-stub-status-module模块"><a href="#确认nginx是否开启with-http-stub-status-module模块" class="headerlink" title="确认nginx是否开启with-http_stub_status_module模块"></a>确认nginx是否开启with-http_stub_status_module模块</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nginx -V 2&gt;&amp;1 | grep -o with-http_stub_status_module</span><br></pre></td></tr></table></figure><p>如果出现with-http_stub_status_module，说明已经开启了该module，即可进行下一步</p><h2 id="配置nginx"><a href="#配置nginx" class="headerlink" title="配置nginx"></a>配置nginx</h2><p>在80端口对应的配置项里加入如下配置</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">location = /basic_status &#123;</span><br><span class="line">        stub_status;</span><br><span class="line">        allow 127.0.0.1;</span><br><span class="line">        allow ::1;</span><br><span class="line">        deny all;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2 id="修改宏变量（可选）"><a href="#修改宏变量（可选）" class="headerlink" title="修改宏变量（可选）"></a>修改宏变量（可选）</h2><p>默认情况下，不需要修改任何宏变量，因为他就是指向了localhost&#x2F;basic_status<br>不过如果修改了端口或者location的话，需要修改对应的配置</p><h1 id="Nginx-Plus方式"><a href="#Nginx-Plus方式" class="headerlink" title="Nginx Plus方式"></a>Nginx Plus方式</h1><p>这个方式比较厉害，能看到的东西非常多，但是有个巨大的问题，就是这不是免费的！<br>如果没有用这个的话，建议可以直接放弃<br>参考链接： <a href="https://www.zabbix.com/integrations/nginx#nginx_plus_http">https://www.zabbix.com/integrations/nginx#nginx_plus_http</a></p><h2 id="配置-重启nginx"><a href="#配置-重启nginx" class="headerlink" title="配置&#x2F;重启nginx"></a>配置&#x2F;重启nginx</h2><p>添加如下配置</p><img src="/2025/01/09/Zabbix-Nginx%E7%9B%91%E6%8E%A7/plus_0.png" class="" title="图片"><p>保存并重启nginx<br>restart&#x2F;reload nginx之后，我们可以尝试访问如下页面，可以看到是有数据传输的</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://&lt;IP&gt;:8080/dashboard.html#upstreams</span><br></pre></td></tr></table></figure><img src="/2025/01/09/Zabbix-Nginx%E7%9B%91%E6%8E%A7/plus_1.png" class="" title="图片"><h2 id="绑定template"><a href="#绑定template" class="headerlink" title="绑定template"></a>绑定template</h2><p>这一步非常简单，就把这个template绑定到对应的host上去即可</p><h2 id="修改宏变量"><a href="#修改宏变量" class="headerlink" title="修改宏变量"></a>修改宏变量</h2><p>我们需要把template中的这个宏改成如下格式</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">`&lt;scheme&gt;://&lt;host&gt;:&lt;port&gt;/&lt;location&gt;/`.</span><br></pre></td></tr></table></figure><img src="/2025/01/09/Zabbix-Nginx%E7%9B%91%E6%8E%A7/plus_2.png" class="" title="图片"><h2 id="刷新即可"><a href="#刷新即可" class="headerlink" title="刷新即可"></a>刷新即可</h2><img src="/2025/01/09/Zabbix-Nginx%E7%9B%91%E6%8E%A7/plus_3.png" class="" title="图片"><p>能看到已经自动添加了很多很多的监控项了，基本上每一个stream，每一个zone都有对应的监控，功能比单纯的status监控多得多</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;在项目中使用Nginx之后，有时候我们需要知道Nginx具体的工作情况，这时候就需要使用zabbix进行Nginx的相关监控&lt;br&gt;这边我们</summary>
+      
+    
+    
+    
+    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+    <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
+    
+  </entry>
   
   <entry>
     <title>Grafana-对接MySQL数据库的一些注意点</title>
@@ -245,9 +339,9 @@
     <link href="https://maydaychen.github.io/2024/12/23/Zabbix-%E5%AF%86%E7%A0%81%E9%87%8D%E7%BD%AE/"/>
     <id>https://maydaychen.github.io/2024/12/23/Zabbix-%E5%AF%86%E7%A0%81%E9%87%8D%E7%BD%AE/</id>
     <published>2024-12-23T08:18:55.000Z</published>
-    <updated>2024-12-27T08:22:50.000Z</updated>
+    <updated>2025-01-24T07:12:40.000Z</updated>
     
-    <content type="html"><![CDATA[<p>在使用 zabbix 的过程中由于默认密码过于简单，往往会修改密码并配置为自动登录，时间一长往往忘记密码，造成无法登录的情况，这种情况就需要重置密码。</p><p>Zabbix 的密码存储在数据库中，可通过数据库重置。<strong>在 Zabbix 5.0 版本之前，zabbix 用户密码使用 MD5 加密方式存储，从 5.0 版本开始使用 Bcrypt 加密方式</strong>。</p><p>BCrypt 是一种跨平台的文件加密工具，使用的是布鲁斯 · 施内尔在 1993 年发布的 Blowfish 加密算法。它是一种可生成随机盐值的单向 Hash 加密算法，Hash 值中包含了上一步生成的盐值（22 个字符）的不可逆加密算法。同一种明文，每次被加密后的密文都不一样，并且不可反向破解生成明文，破解难度非常大。大大提升了系统的安全性，因此要重置 5.0 以后版本的用户密码就需要注意，不能再使用 MD5 加密方式生成的密码。</p><p>可按照以下方法对 zabbix 的 Admin 用户密码进行重置 MySQL 数据库</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mysql -uzabbix -p</span><br><span class="line">use zabbix;</span><br><span class="line">updateusersSET passwd=&#x27;$2y$10$92nDno4n0Zm7Ej7Jfsz8WukBfgSS/U0QkIuu8WkJPihXBb2A1UrEK&#x27;where userid=1;</span><br><span class="line">quit;</span><br></pre></td></tr></table></figure><p>PostgreSQL</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">su - postgres</span><br><span class="line">psql</span><br><span class="line">\c zabbix;</span><br><span class="line">updateusersSET passwd=&#x27;$2y$10$92nDno4n0Zm7Ej7Jfsz8WukBfgSS/U0QkIuu8WkJPihXBb2A1UrEK&#x27;where userid=1;</span><br><span class="line">、q</span><br></pre></td></tr></table></figure><p>重置后即可使用账号：Admin 密码：zabbix 登录系统，注意账号 Admin 的 A 为大写，区分大小写。</p>]]></content>
+    <content type="html"><![CDATA[<p>在使用 zabbix 的过程中由于默认密码过于简单，往往会修改密码并配置为自动登录，时间一长往往忘记密码，造成无法登录的情况，这种情况就需要重置密码。</p><p>Zabbix 的密码存储在数据库中，可通过数据库重置。<strong>在 Zabbix 5.0 版本之前，zabbix 用户密码使用 MD5 加密方式存储，从 5.0 版本开始使用 Bcrypt 加密方式</strong>。</p><p>BCrypt 是一种跨平台的文件加密工具，使用的是布鲁斯 · 施内尔在 1993 年发布的 Blowfish 加密算法。它是一种可生成随机盐值的单向 Hash 加密算法，Hash 值中包含了上一步生成的盐值（22 个字符）的不可逆加密算法。同一种明文，每次被加密后的密文都不一样，并且不可反向破解生成明文，破解难度非常大。大大提升了系统的安全性，因此要重置 5.0 以后版本的用户密码就需要注意，不能再使用 MD5 加密方式生成的密码。</p><p>可按照以下方法对 zabbix 的 Admin 用户密码进行重置 MySQL 数据库</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mysql -uzabbix -p</span><br><span class="line">use zabbix;</span><br><span class="line">updateusersSET passwd=&#x27;$2y$10$92nDno4n0Zm7Ej7Jfsz8WukBfgSS/U0QkIuu8WkJPihXBb2A1UrEK&#x27;where userid=1;</span><br><span class="line">quit;</span><br></pre></td></tr></table></figure><p>PostgreSQL</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">su - postgres</span><br><span class="line">psql</span><br><span class="line">c zabbix;</span><br><span class="line">updateusersSET passwd=&#x27;$2y$10$92nDno4n0Zm7Ej7Jfsz8WukBfgSS/U0QkIuu8WkJPihXBb2A1UrEK&#x27;where userid=1;</span><br><span class="line">、q</span><br></pre></td></tr></table></figure><p>重置后即可使用账号：Admin 密码：zabbix 登录系统，注意账号 Admin 的 A 为大写，区分大小写。</p><p>{&quot;AlarmName&quot;:&quot;AWS&#x2F;WAF HostingProviderIPList BlockedRequests is more than 300 in 5 mins&quot;,&quot;AlarmDescription&quot;:null,&quot;AWSAccountId&quot;:&quot;861276109353&quot;,&quot;AlarmConfigurationUpdatedTimestamp&quot;:&quot;2025-01-23T06:39:17.195+0000&quot;,&quot;NewStateValue&quot;:&quot;OK&quot;,&quot;NewStateReason&quot;:&quot;Threshold Crossed: 1 out of the last 1 datapoints [1.0 (23&#x2F;01&#x2F;25 06:35:00)] was not greater than the threshold (300.0) (minimum 1 datapoint for ALARM -&gt; OK transition).&quot;,&quot;StateChangeTime&quot;:&quot;2025-01-23T06:40:06.454+0000&quot;,&quot;Region&quot;:&quot;Asia Pacific (Singapore)&quot;,&quot;AlarmArn&quot;:&quot;arn:aws:cloudwatch:ap-southeast-1:861276109353:alarm:AWS&#x2F;WAF HostingProviderIPList BlockedRequests is more than 300 in 5 mins&quot;,&quot;OldStateValue&quot;:&quot;ALARM&quot;,&quot;OKActions&quot;:[&quot;arn:aws:sns:ap-southeast-1:861276109353:Monitoring-Prod-CloudWatch&quot;],&quot;AlarmActions&quot;:[&quot;arn:aws:sns:ap-southeast-1:861276109353:Monitoring-Prod-CloudWatch&quot;],&quot;InsufficientDataActions&quot;:[],&quot;Trigger&quot;:{&quot;MetricName&quot;:&quot;BlockedRequests&quot;,&quot;Namespace&quot;:&quot;AWS&#x2F;WAFV2&quot;,&quot;StatisticType&quot;:&quot;Statistic&quot;,&quot;Statistic&quot;:&quot;SUM&quot;,&quot;Unit&quot;:null,&quot;Dimensions&quot;:[{&quot;value&quot;:&quot;apx-prod-web-acl&quot;,&quot;name&quot;:&quot;WebACL&quot;},{&quot;value&quot;:&quot;ap-southeast-1&quot;,&quot;name&quot;:&quot;Region&quot;},{&quot;value&quot;:&quot;HostingProviderIPList&quot;,&quot;name&quot;:&quot;LabelName&quot;},{&quot;value&quot;:&quot;awswaf:managed:aws:anonymous-ip-list&quot;,&quot;name&quot;:&quot;LabelNamespace&quot;}],&quot;Period&quot;:300,&quot;EvaluationPeriods&quot;:1,&quot;DatapointsToAlarm&quot;:1,&quot;ComparisonOperator&quot;:&quot;GreaterThanThreshold&quot;,&quot;Threshold&quot;:300.0,&quot;TreatMissingData&quot;:&quot;notBreaching&quot;,&quot;EvaluateLowSampleCountPercentile&quot;:&quot;&quot;}}</p>]]></content>
     
     
       
@@ -412,104 +506,6 @@
     
     
     <category term="NAS" scheme="https://maydaychen.github.io/tags/NAS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Zabbix-Queue相关</title>
-    <link href="https://maydaychen.github.io/2024/12/05/Zabbix-Queue%E7%9B%B8%E5%85%B3/"/>
-    <id>https://maydaychen.github.io/2024/12/05/Zabbix-Queue%E7%9B%B8%E5%85%B3/</id>
-    <published>2024-12-05T07:58:12.000Z</published>
-    <updated>2024-12-27T08:03:18.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>queue（队列）显示监控项等待刷新的时间,可以看到每种agent类型刷新时间，通过queue可以更好的体现出监控的一个指标.正常情况下，是一片绿色。如果出现过多红色，那么需要留意一下。我们也可以在右上角的下拉条选detail，可以找出到底是哪个item的问题。</p><h2 id="远程节点延迟"><a href="#远程节点延迟" class="headerlink" title="远程节点延迟"></a>远程节点延迟</h2><p>来自子节点（child node）的信息部都不是最新的。master节点接受到的数据都存在一定得延迟（通常情况下，多则需要10秒）</p><p>决定子节点信息延迟因素</p><ul><li>子节点性能</li><li>子节点与主节点之间的通信质量</li><li>子节点与主节点之间的时间差</li></ul><h2 id="Queue-item"><a href="#Queue-item" class="headerlink" title="Queue item"></a>Queue item</h2><p>既然queue也是一项性能指标，那么我们也有很必要把他加入监控项，zabbix提供了内建item zabbix[queue,,] ，from默认为6秒，表示超过多少秒便报警，to默认为infinity，也就是无限制.</p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h2 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot; title=&quot;概述&quot;&gt;&lt;/a&gt;概述&lt;/h2&gt;&lt;p&gt;queue（队列）显示监控项等待刷新的时间,可以看到每种agent类型刷新时间，通过queue可以更好的体现出监控的一个指标.正常情况下，是</summary>
-      
-    
-    
-    
-    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-    <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Zabbix-数据库监控数据磁盘使用量解析及预测</title>
-    <link href="https://maydaychen.github.io/2024/12/04/Zabbix-%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9B%91%E6%8E%A7%E6%95%B0%E6%8D%AE%E7%A3%81%E7%9B%98%E4%BD%BF%E7%94%A8%E9%87%8F%E8%A7%A3%E6%9E%90%E5%8F%8A%E9%A2%84%E6%B5%8B/"/>
-    <id>https://maydaychen.github.io/2024/12/04/Zabbix-%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9B%91%E6%8E%A7%E6%95%B0%E6%8D%AE%E7%A3%81%E7%9B%98%E4%BD%BF%E7%94%A8%E9%87%8F%E8%A7%A3%E6%9E%90%E5%8F%8A%E9%A2%84%E6%B5%8B/</id>
-    <published>2024-12-04T08:21:42.000Z</published>
-    <updated>2024-12-27T08:22:24.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="Zabbix对磁盘的决定性因素有四个"><a href="#Zabbix对磁盘的决定性因素有四个" class="headerlink" title="Zabbix对磁盘的决定性因素有四个"></a>Zabbix对磁盘的决定性因素有四个</h2><ol><li>每秒处理的数据量<br>这个问题不说，大家也明白。这边的每秒只是一个平均值，例如我有3000个监控项，每60秒刷新一次，那么平均每秒有50（3000&#x2F;60）个数据要处理。就是说每秒有50条数据要插入MySQL</li><li>历史记录保存时间<br>zabbix对每个监控项的值都要记录下来，这些记录一般保留几周到几个月，每个值都需要暂用硬盘空间。假如一个数据你要保留30天，而且每秒有50个值要保留，那我们一共有129，600，000（30天<em>24小时</em>3600秒）<em>50个值，一条记录多大，由你的数据库引擎和你存储的数据类型来决定（浮点型，整形，字符型等等），一般来说一条记录需要占用50个字节（一个大概值），在这个案例中129,600,000个记录大约需要（129600000</em>50字节）6.5G的硬盘空间</li><li>趋势数据保存时间<br>什么是趋势数据呢？当你查看一周或者一月的图表，图表上看到的MAX&#x2F;MIN&#x2F;AVG&#x2F;COUNT都是取自趋势数据，趋势数据一小时获取一次，一般情况下，趋势数据一条记录大概占用128字节，如果我们想保存5年趋势数据，3000个监控线需要2.4GB（3000个<em>24小时</em>356天*128字节）每年，5年一共16.8G</li><li>事件记录保存时间<br>报警、警告、恢复等等事情，一个事件大概占用130个字节，一般情况下不会太多，除非运维做的太糟糕，或者运维要求太严格，把阀值调的很低。假如这个运维今年本命年，既没拜佛有没烧香，更别说给服务器贴灵符，于是这一年每秒钟就有一个事件发生，那么事件这一年占用的数据空间为：1年<em>365天</em>24小时<em>3600秒</em>130字节大概为4.1G空间。</li></ol><h2 id="数据库空间计算公式"><a href="#数据库空间计算公式" class="headerlink" title="数据库空间计算公式"></a>数据库空间计算公式</h2><p>zabbix配置：固定大小，一般&lt;10MB</p><p>历史数据：天数*(监控项总数&#x2F;刷新频率)<em>24小时</em>3600秒*50字节</p><p>趋势数据：天数<em>（监控项总数&#x2F;3600）</em>24小时<em>3600秒</em>128字节</p><p>事件数据：天数<em>事件个数（大概值）</em>24小时<em>3600秒</em>130字节</p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h2 id=&quot;Zabbix对磁盘的决定性因素有四个&quot;&gt;&lt;a href=&quot;#Zabbix对磁盘的决定性因素有四个&quot; class=&quot;headerlink&quot; title=&quot;Zabbix对磁盘的决定性因素有四个&quot;&gt;&lt;/a&gt;Zabbix对磁盘的决定性因素有四个&lt;/h2&gt;&lt;ol&gt;
-&lt;li&gt;</summary>
-      
-    
-    
-    
-    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-    <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Zabbix-执行远程命令</title>
-    <link href="https://maydaychen.github.io/2024/12/02/Zabbix-%E6%89%A7%E8%A1%8C%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4/"/>
-    <id>https://maydaychen.github.io/2024/12/02/Zabbix-%E6%89%A7%E8%A1%8C%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4/</id>
-    <published>2024-12-02T08:00:22.000Z</published>
-    <updated>2024-12-27T08:01:57.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="远程执行命令能做些什么"><a href="#远程执行命令能做些什么" class="headerlink" title="远程执行命令能做些什么:"></a>远程执行命令能做些什么:</h2><ul><li>重启应用（Apache、<a href="http://www.ttlsa.com/nginx/">nginx</a>、MySQL等等）</li><li>使用IPMI接口重启服务器</li><li>自动释放磁盘空间（删除老文件，清除&#x2F;tmp目录等等）</li><li>CPU过载时讲一个虚拟机迁移到另外一台物理服务器</li><li>云环境下，一台服务器CPU\硬盘\内存\其他硬件资源不足的情况下，可以自动添加过去</li></ul><aside>⚠️ Zabbix proxy不支持远程命令</aside><p>远程命令最大长度为255字符，同时支持多个远程命令，如需要执行多条命令，只需要另起一行写命令即可，还有，远程命令可以使用宏变量。</p><h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h3 id="修改agentd-conf"><a href="#修改agentd-conf" class="headerlink" title="修改agentd.conf"></a>修改agentd.conf</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">EnableRemoteCommands = 1</span><br></pre></td></tr></table></figure><h3 id="重启agent"><a href="#重启agent" class="headerlink" title="重启agent"></a>重启agent</h3><h3 id="配置action"><a href="#配置action" class="headerlink" title="配置action"></a>配置action</h3><ul><li>在Operations选显卡中选择Remote command</li><li>选择远程命令类型(IPMI, Custom script, SSH, Telnet, Global script)</li><li>写上远程命令</li></ul><h3 id="备注"><a href="#备注" class="headerlink" title="备注"></a>备注</h3><ol><li>sudo不用多说了，zabbix用户没有运行某些命令的权限,必须加上.</li><li>远程命令，自然是在远程的主机后台运行。<br>Conditions选项卡定义了什么条件下，这个远程命令会被执行，其实这个和前面说的action真没什么区别，大家都能看懂。下图的意思是，在非维护时间Apache应用出现状况，并且严重性级别为Disaster。满足条件之后，就开始执行命令了。</li></ol><h2 id="访问权限配置"><a href="#访问权限配置" class="headerlink" title="访问权限配置"></a>访问权限配置</h2><p>可以配置sudoer文件，使zabbix用户可以执行所有命令</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># allows &#x27;zabbix&#x27; user to run all commands without password.</span><br><span class="line"> zabbix ALL=NOPASSWD: ALL</span><br><span class="line"># allows &#x27;zabbix&#x27; user to restart apache without password.</span><br><span class="line"> zabbix ALL=NOPASSWD: /etc/init.d/apache restart</span><br></pre></td></tr></table></figure>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h2 id=&quot;远程执行命令能做些什么&quot;&gt;&lt;a href=&quot;#远程执行命令能做些什么&quot; class=&quot;headerlink&quot; title=&quot;远程执行命令能做些什么:&quot;&gt;&lt;/a&gt;远程执行命令能做些什么:&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;重启应用（Apache、&lt;a href=&quot;http:</summary>
-      
-    
-    
-    
-    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-    <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Teams通过Webhook实现mention某人及踩坑记录</title>
-    <link href="https://maydaychen.github.io/2024/04/23/Teams%E9%80%9A%E8%BF%87Webhook%E5%AE%9E%E7%8E%B0@%E6%9F%90%E4%BA%BA%E5%8F%8A%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95/"/>
-    <id>https://maydaychen.github.io/2024/04/23/Teams%E9%80%9A%E8%BF%87Webhook%E5%AE%9E%E7%8E%B0@%E6%9F%90%E4%BA%BA%E5%8F%8A%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95/</id>
-    <published>2024-04-23T15:02:27.000Z</published>
-    <updated>2024-12-27T05:13:56.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>我们在使用MS Teams进行沟通的时候，肯定会用到webhook进行消息的自动化发送，但是现在有一个需求，有一些消息需要指定@某些人，而不是单纯的发送消息</p><h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>前面我们说了怎么通过python代码进行通知发送，这次只需要改一些代码</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> urllib3</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line">http = urllib3.PoolManager()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">lambda_handler</span>(<span class="params">event, context</span>):</span><br><span class="line">    <span class="comment"># 这是webhook地址</span></span><br><span class="line">    url = <span class="string">&quot;https://xxx.webhook.office.com/webhookb2/xxxxxx&quot;</span></span><br><span class="line">    msg = &#123;</span><br><span class="line">   <span class="string">&quot;type&quot;</span>:<span class="string">&quot;message&quot;</span>,</span><br><span class="line">   <span class="string">&quot;attachments&quot;</span>:[</span><br><span class="line">      &#123;</span><br><span class="line">         <span class="string">&quot;contentType&quot;</span>:<span class="string">&quot;application/vnd.microsoft.card.adaptive&quot;</span>,</span><br><span class="line">         <span class="string">&quot;contentUrl&quot;</span>:<span class="string">&#x27;&#x27;</span>,</span><br><span class="line">         <span class="string">&quot;content&quot;</span>:&#123;</span><br><span class="line">            <span class="string">&quot;$schema&quot;</span>:<span class="string">&quot;http://adaptivecards.io/schemas/adaptive-card.json&quot;</span>,</span><br><span class="line">            <span class="string">&quot;type&quot;</span>:<span class="string">&quot;AdaptiveCard&quot;</span>,</span><br><span class="line">            <span class="string">&quot;version&quot;</span>:<span class="string">&quot;1.2&quot;</span>,</span><br><span class="line">            <span class="string">&quot;body&quot;</span>: [</span><br><span class="line">              &#123;</span><br><span class="line">                <span class="string">&quot;type&quot;</span>: <span class="string">&quot;TextBlock&quot;</span>,</span><br><span class="line">                <span class="string">&quot;text&quot;</span>: <span class="string">&quot;Hi &lt;at&gt;Adele UPN&lt;/at&gt;, &lt;at&gt;Adele Microsoft Entra ID&lt;/at&gt;&quot;</span></span><br><span class="line">              &#125;</span><br><span class="line">            ],</span><br><span class="line">            <span class="string">&quot;msteams&quot;</span>: &#123;</span><br><span class="line">                <span class="string">&quot;entities&quot;</span>: [</span><br><span class="line">                  &#123;</span><br><span class="line">                    <span class="string">&quot;type&quot;</span>: <span class="string">&quot;mention&quot;</span>,</span><br><span class="line">                    <span class="string">&quot;text&quot;</span>: <span class="string">&quot;&lt;at&gt;Adele UPN&lt;/at&gt;&quot;</span>,</span><br><span class="line">                    <span class="string">&quot;mentioned&quot;</span>: &#123;</span><br><span class="line">                      <span class="string">&quot;id&quot;</span>: <span class="string">&quot;AdeleV@contoso.onmicrosoft.com&quot;</span>,</span><br><span class="line">                      <span class="string">&quot;name&quot;</span>: <span class="string">&quot;Adele Vance&quot;</span></span><br><span class="line">                    &#125;</span><br><span class="line">                  &#125;,</span><br><span class="line">                  &#123;</span><br><span class="line">                    <span class="string">&quot;type&quot;</span>: <span class="string">&quot;mention&quot;</span>,</span><br><span class="line">                    <span class="string">&quot;text&quot;</span>: <span class="string">&quot;&lt;at&gt;Adele Microsoft Entra ID&lt;/at&gt;&quot;</span>,</span><br><span class="line">                    <span class="string">&quot;mentioned&quot;</span>: &#123;</span><br><span class="line">                      <span class="string">&quot;id&quot;</span>: <span class="string">&quot;87d349ed-44d7-43e1-9a83-5f2406dee5bd&quot;</span>,</span><br><span class="line">                      <span class="string">&quot;name&quot;</span>: <span class="string">&quot;Adele Vance&quot;</span></span><br><span class="line">                    &#125;</span><br><span class="line">                  &#125;</span><br><span class="line">                ]</span><br><span class="line">              &#125;</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   ]</span><br><span class="line">&#125;</span><br><span class="line">    encoded_msg = json.dumps(msg).encode(<span class="string">&quot;utf-8&quot;</span>)</span><br><span class="line">    resp = http.request(<span class="string">&quot;POST&quot;</span>, url, body=encoded_msg)</span><br><span class="line">    <span class="built_in">print</span>(</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="string">&quot;message&quot;</span>: event[<span class="string">&quot;Records&quot;</span>][<span class="number">0</span>][<span class="string">&quot;Sns&quot;</span>][<span class="string">&quot;Message&quot;</span>],</span><br><span class="line">            <span class="string">&quot;status_code&quot;</span>: resp.status,</span><br><span class="line">            <span class="string">&quot;response&quot;</span>: resp.data,</span><br><span class="line">        &#125;</span><br><span class="line">    )</span><br></pre></td></tr></table></figure><p>可以看到一下变更点</p><ol><li>body中的TextBlock添加了<at>Adele UPN</at> 字段，其中Adele UPN可以为用户名</li><li>添加msteams块，其中指定type为mention， id可以为UserId，也可以为用户邮箱，也可以为MS Entra Object ID,key都是id</li><li>name字段，可以把变更点1中的用户名改为别的字段，但是不影响@用户的效果</li></ol><h2 id="坑点"><a href="#坑点" class="headerlink" title="坑点"></a>坑点</h2><p>切记！@mention功能不支持Guest账户，也就是说只有在这个Teams中的用户才能被@！</p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h2 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h2&gt;&lt;p&gt;我们在使用MS Teams进行沟通的时候，肯定会用到webhook进行消息的自动化发送，但是现在有一个需求，有一些消息需要指定@某些人，而不</summary>
-      
-    
-    
-    
-    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-    <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
     
   </entry>
   
