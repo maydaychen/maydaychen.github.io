@@ -2,6 +2,51 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://maydaychen.github.io/2025/02/08/Grafana-%E4%BD%BF%E7%94%A8Button%E4%BF%AE%E6%94%B9MySQL%E6%95%B0%E6%8D%AE%E5%BA%93/</loc>
+    
+    <lastmod>2025-02-08</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://maydaychen.github.io/2024/12/22/Zabbix-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E7%9B%B8%E5%85%B3/</loc>
+    
+    <lastmod>2025-02-08</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://maydaychen.github.io/2025/02/03/AI-Ollama%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E8%AE%B0%E5%BD%95/</loc>
+    
+    <lastmod>2025-02-08</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://maydaychen.github.io/2025/02/09/Grafana-%E9%87%8D%E7%BD%AE%E5%AF%86%E7%A0%81%E6%96%B9%E6%B3%95/</loc>
+    
+    <lastmod>2025-02-08</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://maydaychen.github.io/2025/02/08/Zabbix-Rocky9%E5%AE%89%E8%A3%85Zabbix-Grafana/</loc>
+    
+    <lastmod>2025-02-08</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://maydaychen.github.io/about/index.html</loc>
     
     <lastmod>2025-02-05</lastmod>
@@ -14,15 +59,6 @@
     <loc>https://maydaychen.github.io/2025/02/03/AI-%E5%B0%9D%E8%AF%95%E4%BD%BF%E7%94%A8Ollama%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2DeepSeek-R1/</loc>
     
     <lastmod>2025-02-05</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://maydaychen.github.io/2025/02/03/AI-Ollama%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E8%AE%B0%E5%BD%95/</loc>
-    
-    <lastmod>2025-02-03</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -156,15 +192,6 @@
   
   <url>
     <loc>https://maydaychen.github.io/2024/12/05/Zabbix-Queue%E7%9B%B8%E5%85%B3/</loc>
-    
-    <lastmod>2024-12-27</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://maydaychen.github.io/2024/12/22/Zabbix-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E7%9B%B8%E5%85%B3/</loc>
     
     <lastmod>2024-12-27</lastmod>
     
@@ -670,7 +697,7 @@
 
   <url>
     <loc>https://maydaychen.github.io/</loc>
-    <lastmod>2025-02-07</lastmod>
+    <lastmod>2025-02-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -678,91 +705,91 @@
   
   <url>
     <loc>https://maydaychen.github.io/tags/Android/</loc>
-    <lastmod>2025-02-07</lastmod>
+    <lastmod>2025-02-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://maydaychen.github.io/tags/Ansible/</loc>
-    <lastmod>2025-02-07</lastmod>
+    <lastmod>2025-02-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://maydaychen.github.io/tags/Docker/</loc>
-    <lastmod>2025-02-07</lastmod>
+    <lastmod>2025-02-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://maydaychen.github.io/tags/%E5%89%8D%E7%AB%AF/</loc>
-    <lastmod>2025-02-07</lastmod>
+    <lastmod>2025-02-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://maydaychen.github.io/tags/Git/</loc>
-    <lastmod>2025-02-07</lastmod>
+    <lastmod>2025-02-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/</loc>
-    <lastmod>2025-02-07</lastmod>
+    <lastmod>2025-02-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://maydaychen.github.io/tags/Hexo/</loc>
-    <lastmod>2025-02-07</lastmod>
+    <lastmod>2025-02-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://maydaychen.github.io/tags/NAS/</loc>
-    <lastmod>2025-02-07</lastmod>
+    <lastmod>2025-02-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://maydaychen.github.io/tags/Linux/</loc>
-    <lastmod>2025-02-07</lastmod>
+    <lastmod>2025-02-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://maydaychen.github.io/tags/MacOS/</loc>
-    <lastmod>2025-02-07</lastmod>
+    <lastmod>2025-02-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://maydaychen.github.io/tags/Python/</loc>
-    <lastmod>2025-02-07</lastmod>
+    <lastmod>2025-02-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://maydaychen.github.io/tags/Windows/</loc>
-    <lastmod>2025-02-07</lastmod>
+    <lastmod>2025-02-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://maydaychen.github.io/tags/%E9%A3%9F%E8%B0%B1/</loc>
-    <lastmod>2025-02-07</lastmod>
+    <lastmod>2025-02-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -771,42 +798,42 @@
   
   <url>
     <loc>https://maydaychen.github.io/categories/Tools/</loc>
-    <lastmod>2025-02-07</lastmod>
+    <lastmod>2025-02-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://maydaychen.github.io/categories/%E5%BC%80%E5%8F%91/</loc>
-    <lastmod>2025-02-07</lastmod>
+    <lastmod>2025-02-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/</loc>
-    <lastmod>2025-02-07</lastmod>
+    <lastmod>2025-02-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://maydaychen.github.io/categories/%E5%8D%9A%E5%AE%A2%E7%9B%B8%E5%85%B3/</loc>
-    <lastmod>2025-02-07</lastmod>
+    <lastmod>2025-02-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://maydaychen.github.io/categories/%E7%94%9F%E6%B4%BB/</loc>
-    <lastmod>2025-02-07</lastmod>
+    <lastmod>2025-02-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://maydaychen.github.io/categories/AI/</loc>
-    <lastmod>2025-02-07</lastmod>
+    <lastmod>2025-02-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
