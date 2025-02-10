@@ -18,16 +18,16 @@
   
   
   <title>Zabbix-配置AWS-SES以发送邮件 | Maydaychen Station</title>
-  <meta name="description" content="配置SES略过，无非是配置这么几个 12345SMTP endpoint: &#x2F;&#x2F;可以从AWS直接获取SMTP port: SMTP user name: &#x2F;&#x2F;可以从AWS直接获取SMTP password: &#x2F;&#x2F;可以从AWS直接获取SMTP domain: &#x2F;&#x2F;AWS SES上有domain，前缀xxx@可以任意配置  问题解决Protocol “smtps” not supported or d">
+  <meta name="description" content="配置SES12345SMTP endpoint: &#x2F;&#x2F;可以从AWS直接获取SMTP port: 465SMTP user name: &#x2F;&#x2F;可以从AWS直接获取SMTP password: &#x2F;&#x2F;可以从AWS直接获取SMTP domain: &#x2F;&#x2F;AWS SES上有domain，前缀xxx@可以任意配置  问题解决Protocol “smtps” not supported or disabled in">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Zabbix-配置AWS-SES以发送邮件">
 <meta property="og:url" content="https://maydaychen.github.io/2025/01/22/Zabbix-%E9%85%8D%E7%BD%AEAWS-SES%E4%BB%A5%E5%8F%91%E9%80%81%E9%82%AE%E4%BB%B6/index.html">
 <meta property="og:site_name" content="Hexotest">
-<meta property="og:description" content="配置SES略过，无非是配置这么几个 12345SMTP endpoint: &#x2F;&#x2F;可以从AWS直接获取SMTP port: SMTP user name: &#x2F;&#x2F;可以从AWS直接获取SMTP password: &#x2F;&#x2F;可以从AWS直接获取SMTP domain: &#x2F;&#x2F;AWS SES上有domain，前缀xxx@可以任意配置  问题解决Protocol “smtps” not supported or d">
+<meta property="og:description" content="配置SES12345SMTP endpoint: &#x2F;&#x2F;可以从AWS直接获取SMTP port: 465SMTP user name: &#x2F;&#x2F;可以从AWS直接获取SMTP password: &#x2F;&#x2F;可以从AWS直接获取SMTP domain: &#x2F;&#x2F;AWS SES上有domain，前缀xxx@可以任意配置  问题解决Protocol “smtps” not supported or disabled in">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://maydaychen.github.io/2025/01/22/Zabbix-%E9%85%8D%E7%BD%AEAWS-SES%E4%BB%A5%E5%8F%91%E9%80%81%E9%82%AE%E4%BB%B6/1.png">
 <meta property="article:published_time" content="2025-01-22T07:47:16.000Z">
-<meta property="article:modified_time" content="2025-02-03T14:15:00.894Z">
+<meta property="article:modified_time" content="2025-02-10T05:26:10.000Z">
 <meta property="article:author" content="Maydaychen">
 <meta property="article:tag" content="监控">
 <meta name="twitter:card" content="summary">
@@ -384,8 +384,7 @@
     </div>
     <div class="article-entry marked-body" itemprop="articleBody">
       
-        <h1 id="配置SES"><a href="#配置SES" class="headerlink" title="配置SES"></a>配置SES</h1><p>略过，无非是配置这么几个</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">SMTP endpoint: //可以从AWS直接获取</span><br><span class="line">SMTP port: </span><br><span class="line">SMTP user name: //可以从AWS直接获取</span><br><span class="line">SMTP password: //可以从AWS直接获取</span><br><span class="line">SMTP domain: //AWS SES上有domain，前缀xxx@可以任意配置</span><br></pre></td></tr></table></figure>
+        <h1 id="配置SES"><a href="#配置SES" class="headerlink" title="配置SES"></a>配置SES</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">SMTP endpoint: //可以从AWS直接获取</span><br><span class="line">SMTP port: 465</span><br><span class="line">SMTP user name: //可以从AWS直接获取</span><br><span class="line">SMTP password: //可以从AWS直接获取</span><br><span class="line">SMTP domain: //AWS SES上有domain，前缀xxx@可以任意配置</span><br></pre></td></tr></table></figure>
 
 <h1 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h1><h2 id="Protocol-“smtps”-not-supported-or-disabled-in-libcurl"><a href="#Protocol-“smtps”-not-supported-or-disabled-in-libcurl" class="headerlink" title="Protocol “smtps” not supported or disabled in libcurl"></a>Protocol “smtps” not supported or disabled in libcurl</h2><p>在Zabbix上配置完SES以后，在Test的时候出现上述错误<br>在check curl版本的时候，发现并不支持smtps</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl --version</span><br></pre></td></tr></table></figure>
