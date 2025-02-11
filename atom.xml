@@ -6,7 +6,7 @@
   <link href="https://maydaychen.github.io/atom.xml" rel="self"/>
   
   <link href="https://maydaychen.github.io/"/>
-  <updated>2025-02-08T15:48:55.283Z</updated>
+  <updated>2025-02-11T06:35:50.308Z</updated>
   <id>https://maydaychen.github.io/</id>
   
   <author>
@@ -17,11 +17,315 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Prometheus-如何发送报警到Teams</title>
+    <link href="https://maydaychen.github.io/2025/02/15/Prometheus-%E5%A6%82%E4%BD%95%E5%8F%91%E9%80%81%E6%8A%A5%E8%AD%A6%E5%88%B0Teams/"/>
+    <id>https://maydaychen.github.io/2025/02/15/Prometheus-%E5%A6%82%E4%BD%95%E5%8F%91%E9%80%81%E6%8A%A5%E8%AD%A6%E5%88%B0Teams/</id>
+    <published>2025-02-15T06:20:49.000Z</published>
+    <updated>2025-02-11T06:35:50.308Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="MS-Teams中创建webhook"><a href="#MS-Teams中创建webhook" class="headerlink" title="MS Teams中创建webhook"></a>MS Teams中创建webhook</h1><p>参考地址：<br><a href="https://learn.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/add-incoming-webhook?tabs=newteams,dotnet">https://learn.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/add-incoming-webhook?tabs=newteams%2Cdotnet</a></p><h1 id="配置AlertManager"><a href="#配置AlertManager" class="headerlink" title="配置AlertManager"></a>配置AlertManager</h1><p>分为两个版本，旧版本和新版本</p><h2 id="老版本"><a href="#老版本" class="headerlink" title="老版本"></a>老版本</h2><p>老版本请参考这个工具<br><a href="https://github.com/prometheus-msteams/prometheus-msteams">https://github.com/prometheus-msteams/prometheus-msteams</a></p><h2 id="新版本"><a href="#新版本" class="headerlink" title="新版本"></a>新版本</h2><p>在新版本中，我们就可以直接使用teams配置来<br><a href="https://prometheus.io/docs/alerting/latest/configuration/#msteams_config">https://prometheus.io/docs/alerting/latest/configuration/#msteams_config</a></p><h3 id="配置receiver"><a href="#配置receiver" class="headerlink" title="配置receiver"></a>配置receiver</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">      - name: &#x27;teams&#x27;</span><br><span class="line">        msteams_configs:</span><br><span class="line">          - webhook_url: &#x27;&#123;&#123; webhook_url &#125;&#125;&#x27;</span><br><span class="line">            title: &#x27;&#123;&#123; template &quot;teams_alert_title&quot; . &#125;&#125;&#x27;</span><br><span class="line">            text: &#x27;&#123;&#123; template &quot;teams_alert_message&quot; . &#125;&#125;&#x27;</span><br><span class="line">templateFiles:</span><br><span class="line">teams_alert_title.tmpl: |-</span><br><span class="line">&#123;&#123; define &quot;teams_alert_title&quot; &#125;&#125;[&#123;&#123; .Status | toUpper &#125;&#125;] &#123;&#123; .CommonLabels.alertname &#125;&#125;&#123;&#123;- end &#125;&#125;</span><br><span class="line">teams_alert_message.tmpl: |-</span><br><span class="line">&#123;&#123; define &quot;teams_alert_message&quot; &#125;&#125;</span><br><span class="line">&#123;&#123; range .Alerts &#125;&#125;</span><br><span class="line">*Environment:* megatron-dev-eks-cluster</span><br><span class="line">*Namespace:* &#123;&#123; .Labels.namespace &#125;&#125;</span><br><span class="line">*Pod:* &#123;&#123; .Labels.pod &#125;&#125;</span><br><span class="line">*Summary:* &#123;&#123; .Annotations.summary &#125;&#125;</span><br><span class="line">*Description:* &#123;&#123; .Annotations.description &#125;&#125;</span><br><span class="line">*Runbook_Url:* &#123;&#123; .Annotations.runbook_url &#125;&#125;</span><br><span class="line">&#123;&#123; end &#125;&#125;</span><br><span class="line">&#123;&#123;- end &#125;&#125;</span><br></pre></td></tr></table></figure><p>webhook_url 为在Teams中创建的webhook<br>我们可以直接使用这个template，也可以加一些其他的内容</p><h3 id="配置route"><a href="#配置route" class="headerlink" title="配置route"></a>配置route</h3><pre><code>  routes:  - receiver: &#39;xxx&#39;    continue: true  - receiver: &#39;teams&#39;</code></pre><h3 id="测试是否可行"><a href="#测试是否可行" class="headerlink" title="测试是否可行"></a>测试是否可行</h3><p>经过上面的配置，在Teams中我们确实可以收到对应的alert，因此配置成功</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;MS-Teams中创建webhook&quot;&gt;&lt;a href=&quot;#MS-Teams中创建webhook&quot; class=&quot;headerlink&quot; title=&quot;MS Teams中创建webhook&quot;&gt;&lt;/a&gt;MS Teams中创建webhook&lt;/h1&gt;&lt;p&gt;参考地址：&lt;</summary>
+      
+    
+    
+    
+    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+    <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
+    
+    <category term="Prometheus" scheme="https://maydaychen.github.io/tags/Prometheus/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Zabbix-监控JAVA heap memory相关</title>
+    <link href="https://maydaychen.github.io/2025/02/14/Zabbix-%E7%9B%91%E6%8E%A7JAVA-heap-memory%E7%9B%B8%E5%85%B3/"/>
+    <id>https://maydaychen.github.io/2025/02/14/Zabbix-%E7%9B%91%E6%8E%A7JAVA-heap-memory%E7%9B%B8%E5%85%B3/</id>
+    <published>2025-02-14T03:29:36.000Z</published>
+    <updated>2025-02-11T06:19:57.476Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><h1 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h1><h2 id="创建scripts"><a href="#创建scripts" class="headerlink" title="创建scripts"></a>创建scripts</h2><p>在scripts（&#x2F;etc&#x2F;zabbix&#x2F;scripts）目录下创建一个新的shell脚本 get_heap_memory.sh</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span></span><br><span class="line"></span><br><span class="line">pid=`ps -aux | grep java | grep wildfly | grep -v &quot;grep&quot; | grep -v $0 | awk &#x27;&#123;print $2&#125;&#x27;`</span><br><span class="line"></span><br><span class="line">S0U=`jstat -gc $pid | awk &#x27;&#123;if(NR!=1) print int($3+0.5)&#125;&#x27;`</span><br><span class="line">S1U=`jstat -gc $pid | awk &#x27;&#123;if(NR!=1) print int($4+0.5)&#125;&#x27;`</span><br><span class="line">EU=`jstat -gc $pid | awk &#x27;&#123;if(NR!=1) print int($6+0.5)&#125;&#x27;`</span><br><span class="line">OU=`jstat -gc $pid | awk &#x27;&#123;if(NR!=1) print int($8+0.5)&#125;&#x27;`</span><br><span class="line">heap_memory_used=$((S0U+S1U+EU+OU))</span><br><span class="line">heap_memory_max=`jinfo -flag MaxHeapSize $pid | awk -F &quot;=&quot; &#x27;&#123;print $2&#125;&#x27;`</span><br><span class="line">echo $heap_memory_used &gt; /var/log/zabbix/heap_memory_used.txt</span><br><span class="line">echo $heap_memory_max &gt; /var/log/zabbix/heap_memory_max.txt</span><br></pre></td></tr></table></figure><h2 id="配置定时任务"><a href="#配置定时任务" class="headerlink" title="配置定时任务"></a>配置定时任务</h2><p>由于zabbix agent没有权限去运行这个命令，因此我们采用定时任务的方式</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">* * * * * sudo bash /etc/zabbix/get_heap_memory.sh</span><br></pre></td></tr></table></figure><p>注：其实可以通过赋予agent运行这个脚本的权限来省略这一步</p><h2 id="获得任务执行结果"><a href="#获得任务执行结果" class="headerlink" title="获得任务执行结果"></a>获得任务执行结果</h2><p>在脚本运行后，会生成下面两个文件，我们监控这两个文件即可</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/var/log/zabbix/heap_memory_used.txt</span><br><span class="line">/var/log/zabbix/heap_memory_max.txt</span><br></pre></td></tr></table></figure><h2 id="在console中配置"><a href="#在console中配置" class="headerlink" title="在console中配置"></a>在console中配置</h2><p>分别创建两个item，用来监控最大值和已使用值</p><img src="/2025/02/14/Zabbix-%E7%9B%91%E6%8E%A7JAVA-heap-memory%E7%9B%B8%E5%85%B3/1.png" class="" title="图片"><img src="/2025/02/14/Zabbix-%E7%9B%91%E6%8E%A7JAVA-heap-memory%E7%9B%B8%E5%85%B3/2.png" class="" title="图片">]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;h1 id=&quot;实现&quot;&gt;&lt;a href=&quot;#实现&quot; class=&quot;headerlink&quot; title=&quot;实现&quot;&gt;&lt;/a&gt;实现&lt;/h1&gt;&lt;h2 id</summary>
+      
+    
+    
+    
+    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+    <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
+    
+    <category term="Zabbix" scheme="https://maydaychen.github.io/tags/Zabbix/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Zabbix-监控SSL证书有效期</title>
+    <link href="https://maydaychen.github.io/2025/02/13/Zabbix-%E7%9B%91%E6%8E%A7SSL%E8%AF%81%E4%B9%A6%E6%9C%89%E6%95%88%E6%9C%9F/"/>
+    <id>https://maydaychen.github.io/2025/02/13/Zabbix-%E7%9B%91%E6%8E%A7SSL%E8%AF%81%E4%B9%A6%E6%9C%89%E6%95%88%E6%9C%9F/</id>
+    <published>2025-02-13T03:28:15.000Z</published>
+    <updated>2025-02-11T06:19:57.370Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>项目需要，需要监控所有的SSL证书的有效期，因此需要自定义一个监控项</p><h1 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h1><h2 id="创建自定义脚本"><a href="#创建自定义脚本" class="headerlink" title="创建自定义脚本"></a>创建自定义脚本</h2><p>在Zabbix的scripts目录(&#x2F;etc&#x2F;zabbix&#x2F;scripts&#x2F;)下创建一个新的shell脚本check_ssl.sh，内容如下</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">time=$(echo | openssl s_client  -connect  $1:443 2&gt;/dev/null | openssl x509 -noout -dates |awk -F&#x27;=&#x27; &#x27;NR==2&#123;print $2&#125;&#x27;)</span><br><span class="line">times=$((($(date +%s -d &quot;$time&quot;)-$(date +%s))/(60*60*24)))</span><br><span class="line">echo $times</span><br></pre></td></tr></table></figure><h2 id="修改agent配置文件"><a href="#修改agent配置文件" class="headerlink" title="修改agent配置文件"></a>修改agent配置文件</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UserParameter=check_ssl[*],/etc/zabbix/scripts/check_ssl.sh $1</span><br></pre></td></tr></table></figure><h2 id="在Zabbix-console中配置"><a href="#在Zabbix-console中配置" class="headerlink" title="在Zabbix console中配置"></a>在Zabbix console中配置</h2><p>创建如下item<br>name值为SSL certification expire date of <br>key值为check_ssl[domain]<br>都需要填入自己要监控的domain</p><img src="/2025/02/13/Zabbix-%E7%9B%91%E6%8E%A7SSL%E8%AF%81%E4%B9%A6%E6%9C%89%E6%95%88%E6%9C%9F/1.png" class="" title="图片"><h2 id="在latest-data中即可看到具体的有效期"><a href="#在latest-data中即可看到具体的有效期" class="headerlink" title="在latest data中即可看到具体的有效期"></a>在latest data中即可看到具体的有效期</h2><img src="/2025/02/13/Zabbix-%E7%9B%91%E6%8E%A7SSL%E8%AF%81%E4%B9%A6%E6%9C%89%E6%95%88%E6%9C%9F/2.png" class="" title="图片">]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;项目需要，需要监控所有的SSL证书的有效期，因此需要自定义一个监控项&lt;/p&gt;
+&lt;h1 id=&quot;实现&quot;&gt;&lt;a href=&quot;#实现&quot; class</summary>
+      
+    
+    
+    
+    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+    <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
+    
+    <category term="Zabbix" scheme="https://maydaychen.github.io/tags/Zabbix/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Grafana-如何迁移Grafana到一台新服务器</title>
+    <link href="https://maydaychen.github.io/2025/02/12/Grafana-%E5%A6%82%E4%BD%95%E8%BF%81%E7%A7%BBGrafana%E5%88%B0%E4%B8%80%E5%8F%B0%E6%96%B0%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
+    <id>https://maydaychen.github.io/2025/02/12/Grafana-%E5%A6%82%E4%BD%95%E8%BF%81%E7%A7%BBGrafana%E5%88%B0%E4%B8%80%E5%8F%B0%E6%96%B0%E6%9C%8D%E5%8A%A1%E5%99%A8/</id>
+    <published>2025-02-12T02:44:22.000Z</published>
+    <updated>2025-02-11T06:19:57.507Z</updated>
+    
+    <content type="html"><![CDATA[<p>有时候由于服务器更新之类的，我们需要迁移一整套Grafana，这时候该怎么操作呢？<br>下面让我一步步说明下</p><h1 id="安装Grafana"><a href="#安装Grafana" class="headerlink" title="安装Grafana"></a>安装Grafana</h1><p>在新的服务器上安装Grafana<br>这个不再赘述，可以看一下我之前的文章</p><h1 id="备份及迁移"><a href="#备份及迁移" class="headerlink" title="备份及迁移"></a>备份及迁移</h1><h2 id="迁移配置文件"><a href="#迁移配置文件" class="headerlink" title="迁移配置文件"></a>迁移配置文件</h2><p>配置文件即grafana.ini，一般存放于&#x2F;etc&#x2F;grafana&#x2F;grafana.ini<br>一般有两种迁移法，</p><ul><li>直接覆盖配置文件，但是如果版本号差异过大，会有很多的新的配置项，直接覆盖会有风险</li><li>对比配置文件，逐个修改，如果配置项不多的话，建议使用此方式</li></ul><h2 id="迁移数据库文件"><a href="#迁移数据库文件" class="headerlink" title="迁移数据库文件"></a>迁移数据库文件</h2><p>数据库和插件都在 &#x2F;var&#x2F;lib&#x2F;grafana 文件夹, 所以我们迁移这整个文件夹就行</p><img src="/2025/02/12/Grafana-%E5%A6%82%E4%BD%95%E8%BF%81%E7%A7%BBGrafana%E5%88%B0%E4%B8%80%E5%8F%B0%E6%96%B0%E6%9C%8D%E5%8A%A1%E5%99%A8/1.png" class="" title="图片"><p>其中最重要的就是DB文件和plugin文件，当然，如果不想同步plugin，直接跳过就行</p><h1 id="启动及查漏补缺"><a href="#启动及查漏补缺" class="headerlink" title="启动及查漏补缺"></a>启动及查漏补缺</h1><h2 id="启动Grafana"><a href="#启动Grafana" class="headerlink" title="启动Grafana"></a>启动Grafana</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl start grafana-server</span><br></pre></td></tr></table></figure><h2 id="插件检查"><a href="#插件检查" class="headerlink" title="插件检查"></a>插件检查</h2><p>如果插件不全或者太老，建议删除插件重新安装</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grafana-cli plugins install [plugin-name]</span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;有时候由于服务器更新之类的，我们需要迁移一整套Grafana，这时候该怎么操作呢？&lt;br&gt;下面让我一步步说明下&lt;/p&gt;
+&lt;h1 id=&quot;安装Grafana&quot;&gt;&lt;a href=&quot;#安装Grafana&quot; class=&quot;headerlink&quot; title=&quot;安装Grafana&quot;&gt;</summary>
+      
+    
+    
+    
+    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+    <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
+    
+    <category term="Grafana" scheme="https://maydaychen.github.io/tags/Grafana/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Grafana-接入OpenSearch</title>
+    <link href="https://maydaychen.github.io/2025/02/11/Grafana-%E6%8E%A5%E5%85%A5OpenSearch/"/>
+    <id>https://maydaychen.github.io/2025/02/11/Grafana-%E6%8E%A5%E5%85%A5OpenSearch/</id>
+    <published>2025-02-11T10:11:06.000Z</published>
+    <updated>2025-02-11T10:19:43.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="添加OpenSearch数据源"><a href="#添加OpenSearch数据源" class="headerlink" title="添加OpenSearch数据源"></a>添加OpenSearch数据源</h1><img src="/2025/02/11/Grafana-%E6%8E%A5%E5%85%A5OpenSearch/1.png" class="" title="图片"><h1 id="配置连接信息"><a href="#配置连接信息" class="headerlink" title="配置连接信息"></a>配置连接信息</h1><img src="/2025/02/11/Grafana-%E6%8E%A5%E5%85%A5OpenSearch/2.png" class="" title="图片"><ul><li>Name: 任意填写即可</li><li>URL: 在AWS OpenSearch中找到，endpoint信息</li><li>Access： 默认Server即可<br>其他可不填</li></ul><h1 id="配置认证信息"><a href="#配置认证信息" class="headerlink" title="配置认证信息"></a>配置认证信息</h1><h2 id="Basic模式"><a href="#Basic模式" class="headerlink" title="Basic模式"></a>Basic模式</h2><p>适合可以直接用账号密码登录OpenSearch的情况下使用</p><img src="/2025/02/11/Grafana-%E6%8E%A5%E5%85%A5OpenSearch/4.png" class="" title="图片"><p>直接在下面的Basic Auth Details里面填入用户名密码即可</p><h2 id="sigv4模式"><a href="#sigv4模式" class="headerlink" title="sigv4模式"></a>sigv4模式</h2><p>适合只接入了第三方，并且可能设置了MFA导致无法直接登录的情况下</p><img src="/2025/02/11/Grafana-%E6%8E%A5%E5%85%A5OpenSearch/3.png" class="" title="图片"><p>这边的Authentication Provider有三个选项，分别为</p><ul><li>AWS SDK Default</li><li>Access &amp; Secrct Key<br>  该模式适用于</li><li>Credentials file</li></ul>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;添加OpenSearch数据源&quot;&gt;&lt;a href=&quot;#添加OpenSearch数据源&quot; class=&quot;headerlink&quot; title=&quot;添加OpenSearch数据源&quot;&gt;&lt;/a&gt;添加OpenSearch数据源&lt;/h1&gt;&lt;img src=&quot;/2025/02/11</summary>
+      
+    
+    
+    
+    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+    <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
+    
+    <category term="Grafana" scheme="https://maydaychen.github.io/tags/Grafana/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux-用户增删改查相关操作</title>
+    <link href="https://maydaychen.github.io/2025/02/11/Linux-%E7%94%A8%E6%88%B7%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C/"/>
+    <id>https://maydaychen.github.io/2025/02/11/Linux-%E7%94%A8%E6%88%B7%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C/</id>
+    <published>2025-02-11T09:47:01.000Z</published>
+    <updated>2025-02-11T09:53:50.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="创建（管理员）用户"><a href="#创建（管理员）用户" class="headerlink" title="创建（管理员）用户"></a>创建（管理员）用户</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/sh</span></span><br><span class="line">USERNAME=[username]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">1代表有sudo权限，0代表普通用户</span></span><br><span class="line">SUDO_FLAG=1</span><br><span class="line"></span><br><span class="line">PUBKEY=&quot;ssh-rsa xxx&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if id &quot;$&#123;USERNAME&#125;&quot; &amp;&gt;/dev/null; then</span><br><span class="line">    echo &#x27;adduser: user &#x27;$&#123;USERNAME&#125;&#x27; already exists&#x27;</span><br><span class="line">    exit 0</span><br><span class="line">else</span><br><span class="line">    adduser $&#123;USERNAME&#125;</span><br><span class="line">    mkdir /home/$&#123;USERNAME&#125;/.ssh</span><br><span class="line">    chmod 700 /home/$&#123;USERNAME&#125;/.ssha</span><br><span class="line">    touch /home/$&#123;USERNAME&#125;/.ssh/authorized_keys</span><br><span class="line">    chmod 600 /home/$&#123;USERNAME&#125;/.ssh/authorized_keys</span><br><span class="line">    echo $&#123;PUBKEY&#125; &gt;&gt; /home/$&#123;USERNAME&#125;/.ssh/authorized_keys</span><br><span class="line">    chown $&#123;USERNAME&#125;:$&#123;USERNAME&#125; /home/$&#123;USERNAME&#125;/.ssh/*</span><br><span class="line">    chown $&#123;USERNAME&#125;:$&#123;USERNAME&#125; /home/$&#123;USERNAME&#125;/.ssh</span><br><span class="line"></span><br><span class="line">    #depends whether sudo right is needed for the user</span><br><span class="line">    if [ $SUDO_FLAG -eq 1 ]; then</span><br><span class="line">        touch /etc/sudoers.d/$&#123;USERNAME&#125;</span><br><span class="line">        echo $&#123;USERNAME&#125;&#x27; ALL=(ALL) NOPASSWD:ALL&#x27; &gt;&gt; /etc/sudoers.d/$&#123;USERNAME&#125;</span><br><span class="line">        echo yi.chen&#x27; ALL=(ALL) NOPASSWD:ALL&#x27; &gt;&gt; /etc/sudoers.d/yi.chen</span><br><span class="line">        chmod 640 /etc/sudoers.d/$&#123;USERNAME&#125;</span><br><span class="line">    fi</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">chage -I -1 -m 0 -M 99999 -E -1 $&#123;USERNAME&#125;</span><br><span class="line"></span><br><span class="line">if [ $? -eq 0 ]; then</span><br><span class="line">    echo &#x27;Success! Created user &#x27;$&#123;USERNAME&#125;&#x27; &#x27;</span><br><span class="line">else</span><br><span class="line">    echo &#x27;Failed! user:&#x27;$&#123;USERNAME&#125;&#x27;&#x27;</span><br><span class="line">fi</span><br><span class="line"></span><br></pre></td></tr></table></figure><h1 id="删除（管理员）用户"><a href="#删除（管理员）用户" class="headerlink" title="删除（管理员）用户"></a>删除（管理员）用户</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查询普通用户并删除</span></span><br><span class="line">cat /etc/passwd | grep username</span><br><span class="line">sudo userdel -r username</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看用户有没有设定定时任务，有的话记得删除</span></span><br><span class="line">sudo crontab -u username -l</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">删除与用户相关的sudoers文件</span></span><br><span class="line">sudo rm /etc/sudoers.d/username</span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;创建（管理员）用户&quot;&gt;&lt;a href=&quot;#创建（管理员）用户&quot; class=&quot;headerlink&quot; title=&quot;创建（管理员）用户&quot;&gt;&lt;/a&gt;创建（管理员）用户&lt;/h1&gt;&lt;figure class=&quot;highlight shell&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;t</summary>
+      
+    
+    
+    
+    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+    <category term="Linux" scheme="https://maydaychen.github.io/tags/Linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Zabbix-运行一段时间后IO过高的问题解决</title>
+    <link href="https://maydaychen.github.io/2025/02/11/Zabbix-%E8%BF%90%E8%A1%8C%E4%B8%80%E6%AE%B5%E6%97%B6%E9%97%B4%E5%90%8EIO%E8%BF%87%E9%AB%98%E7%9A%84%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
+    <id>https://maydaychen.github.io/2025/02/11/Zabbix-%E8%BF%90%E8%A1%8C%E4%B8%80%E6%AE%B5%E6%97%B6%E9%97%B4%E5%90%8EIO%E8%BF%87%E9%AB%98%E7%9A%84%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/</id>
+    <published>2025-02-11T09:35:33.000Z</published>
+    <updated>2025-02-11T09:36:44.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h1><p>zabbix server 服务器运行一段时间后有两个进程会出现cpu负载和io瓶颈，主要是:</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">zabbix busy housekeeper processes </span><br><span class="line">zabbix busy history syncer processes</span><br></pre></td></tr></table></figure><p>出现这两个问题主要是表数据太大 history_uint，trends_uint，history主要是这三个表，</p><h1 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt;show variables like &quot;%_buffer%&quot;;</span><br><span class="line">innodb_buffer_pool_size=8M 默认mysql只有8M而已，</span><br></pre></td></tr></table></figure><p>可将此值调值物理内存的70%，比如innodb_buffer_pool_size&#x3D;4G，mysql的这个配置一般是在&#x2F;etc&#x2F;my.cnf，<br>如果次配置文件里没有此属性，直接添加，保存，重启mysql即可。</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart mysql</span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;问题描述&quot;&gt;&lt;a href=&quot;#问题描述&quot; class=&quot;headerlink&quot; title=&quot;问题描述&quot;&gt;&lt;/a&gt;问题描述&lt;/h1&gt;&lt;p&gt;zabbix server 服务器运行一段时间后有两个进程会出现cpu负载和io瓶颈，主要是:&lt;/p&gt;
+&lt;figure cl</summary>
+      
+    
+    
+    
+    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+    <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
+    
+    <category term="Zabbix" scheme="https://maydaychen.github.io/tags/Zabbix/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Zabbix-监控Windows下某个文件夹的所有文件变化</title>
+    <link href="https://maydaychen.github.io/2025/02/11/Zabbix-%E7%9B%91%E6%8E%A7Windows%E4%B8%8B%E6%9F%90%E4%B8%AA%E6%96%87%E4%BB%B6%E5%A4%B9%E7%9A%84%E6%89%80%E6%9C%89%E6%96%87%E4%BB%B6%E5%8F%98%E5%8C%96/"/>
+    <id>https://maydaychen.github.io/2025/02/11/Zabbix-%E7%9B%91%E6%8E%A7Windows%E4%B8%8B%E6%9F%90%E4%B8%AA%E6%96%87%E4%BB%B6%E5%A4%B9%E7%9A%84%E6%89%80%E6%9C%89%E6%96%87%E4%BB%B6%E5%8F%98%E5%8C%96/</id>
+    <published>2025-02-11T09:32:19.000Z</published>
+    <updated>2025-02-11T09:37:55.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="获取所有的指定路径下的文件列表"><a href="#获取所有的指定路径下的文件列表" class="headerlink" title="获取所有的指定路径下的文件列表"></a>获取所有的指定路径下的文件列表</h1><p>在scripts目录下创建check_file_in_D_Apps.ps1文件，内容如下</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$Path = &quot;D:\Apps&quot;</span><br><span class="line"></span><br><span class="line">$files = Get-ChildItem -Path $Path -File -Recurse | Where-Object &#123;</span><br><span class="line">    -not ($_.FullName -like &quot;*\backup\*&quot;)</span><br><span class="line">&#125; | ForEach-Object &#123;</span><br><span class="line">    @&#123;</span><br><span class="line">        &quot;&#123;#FULLPATH&#125;&quot; = $_.FullName</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$files | ConvertTo-Json -Depth 1</span><br></pre></td></tr></table></figure><h1 id="修改zabbix-agent-conf-file"><a href="#修改zabbix-agent-conf-file" class="headerlink" title="修改zabbix agent conf file"></a>修改zabbix agent conf file</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UserParameter=file_check_D_Apps,powershell -NoProfile -ExecutionPolicy Bypass -File &quot;C:\Program Files\zabbix\scripts\check_file_in_D_Apps.ps1&quot;</span><br></pre></td></tr></table></figure><h1 id="重启zabbix-agent"><a href="#重启zabbix-agent" class="headerlink" title="重启zabbix agent"></a>重启zabbix agent</h1><p>由于这里是windows服务器，所以直接去任务管理器中service那边重启即可</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;获取所有的指定路径下的文件列表&quot;&gt;&lt;a href=&quot;#获取所有的指定路径下的文件列表&quot; class=&quot;headerlink&quot; title=&quot;获取所有的指定路径下的文件列表&quot;&gt;&lt;/a&gt;获取所有的指定路径下的文件列表&lt;/h1&gt;&lt;p&gt;在scripts目录下创建check</summary>
+      
+    
+    
+    
+    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+    <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
+    
+    <category term="Windows" scheme="https://maydaychen.github.io/tags/Windows/"/>
+    
+    <category term="Zabbix" scheme="https://maydaychen.github.io/tags/Zabbix/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Opensearch-ctx内容不全的问题</title>
+    <link href="https://maydaychen.github.io/2025/02/11/Opensearch-ctx%E5%86%85%E5%AE%B9%E4%B8%8D%E5%85%A8%E7%9A%84%E9%97%AE%E9%A2%98/"/>
+    <id>https://maydaychen.github.io/2025/02/11/Opensearch-ctx%E5%86%85%E5%AE%B9%E4%B8%8D%E5%85%A8%E7%9A%84%E9%97%AE%E9%A2%98/</id>
+    <published>2025-02-11T09:25:51.000Z</published>
+    <updated>2025-02-11T09:30:03.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>在OpenSearch中，我希望在action中把一整条log作为报警内容发送出来，但是根据文档，配置为ctx.results.0.hits.hits.0._source.log，但是发现根本找不到这个值</p><p>经过查询，我发现在返回的ctx中仅存在如下的值</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">results=[, hits=, max_score=null&#125;, took=13, timed_out=false&#125;], periodStart=2024-07-08T08:30:07.425Z, periodEnd=2024-07-08T08:31:07.425Z, error=null, trigger=&#123;id=GkWmgZABvp-0qNhTa6Rs, name=Test alarm, please ignore, severity=3, actions=[&#123;name=Test alarm, please ignore&#125;]&#125;, alert=&#123;acknowledged_time=null, id=sHdKkZABDnp5EchiGRFG, version=-1, end_time=null, error_message=null, execution_id=HEWmgZABvp-0qNhTa6R5_2024-07-08T07:41:09.151397924_6ca4e795-58a9-489d-85fe-74c4bbf2d9ab, workflow_id=, workflow_name=, associated_alert_ids=[], last_notification_time=1720426150054, severity=3, start_time=1720424470852, state=ACTIVE, bucket_keys=null, parent_bucket_path=null, finding_ids=, related_doc_ids=&#125;&#125;</span><br></pre></td></tr></table></figure><p>没有我需要的<br>查询语句为</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;size&quot;: 0,</span><br><span class="line">    &quot;query&quot;: &#123;</span><br><span class="line">        &quot;bool&quot;: &#123;</span><br><span class="line">            &quot;filter&quot;: [</span><br><span class="line">                &#123;</span><br><span class="line">                    &quot;range&quot;: &#123;</span><br><span class="line">                        &quot;@timestamp&quot;: &#123;</span><br><span class="line">                            &quot;from&quot;: &quot;&#123;&#123;period_end&#125;&#125;||-1d&quot;,</span><br><span class="line">                            &quot;to&quot;: &quot;&#123;&#123;period_end&#125;&#125;&quot;,</span><br><span class="line">                            &quot;include_lower&quot;: true,</span><br><span class="line">                            &quot;include_upper&quot;: true,</span><br><span class="line">                            &quot;format&quot;: &quot;epoch_millis&quot;,</span><br><span class="line">                            &quot;boost&quot;: 1</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;,</span><br><span class="line">                &#123;</span><br><span class="line">                    &quot;query_string&quot;: &#123;</span><br><span class="line">                        &quot;query&quot;: &quot;*BATCHMONITORING*&quot;,</span><br><span class="line">                        &quot;default_field&quot;: &quot;log&quot;,</span><br><span class="line">                        &quot;fields&quot;: [],</span><br><span class="line">                        &quot;type&quot;: &quot;best_fields&quot;,</span><br><span class="line">                        &quot;default_operator&quot;: &quot;or&quot;,</span><br><span class="line">                        &quot;max_determinized_states&quot;: 10000,</span><br><span class="line">                        &quot;enable_position_increments&quot;: true,</span><br><span class="line">                        &quot;fuzziness&quot;: &quot;AUTO&quot;,</span><br><span class="line">                        &quot;fuzzy_prefix_length&quot;: 0,</span><br><span class="line">                        &quot;fuzzy_max_expansions&quot;: 50,</span><br><span class="line">                        &quot;phrase_slop&quot;: 0,</span><br><span class="line">                        &quot;escape&quot;: false,</span><br><span class="line">                        &quot;auto_generate_synonyms_phrase_query&quot;: true,</span><br><span class="line">                        &quot;fuzzy_transpositions&quot;: true,</span><br><span class="line">                        &quot;boost&quot;: 1</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            ],</span><br><span class="line">            &quot;adjust_pure_negative&quot;: true,</span><br><span class="line">            &quot;boost&quot;: 1</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure><h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><p>经过查询，我发现问题存在于size这个参数</p><p>size: 这指定了返回的文档数量。在这里设为 0 表示只返回匹配的聚合结果，而不返回实际的文档内容。</p><p>我这边把size:0从查询语句中删除后，返回的结果终于包含了我需要的参数</p><h1 id="其他参数解释"><a href="#其他参数解释" class="headerlink" title="其他参数解释"></a>其他参数解释</h1><ul><li><strong>query</strong>: 这是查询的主体，使用布尔查询（bool query），允许将多个过滤条件组合在一起。</li><li><strong>bool</strong>: 布尔查询允许组合多个查询子句，如 <code>filter</code>、<code>must</code>、<code>must_not</code> 等。</li><li><strong>filter</strong>: 这是一个过滤器子句，它包含了两个过滤条件。</li><li><strong>range</strong>: 范围查询，用于限制 <code>@timestamp</code> 字段的范围。具体来说：<ul><li><code>&quot;from&quot;: &quot;&#123;&#123;period_end&#125;&#125;||-1d&quot;</code>：表示从 <code>period_end</code> 变量指定的时间开始，向前推一天。<code>&#123;&#123;period_end&#125;&#125;</code> 是一个模板变量，在实际执行时会被具体的时间值替换。</li><li><code>&quot;to&quot;: &quot;&#123;&#123;period_end&#125;&#125;&quot;</code>：表示到 <code>period_end</code> 变量指定的时间结束。</li><li><code>&quot;format&quot;: &quot;epoch_millis&quot;</code>：指定时间格式为毫秒级时间戳。</li><li><code>&quot;include_lower&quot;: true, &quot;include_upper&quot;: true</code>：包括上下界值。</li></ul></li><li><strong>query_string</strong>: 查询字符串查询，用于搜索包含指定关键字的文档。<ul><li><code>&quot;query&quot;: &quot;*BATCHMONITORING*&quot;</code>：这里的查询字符串是通配符形式，表示搜索包含 “BATCHMONITORING” 关键字的文档。</li><li><code>&quot;default_field&quot;: &quot;log&quot;</code>：指定默认搜索字段为 “log”。</li><li><code>&quot;default_operator&quot;: &quot;or&quot;</code>：默认操作符为 OR 操作符，表示任何一个关键字匹配即可。</li><li>其他参数如 <code>fuzziness</code>、<code>phrase_slop</code> 等是调整查询行为的参数，如自动模糊匹配、短语搜索等。</li></ul></li><li><strong>adjust_pure_negative</strong>: 设置为 <code>true</code>，表示查询结果中不包含全负匹配的文档。</li><li><strong>boost</strong>: 设置为 <code>1</code>，表示默认的查询权重。</li></ul>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;问题&quot;&gt;&lt;a href=&quot;#问题&quot; class=&quot;headerlink&quot; title=&quot;问题&quot;&gt;&lt;/a&gt;问题&lt;/h1&gt;&lt;p&gt;在OpenSearch中，我希望在action中把一整条log作为报警内容发送出来，但是根据文档，配置为ctx.results.0.hits</summary>
+      
+    
+    
+    
+    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+    <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
+    
+    <category term="ELK" scheme="https://maydaychen.github.io/tags/ELK/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Grafana-开启Sigv4认证</title>
+    <link href="https://maydaychen.github.io/2025/02/11/Grafana-%E5%BC%80%E5%90%AFSigv4%E8%AE%A4%E8%AF%81/"/>
+    <id>https://maydaychen.github.io/2025/02/11/Grafana-%E5%BC%80%E5%90%AFSigv4%E8%AE%A4%E8%AF%81/</id>
+    <published>2025-02-11T09:15:08.000Z</published>
+    <updated>2025-02-11T09:20:53.202Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>在Grafana中，有些data source是需要开启sigv4认证的，例如OpenSearch，这个配置项默认是关闭的，这里我们介绍一下怎么开启</p><h1 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h1><h2 id="传统方式"><a href="#传统方式" class="headerlink" title="传统方式"></a>传统方式</h2><p>如果我们想在Grafana中开启sigv4认证，我们需要在grafana.ini中修改一个参数</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">;sigv4_auth_enabled = false</span><br></pre></td></tr></table></figure><p>这个配置默认是关闭的，所以我们需要修改成true并重启grafana</p><h2 id="K8S方式"><a href="#K8S方式" class="headerlink" title="K8S方式"></a>K8S方式</h2><p>如果我们使用了helmfile，在kube-prometheus-stack中，并没有全部的grafana配置，那么我们该怎么操作呢？<br>这时候我们需要找到prometheus-operator-values.yaml文件</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">grafana:</span><br><span class="line"># grafana.ini 字段用于修改 grafana 配置文件内容，使用 yaml 格式定义，会自动转成 ini。</span><br><span class="line">  grafana.ini:</span><br><span class="line">    auth:</span><br><span class="line">      sigv4_auth_enabled: false</span><br></pre></td></tr></table></figure><p>然后通过命令生效</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">helmfile apply</span><br></pre></td></tr></table></figure><img src="/2025/02/11/Grafana-%E5%BC%80%E5%90%AFSigv4%E8%AE%A4%E8%AF%81/1.png" class="" title="图片">]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;在Grafana中，有些data source是需要开启sigv4认证的，例如OpenSearch，这个配置项默认是关闭的，这里我们介绍一下</summary>
+      
+    
+    
+    
+    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+    <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
+    
+    <category term="Grafana" scheme="https://maydaychen.github.io/tags/Grafana/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>AI-使用ChatBox工具实现AI界面化操作</title>
+    <link href="https://maydaychen.github.io/2025/02/11/AI-%E4%BD%BF%E7%94%A8ChatBox%E5%B7%A5%E5%85%B7%E5%AE%9E%E7%8E%B0AI%E7%95%8C%E9%9D%A2%E5%8C%96%E6%93%8D%E4%BD%9C/"/>
+    <id>https://maydaychen.github.io/2025/02/11/AI-%E4%BD%BF%E7%94%A8ChatBox%E5%B7%A5%E5%85%B7%E5%AE%9E%E7%8E%B0AI%E7%95%8C%E9%9D%A2%E5%8C%96%E6%93%8D%E4%BD%9C/</id>
+    <published>2025-02-11T02:38:05.000Z</published>
+    <updated>2025-02-11T02:38:24.304Z</updated>
+    
+    
+    
+    
+    <category term="AI" scheme="https://maydaychen.github.io/categories/AI/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Grafana-配置SMTP以发送忘记密码重置邮件</title>
+    <link href="https://maydaychen.github.io/2025/02/10/Grafana-%E9%85%8D%E7%BD%AESMTP%E4%BB%A5%E5%8F%91%E9%80%81%E5%BF%98%E8%AE%B0%E5%AF%86%E7%A0%81%E9%87%8D%E7%BD%AE%E9%82%AE%E4%BB%B6/"/>
+    <id>https://maydaychen.github.io/2025/02/10/Grafana-%E9%85%8D%E7%BD%AESMTP%E4%BB%A5%E5%8F%91%E9%80%81%E5%BF%98%E8%AE%B0%E5%AF%86%E7%A0%81%E9%87%8D%E7%BD%AE%E9%82%AE%E4%BB%B6/</id>
+    <published>2025-02-10T01:52:50.000Z</published>
+    <updated>2025-02-11T06:19:57.513Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>在项目中，我们每个人都会用到各种各样的工具，随着工具的增多，拥有的账号的数量也随之递增，这时候如果没有使用密码管理工具，很容易就忘记了某一个工具的账号密码<br>而我们现在就要讨论一下在Grafana中，如果忘记了密码，怎么在不联系管理员的情况下手动重置密码</p><h1 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h1><p>在Grafana登录时，我们可以看到在登陆框的下面有一个Forget your password?<br>点击该按钮，会让你输入用户名或邮箱，然后Grafana就会自动发送邮件到这个邮箱，帮你重置密码<br>但是如果没有配置SMTP服务的话，这个功能是不起作用的，所以本文就是用来讲如何配置SMTP</p><img src="/2025/02/10/Grafana-%E9%85%8D%E7%BD%AESMTP%E4%BB%A5%E5%8F%91%E9%80%81%E5%BF%98%E8%AE%B0%E5%AF%86%E7%A0%81%E9%87%8D%E7%BD%AE%E9%82%AE%E4%BB%B6/1.png" class="" title="图片"><p>打开Grafana配置文件（&#x2F;etc&#x2F;grafana&#x2F;grafana.ini），找到如下这一段</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">#################################### SMTP / Emailing ##########################</span><br><span class="line">[smtp]</span><br><span class="line">;enabled = false</span><br><span class="line">enabled = true</span><br><span class="line">;host = localhost:25</span><br><span class="line">host = &#123;&#123;smtp-server:465&#125;&#125;</span><br><span class="line">;user =</span><br><span class="line">user = &#123;&#123;username&#125;&#125;</span><br><span class="line"># If the password contains # or ; you have to wrap it with triple quotes. Ex &quot;&quot;&quot;#password;&quot;&quot;&quot;</span><br><span class="line">;password =</span><br><span class="line">password = &#123;&#123;password&#125;&#125;</span><br><span class="line">;cert_file =</span><br><span class="line">;key_file =</span><br><span class="line">;skip_verify = false</span><br><span class="line">;from_address = admin@grafana.localhost</span><br><span class="line">from_address = &#123;&#123;aaa@example.com&#125;&#125;</span><br><span class="line">;from_name = Grafana</span><br><span class="line"># EHLO identity in SMTP dialog (defaults to instance_name)</span><br><span class="line">;ehlo_identity = dashboard.example.com</span><br><span class="line">ehlo_identity = &#123;&#123;ehlo&#125;&#125;</span><br><span class="line"># SMTP startTLS policy (defaults to &#x27;OpportunisticStartTLS&#x27;)</span><br><span class="line">;startTLS_policy = NoStartTLS</span><br><span class="line"># Enable trace propagation in e-mail headers, using the &#x27;traceparent&#x27;, &#x27;tracestate&#x27; and (optionally) &#x27;baggage&#x27; fields (defaults to false)</span><br><span class="line">;enable_tracing = false</span><br></pre></td></tr></table></figure><p>按照如上配置,修改括号中的内容</p><p>再之后重启grafana</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl restart grafana-server</span><br></pre></td></tr></table></figure><h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1><p>经测试可以正常发送，配置正确</p><img src="/2025/02/10/Grafana-%E9%85%8D%E7%BD%AESMTP%E4%BB%A5%E5%8F%91%E9%80%81%E5%BF%98%E8%AE%B0%E5%AF%86%E7%A0%81%E9%87%8D%E7%BD%AE%E9%82%AE%E4%BB%B6/2.png" class="" title="Grafana-login"><h1 id="题外话"><a href="#题外话" class="headerlink" title="题外话"></a>题外话</h1><h2 id="startTLS-policy"><a href="#startTLS-policy" class="headerlink" title="startTLS_policy"></a>startTLS_policy</h2><p>关于startTLS_policy，有三个选项，下面介绍一下每一个选项<br>startTLS_policy 用于定义 Grafana 在与 SMTP 服务器通信时如何处理 STARTTLS。它有以下几个可能的取值：</p><ul><li><p>OpportunisticStartTLS（默认值）：<br>  Grafana 会尝试使用 STARTTLS 升级为加密通信。<br>  如果服务器不支持 STARTTLS，Grafana 会回退到明文通信。<br>  这是一种灵活的策略，适用于大多数场景。</p></li><li><p>MandatoryStartTLS：<br>Grafana 必须使用 STARTTLS 加密通信。<br>如果服务器不支持 STARTTLS，Grafana 会拒绝连接并报错。<br>这种策略适合对安全性要求较高的场景。</p></li><li><p>NoStartTLS：<br>Grafana 不会尝试使用 STARTTLS。<br>所有通信都以明文方式进行。<br>这种策略仅适用于测试或内部网络环境，不推荐在生产环境中使用。</p></li></ul>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;在项目中，我们每个人都会用到各种各样的工具，随着工具的增多，拥有的账号的数量也随之递增，这时候如果没有使用密码管理工具，很容易就忘记了某一个</summary>
+      
+    
+    
+    
+    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+    <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
+    
+    <category term="Grafana" scheme="https://maydaychen.github.io/tags/Grafana/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Grafana-重置密码方法</title>
     <link href="https://maydaychen.github.io/2025/02/09/Grafana-%E9%87%8D%E7%BD%AE%E5%AF%86%E7%A0%81%E6%96%B9%E6%B3%95/"/>
     <id>https://maydaychen.github.io/2025/02/09/Grafana-%E9%87%8D%E7%BD%AE%E5%AF%86%E7%A0%81%E6%96%B9%E6%B3%95/</id>
     <published>2025-02-09T15:39:36.000Z</published>
-    <updated>2025-02-08T15:48:55.283Z</updated>
+    <updated>2025-02-11T06:19:57.460Z</updated>
     
     <content type="html"><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>有时候当账号太多的时候，根本记不住所有的账号密码，这时候就很容易登录失败，这时候怎么办呢？<br>接下来就让我来给大家演示一下Grafana的账号如果忘记了的话，该怎么找回自己的账号密码</p><h1 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h1><p>让我们来看一下具体的实操环节，有两种实现方式，如下</p><h2 id="方法一-grafana-cli"><a href="#方法一-grafana-cli" class="headerlink" title="方法一 grafana-cli"></a>方法一 grafana-cli</h2><p>直接使用grafana-cli</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">grafana-cli admin reset-admin-password admin</span><br><span class="line"></span><br><span class="line">## 重启服务</span><br><span class="line">sudo systemctl restart grafana-server</span><br></pre></td></tr></table></figure><p>之后就可以用admin,admin登录了</p><h2 id="方法二-数据库"><a href="#方法二-数据库" class="headerlink" title="方法二 数据库"></a>方法二 数据库</h2><p>直接修改数据库</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">## 直接使用命令找到Grafana的数据库文件</span><br><span class="line">find / -name &quot;grafana.db&quot;</span><br><span class="line"></span><br><span class="line">## 打开数据库</span><br><span class="line">sqlite3 /var/lib/grafana/grafana.db</span><br><span class="line"></span><br><span class="line">## 查看数据库中包含的表</span><br><span class="line">.tables</span><br><span class="line">## 查看user表内容</span><br><span class="line">select * from user;</span><br><span class="line">## 重置admin用户的密码为默认admin</span><br><span class="line">update user set password = &#x27;59acf18b94d7eb0694c61e60ce44c110c7a683ac6a8f09580d626f90f4a242000746579358d77dd9e570e83fa24faa88a8a6&#x27;, salt = &#x27;F3FAxVm33R&#x27; where login = &#x27;admin&#x27;;</span><br><span class="line">## 退出sqlite3</span><br><span class="line">.exit</span><br></pre></td></tr></table></figure><p>之后就可以用admin,admin登录了</p><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>上面就是两种方法的具体操作啦，个人认为肯定是第一种比较简单一点啦，你们觉得嘞？<br>另外，如果服务是放在公网上的话，建议把admin这个账号disable一下或者至少是修改一下密码，防止被别人入侵哦</p>]]></content>
     
@@ -38,6 +342,8 @@
     
     <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
     
+    <category term="Grafana" scheme="https://maydaychen.github.io/tags/Grafana/"/>
+    
   </entry>
   
   <entry>
@@ -45,7 +351,7 @@
     <link href="https://maydaychen.github.io/2025/02/08/Grafana-%E4%BD%BF%E7%94%A8Button%E4%BF%AE%E6%94%B9MySQL%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
     <id>https://maydaychen.github.io/2025/02/08/Grafana-%E4%BD%BF%E7%94%A8Button%E4%BF%AE%E6%94%B9MySQL%E6%95%B0%E6%8D%AE%E5%BA%93/</id>
     <published>2025-02-08T09:25:36.000Z</published>
-    <updated>2025-02-08T16:09:01.046Z</updated>
+    <updated>2025-02-11T06:19:57.390Z</updated>
     
     <content type="html"><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>众所周知，Grafana是一个用来展示数据的平台，但是有时候还是会有需求说能不能有一个按钮，点击的时候再对数据库进行修改，从而达到更新数据的效果<br>经过多方查证，终于实现了一个简单的，点击button执行sql语句的功能，特此分享</p><h1 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h1><h2 id="安装Button插件"><a href="#安装Button插件" class="headerlink" title="安装Button插件"></a>安装Button插件</h2><p>可以在Grafana Plugins里直接找到，安装即可</p><img src="/2025/02/08/Grafana-%E4%BD%BF%E7%94%A8Button%E4%BF%AE%E6%94%B9MySQL%E6%95%B0%E6%8D%AE%E5%BA%93/1.png" class="" title="图片"><h2 id="配置Button功能"><a href="#配置Button功能" class="headerlink" title="配置Button功能"></a>配置Button功能</h2><img src="/2025/02/08/Grafana-%E4%BD%BF%E7%94%A8Button%E4%BF%AE%E6%94%B9MySQL%E6%95%B0%E6%8D%AE%E5%BA%93/2.png" class="" title="图片"><h3 id="Orientation"><a href="#Orientation" class="headerlink" title="Orientation"></a>Orientation</h3><p>按钮的方向，只有一个按钮的时候没有效果，当设置两个或两个以上时，可以设置按钮是水平放置还是垂直放置</p><h3 id="Button-Configuration"><a href="#Button-Configuration" class="headerlink" title="Button Configuration"></a>Button Configuration</h3><p>这边就是重头戏了，可以分别对每一个按钮进行设置<br>可以看到这边有三个选项，下面来一一解释</p><ul><li>Text： 即按钮上显示的文字</li><li>Datasource： 对哪一个datasource进行操作，选择项</li><li>Query： 按下这个button后要执行的语句</li></ul><p>可以看到，功能其实是非常简单的，只不过一开始用的时候，对于这个Query可能会有点懵逼</p><p>那么，到底该怎么配置这些个参数呢？插件作者并没有写，但是我尝试之后终于摸索出来了</p><img src="/2025/02/08/Grafana-%E4%BD%BF%E7%94%A8Button%E4%BF%AE%E6%94%B9MySQL%E6%95%B0%E6%8D%AE%E5%BA%93/3.png" class="" title="图片"><p>我们建立一个新的table控件，并使用query inspector功能来查看它的查询语句<br>可以看到，在queries中有一条数据，并且这边有rawSql参数和format参数比较陌生，于是把这两个参数放到Query中尝试一下，发现确实可以使用</p><p>并且，在页面的右上角也会有消息推送，表示执行成功，至此，功能已被我们实现</p><img src="/2025/02/08/Grafana-%E4%BD%BF%E7%94%A8Button%E4%BF%AE%E6%94%B9MySQL%E6%95%B0%E6%8D%AE%E5%BA%93/4.png" class="" title="图片"><h2 id="Todo-问题待解决"><a href="#Todo-问题待解决" class="headerlink" title="[Todo]问题待解决"></a>[Todo]问题待解决</h2><ol><li>如何解决功能实现后的刷新问题 </li><li>如何动态地编辑我们的数据，比如输入一个值，并通过点击把这个值插入数据库 -&gt; 目前没有找到一个很好的输入框控件</li></ol>]]></content>
     
@@ -62,6 +368,8 @@
     
     <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
     
+    <category term="Grafana" scheme="https://maydaychen.github.io/tags/Grafana/"/>
+    
   </entry>
   
   <entry>
@@ -69,7 +377,7 @@
     <link href="https://maydaychen.github.io/2025/02/08/Zabbix-Rocky9%E5%AE%89%E8%A3%85Zabbix-Grafana/"/>
     <id>https://maydaychen.github.io/2025/02/08/Zabbix-Rocky9%E5%AE%89%E8%A3%85Zabbix-Grafana/</id>
     <published>2025-02-08T09:21:55.000Z</published>
-    <updated>2025-02-10T03:03:18.972Z</updated>
+    <updated>2025-02-11T06:19:57.466Z</updated>
     
     <content type="html"><![CDATA[<h1 id="安装Zabbix"><a href="#安装Zabbix" class="headerlink" title="安装Zabbix"></a>安装Zabbix</h1><h2 id="安装MariaDB"><a href="#安装MariaDB" class="headerlink" title="安装MariaDB"></a>安装MariaDB</h2><p>这里用MariaDB演示<br><a href="https://mariadb.org/download/?t=repo-config&d=Red+Hat+Enterprise+Linux+9&v=10.11&r_m=neusoft">https://mariadb.org/download/?t=repo-config&amp;d=Red+Hat+Enterprise+Linux+9&amp;v=10.11&amp;r_m=neusoft</a><br>通过这个网址获得连接</p><h3 id="选择对应的repo"><a href="#选择对应的repo" class="headerlink" title="选择对应的repo"></a>选择对应的repo</h3><p>根据系统版本和要安装的版本选择对应的repo</p><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>新建一个repo文件，例如&#x2F;etc&#x2F;yum.repos.d&#x2F;MariaDB.repo， 然后把网站上提供的内容复制进去，例如</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># MariaDB 10.11 RedHatEnterpriseLinux repository list - created 2024-02-29 09:14 UTC</span><br><span class="line"># https://mariadb.org/download/</span><br><span class="line">[mariadb]</span><br><span class="line">name = MariaDB</span><br><span class="line"># rpm.mariadb.org is a dynamic mirror if your preferred mirror goes offline. See https://mariadb.org/mirrorbits/ for details.</span><br><span class="line"># baseurl = https://rpm.mariadb.org/10.11/rhel/$releasever/$basearch</span><br><span class="line">baseurl = https://mirrors.aliyun.com/mariadb/yum/10.11/rhel/$releasever/$basearch</span><br><span class="line"># gpgkey = https://rpm.mariadb.org/RPM-GPG-KEY-MariaDB</span><br><span class="line">gpgkey = https://mirrors.aliyun.com/mariadb/yum/RPM-GPG-KEY-MariaDB</span><br><span class="line">gpgcheck = 1</span><br></pre></td></tr></table></figure><p>然后就是安装步骤</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sudo dnf install MariaDB-server</span><br><span class="line"></span><br><span class="line">## 可选步骤，现在mariadb的命令不会自动绑定mysql命令了，所以你现在用mysql -uxxx -p之类的会跟你说命令不存在</span><br><span class="line">sudo ln -s /usr/bin/mariadb /usr/bin/mysql</span><br><span class="line"></span><br><span class="line">## 启动并设置自动启动</span><br><span class="line">sudo systemctl start mysql</span><br><span class="line">sudo systemctl enable mysql</span><br></pre></td></tr></table></figure><p>至此，MariaD的安装就结束了</p><h2 id="安装Zabbix-Server"><a href="#安装Zabbix-Server" class="headerlink" title="安装Zabbix Server"></a>安装Zabbix Server</h2><p>跟着<a href="https://www.zabbix.com/download">这个网页</a>的命令走，基本不会出什么问题<br>由于今天我们主要讲Rocky的安装，所以我们这么选</p><img src="/2025/02/08/Zabbix-Rocky9%E5%AE%89%E8%A3%85Zabbix-Grafana/3.png" class="" title="图片示例"><p>接下来的步骤由于官网写的很详细，我就直接抄下来了，各位可以看一下</p><h3 id="Install-Zabbix-repository"><a href="#Install-Zabbix-repository" class="headerlink" title="Install Zabbix repository"></a>Install Zabbix repository</h3><p>Disable Zabbix packages provided by EPEL, if you have it installed. Edit file &#x2F;etc&#x2F;yum.repos.d&#x2F;epel.repo and add the following statement.</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[epel]</span><br><span class="line">...</span><br><span class="line">excludepkgs=zabbix*</span><br></pre></td></tr></table></figure><p>Proceed with installing zabbix repository.</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># rpm -Uvh https://repo.zabbix.com/zabbix/7.0/rocky/9/x86_64/zabbix-release-latest-7.0.el9.noarch.rpm</span><br><span class="line"># dnf clean all</span><br></pre></td></tr></table></figure><h3 id="Install-Zabbix-server-frontend-agent2"><a href="#Install-Zabbix-server-frontend-agent2" class="headerlink" title="Install Zabbix server, frontend, agent2"></a>Install Zabbix server, frontend, agent2</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># dnf install zabbix-server-mysql zabbix-web-mysql zabbix-nginx-conf zabbix-sql-scripts zabbix-selinux-policy zabbix-agent2</span><br></pre></td></tr></table></figure><h3 id="Install-Zabbix-agent-2-plugins"><a href="#Install-Zabbix-agent-2-plugins" class="headerlink" title="Install Zabbix agent 2 plugins"></a>Install Zabbix agent 2 plugins</h3><p>You may want to install Zabbix agent 2 plugins.</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># dnf install zabbix-agent2-plugin-mongodb zabbix-agent2-plugin-mssql zabbix-agent2-plugin-postgresql</span><br></pre></td></tr></table></figure><h3 id="Create-initial-database"><a href="#Create-initial-database" class="headerlink" title="Create initial database"></a>Create initial database</h3><p>Make sure you have database server up and running.</p><p>Run the following on your database host.</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># mysql -uroot -p</span><br><span class="line">password</span><br><span class="line">mysql&gt; create database zabbix character set utf8mb4 collate utf8mb4_bin;</span><br><span class="line">mysql&gt; create user zabbix@localhost identified by &#x27;password&#x27;;</span><br><span class="line">mysql&gt; grant all privileges on zabbix.* to zabbix@localhost;</span><br><span class="line">mysql&gt; set global log_bin_trust_function_creators = 1;</span><br><span class="line">mysql&gt; quit;</span><br></pre></td></tr></table></figure><p>On Zabbix server host import initial schema and data. You will be prompted to enter your newly created password.</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># zcat /usr/share/zabbix-sql-scripts/mysql/server.sql.gz | mysql --default-character-set=utf8mb4 -uzabbix -p zabbix</span><br></pre></td></tr></table></figure><p>Disable log_bin_trust_function_creators option after importing database schema.</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># mysql -uroot -p</span><br><span class="line">password</span><br><span class="line">mysql&gt; set global log_bin_trust_function_creators = 0;</span><br><span class="line">mysql&gt; quit;</span><br></pre></td></tr></table></figure><h3 id="Configure-the-database-for-Zabbix-server"><a href="#Configure-the-database-for-Zabbix-server" class="headerlink" title="Configure the database for Zabbix server"></a>Configure the database for Zabbix server</h3><p>Edit file &#x2F;etc&#x2F;zabbix&#x2F;zabbix_server.conf</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DBPassword=password</span><br></pre></td></tr></table></figure><h3 id="Start-Zabbix-server-and-agent-processes"><a href="#Start-Zabbix-server-and-agent-processes" class="headerlink" title="Start Zabbix server and agent processes"></a>Start Zabbix server and agent processes</h3><p>Start Zabbix server and agent processes and make it start at system boot.</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># systemctl restart zabbix-server zabbix-agent2 nginx php-fpm</span><br><span class="line"># systemctl enable zabbix-server zabbix-agent2 nginx php-fpm</span><br></pre></td></tr></table></figure><h3 id="Open-Zabbix-UI-web-page"><a href="#Open-Zabbix-UI-web-page" class="headerlink" title="Open Zabbix UI web page"></a>Open Zabbix UI web page</h3><p>在Nginx的配置中，zabbix默认使用80端口，但是由于政策限制，其实我们不能使用，所以这边改成8090</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/nginx/conf.d/zabbix.conf</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">  ## 把下面这两句的注释去掉，再修改一下端口</span><br><span class="line">        listen          8090;</span><br><span class="line">        server_name     example.com;</span><br><span class="line"></span><br><span class="line">## 重载一下nginx</span><br><span class="line">systemctl reload nginx</span><br></pre></td></tr></table></figure><p>然后就可以通过IP:8090 的形式访问到zabbix console了</p><h1 id="安装Grafana"><a href="#安装Grafana" class="headerlink" title="安装Grafana"></a>安装Grafana</h1><h2 id="安装-1"><a href="#安装-1" class="headerlink" title="安装"></a>安装</h2><p>直接进下面<a href="https://grafana.com/grafana/download">这个页面</a>，可以看到这边可以选择版本以及操作系统</p><img src="/2025/02/08/Zabbix-Rocky9%E5%AE%89%E8%A3%85Zabbix-Grafana/1.png" class="" title="图片示例"><p>并且如果是Linux平台的，下面会给出不同平台的命令，直接复制粘贴执行一下就可以了</p><img src="/2025/02/08/Zabbix-Rocky9%E5%AE%89%E8%A3%85Zabbix-Grafana/2.png" class="" title="图片示例"><h2 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h2><p>运行命令</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">## 运行service</span><br><span class="line">systemctl start grafana-server</span><br><span class="line"></span><br><span class="line">## 自启动</span><br><span class="line">systemctl enable grafana-server</span><br></pre></td></tr></table></figure><p>之后浏览器访问IP:3000，就可以看到Grafana界面啦<br>默认账号密码为admin&#x2F;admin，第一次登录会强制修改密码</p><h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><h3 id="修改默认端口"><a href="#修改默认端口" class="headerlink" title="修改默认端口"></a>修改默认端口</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/grafana/grafana.ini</span><br><span class="line"></span><br><span class="line">## 把这个3000修改成别的即可</span><br><span class="line">;http_port = 3000</span><br></pre></td></tr></table></figure><h3 id="配置邮件服务"><a href="#配置邮件服务" class="headerlink" title="配置邮件服务"></a>配置邮件服务</h3><p>用于忘记密码等情况，可以不通知管理员自行修改密码</p>]]></content>
     
@@ -86,6 +394,8 @@
     
     <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
     
+    <category term="Zabbix" scheme="https://maydaychen.github.io/tags/Zabbix/"/>
+    
   </entry>
   
   <entry>
@@ -93,15 +403,15 @@
     <link href="https://maydaychen.github.io/2025/02/03/AI-%E5%B0%9D%E8%AF%95%E4%BD%BF%E7%94%A8Ollama%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2DeepSeek-R1/"/>
     <id>https://maydaychen.github.io/2025/02/03/AI-%E5%B0%9D%E8%AF%95%E4%BD%BF%E7%94%A8Ollama%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2DeepSeek-R1/</id>
     <published>2025-02-03T14:16:11.000Z</published>
-    <updated>2025-02-05T15:01:06.571Z</updated>
+    <updated>2025-02-11T02:34:51.896Z</updated>
     
-    <content type="html"><![CDATA[<p>[Todo]</p>]]></content>
+    <content type="html"><![CDATA[<p>其实类似的文章好多人都写过了，不过为了图以后查询方便，还是自己写一个吧</p><h1 id="Ollama下载"><a href="#Ollama下载" class="headerlink" title="Ollama下载"></a>Ollama下载</h1><p>官网地址： <a href="https://ollama.com/">https://ollama.com/</a> ，在上面根据自己操作系统下载对应平台<br>下载成功后直接安装，安装应该也是傻瓜似的，安装完成后，使用下面的命令查看是否安装成功</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ollama -v</span><br></pre></td></tr></table></figure><p>如果返回给你版本号了，那就是安装成功了</p><h1 id="AI模型下载"><a href="#AI模型下载" class="headerlink" title="AI模型下载"></a>AI模型下载</h1><p>访问下面的这个地址：<a href="https://ollama.com/search">https://ollama.com/search</a></p><img src="/2025/02/03/AI-%E5%B0%9D%E8%AF%95%E4%BD%BF%E7%94%A8Ollama%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2DeepSeek-R1/1.png" class="" title="图片"><p>可以看到有很多个模型可以选择，我们这回选择第一个，DeepSeek-R1，直接点击标题，进入详情页</p><img src="/2025/02/03/AI-%E5%B0%9D%E8%AF%95%E4%BD%BF%E7%94%A8Ollama%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2DeepSeek-R1/2.png" class="" title="图片"><p>在详情页中，我们可以选择不同的tag，即不同的模型大小，这边建议根据自己的电脑规格量力而为，不要下载太大的模型，会导致卡死<br>选择完对应的模型后，右手边会直接显示对应的命令，直接复制，在命令行中执行就好</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">ollama run deepseek-r1:8b</span><br><span class="line">pulling manifest </span><br><span class="line">pulling 6340dc3229b0... 100% ▕████████████████▏ 4.9 GB                         </span><br><span class="line">pulling 369ca498f347... 100% ▕████████████████▏  387 B                         </span><br><span class="line">pulling 6e4c38e1172f... 100% ▕████████████████▏ 1.1 KB                         </span><br><span class="line">pulling f4d24e9138dd... 100% ▕████████████████▏  148 B                         </span><br><span class="line">pulling 0cb05c6e4e02... 100% ▕████████████████▏  487 B                         </span><br><span class="line">verifying sha256 digest </span><br><span class="line">writing manifest </span><br><span class="line">success </span><br><span class="line">&gt;&gt;&gt; </span><br></pre></td></tr></table></figure><p>直到看到success为止，模型就已经下载完成并且已经跑起来了<br>接下来就可以直接问他问题了，如果觉得有点卡可以换小一点规模的模型</p><h1 id="待续"><a href="#待续" class="headerlink" title="待续"></a>待续</h1><p>下一篇我们讲一下如何使用一些第三方工具进行界面化操作，省的每次都用命令行进行聊天</p>]]></content>
     
     
       
       
-    <summary type="html">&lt;p&gt;[Todo]&lt;/p&gt;
-</summary>
+    <summary type="html">&lt;p&gt;其实类似的文章好多人都写过了，不过为了图以后查询方便，还是自己写一个吧&lt;/p&gt;
+&lt;h1 id=&quot;Ollama下载&quot;&gt;&lt;a href=&quot;#Ollama下载&quot; class=&quot;headerlink&quot; title=&quot;Ollama下载&quot;&gt;&lt;/a&gt;Ollama下载&lt;/h1&gt;&lt;p&gt;官网地</summary>
       
     
     
@@ -138,7 +448,7 @@
     <link href="https://maydaychen.github.io/2025/01/22/Zabbix-%E9%85%8D%E7%BD%AEAWS-SES%E4%BB%A5%E5%8F%91%E9%80%81%E9%82%AE%E4%BB%B6/"/>
     <id>https://maydaychen.github.io/2025/01/22/Zabbix-%E9%85%8D%E7%BD%AEAWS-SES%E4%BB%A5%E5%8F%91%E9%80%81%E9%82%AE%E4%BB%B6/</id>
     <published>2025-01-22T07:47:16.000Z</published>
-    <updated>2025-02-10T05:26:10.000Z</updated>
+    <updated>2025-02-11T06:19:57.482Z</updated>
     
     <content type="html"><![CDATA[<h1 id="配置SES"><a href="#配置SES" class="headerlink" title="配置SES"></a>配置SES</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">SMTP endpoint: //可以从AWS直接获取</span><br><span class="line">SMTP port: 465</span><br><span class="line">SMTP user name: //可以从AWS直接获取</span><br><span class="line">SMTP password: //可以从AWS直接获取</span><br><span class="line">SMTP domain: //AWS SES上有domain，前缀xxx@可以任意配置</span><br></pre></td></tr></table></figure><h1 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h1><h2 id="Protocol-“smtps”-not-supported-or-disabled-in-libcurl"><a href="#Protocol-“smtps”-not-supported-or-disabled-in-libcurl" class="headerlink" title="Protocol “smtps” not supported or disabled in libcurl"></a>Protocol “smtps” not supported or disabled in libcurl</h2><p>在Zabbix上配置完SES以后，在Test的时候出现上述错误<br>在check curl版本的时候，发现并不支持smtps</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl --version</span><br></pre></td></tr></table></figure><p>所以怀疑要升级curl以及它的类库</p><img src="/2025/01/22/Zabbix-%E9%85%8D%E7%BD%AEAWS-SES%E4%BB%A5%E5%8F%91%E9%80%81%E9%82%AE%E4%BB%B6/1.png" class="" title="图片"><h3 id="重新安装curl"><a href="#重新安装curl" class="headerlink" title="重新安装curl"></a>重新安装curl</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dnf install curl --allowerasing</span><br></pre></td></tr></table></figure><h3 id="重新安装libcurl"><a href="#重新安装libcurl" class="headerlink" title="重新安装libcurl"></a>重新安装libcurl</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dnf install libcurl --allowerasing</span><br></pre></td></tr></table></figure><p>之后再尝试一下，发现已经支持smtp&#x2F;smtps了，确实是版本的问题</p><h3 id="重新测试邮件发送功能"><a href="#重新测试邮件发送功能" class="headerlink" title="重新测试邮件发送功能"></a>重新测试邮件发送功能</h3>]]></content>
     
@@ -155,16 +465,18 @@
     
     <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
     
+    <category term="Zabbix" scheme="https://maydaychen.github.io/tags/Zabbix/"/>
+    
   </entry>
   
   <entry>
-    <title>Zabbix-Nginx监控</title>
-    <link href="https://maydaychen.github.io/2025/01/09/Zabbix-Nginx%E7%9B%91%E6%8E%A7/"/>
-    <id>https://maydaychen.github.io/2025/01/09/Zabbix-Nginx%E7%9B%91%E6%8E%A7/</id>
+    <title>Zabbix-监控Nginx</title>
+    <link href="https://maydaychen.github.io/2025/01/09/Zabbix-%E7%9B%91%E6%8E%A7Nginx/"/>
+    <id>https://maydaychen.github.io/2025/01/09/Zabbix-%E7%9B%91%E6%8E%A7Nginx/</id>
     <published>2025-01-09T07:01:16.000Z</published>
-    <updated>2025-01-09T07:48:35.366Z</updated>
+    <updated>2025-02-11T06:19:57.520Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>在项目中使用Nginx之后，有时候我们需要知道Nginx具体的工作情况，这时候就需要使用zabbix进行Nginx的相关监控<br>这边我们有两种方法</p><ol><li>使用普通的http请求的方式获取基本信息</li><li>如果使用了Nginx Plus，就可以通过Nginx Plus的接口获取更多的信息</li></ol><h1 id="普通方式"><a href="#普通方式" class="headerlink" title="普通方式"></a>普通方式</h1><p>参考链接： <a href="https://www.zabbix.com/integrations/nginx#nginx_agent">https://www.zabbix.com/integrations/nginx#nginx_agent</a></p><h2 id="确认nginx是否开启with-http-stub-status-module模块"><a href="#确认nginx是否开启with-http-stub-status-module模块" class="headerlink" title="确认nginx是否开启with-http_stub_status_module模块"></a>确认nginx是否开启with-http_stub_status_module模块</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nginx -V 2&gt;&amp;1 | grep -o with-http_stub_status_module</span><br></pre></td></tr></table></figure><p>如果出现with-http_stub_status_module，说明已经开启了该module，即可进行下一步</p><h2 id="配置nginx"><a href="#配置nginx" class="headerlink" title="配置nginx"></a>配置nginx</h2><p>在80端口对应的配置项里加入如下配置</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">location = /basic_status &#123;</span><br><span class="line">        stub_status;</span><br><span class="line">        allow 127.0.0.1;</span><br><span class="line">        allow ::1;</span><br><span class="line">        deny all;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2 id="修改宏变量（可选）"><a href="#修改宏变量（可选）" class="headerlink" title="修改宏变量（可选）"></a>修改宏变量（可选）</h2><p>默认情况下，不需要修改任何宏变量，因为他就是指向了localhost&#x2F;basic_status<br>不过如果修改了端口或者location的话，需要修改对应的配置</p><h1 id="Nginx-Plus方式"><a href="#Nginx-Plus方式" class="headerlink" title="Nginx Plus方式"></a>Nginx Plus方式</h1><p>这个方式比较厉害，能看到的东西非常多，但是有个巨大的问题，就是这不是免费的！<br>如果没有用这个的话，建议可以直接放弃<br>参考链接： <a href="https://www.zabbix.com/integrations/nginx#nginx_plus_http">https://www.zabbix.com/integrations/nginx#nginx_plus_http</a></p><h2 id="配置-重启nginx"><a href="#配置-重启nginx" class="headerlink" title="配置&#x2F;重启nginx"></a>配置&#x2F;重启nginx</h2><p>添加如下配置</p><img src="/2025/01/09/Zabbix-Nginx%E7%9B%91%E6%8E%A7/plus_0.png" class="" title="图片"><p>保存并重启nginx<br>restart&#x2F;reload nginx之后，我们可以尝试访问如下页面，可以看到是有数据传输的</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://&lt;IP&gt;:8080/dashboard.html#upstreams</span><br></pre></td></tr></table></figure><img src="/2025/01/09/Zabbix-Nginx%E7%9B%91%E6%8E%A7/plus_1.png" class="" title="图片"><h2 id="绑定template"><a href="#绑定template" class="headerlink" title="绑定template"></a>绑定template</h2><p>这一步非常简单，就把这个template绑定到对应的host上去即可</p><h2 id="修改宏变量"><a href="#修改宏变量" class="headerlink" title="修改宏变量"></a>修改宏变量</h2><p>我们需要把template中的这个宏改成如下格式</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">`&lt;scheme&gt;://&lt;host&gt;:&lt;port&gt;/&lt;location&gt;/`.</span><br></pre></td></tr></table></figure><img src="/2025/01/09/Zabbix-Nginx%E7%9B%91%E6%8E%A7/plus_2.png" class="" title="图片"><h2 id="刷新即可"><a href="#刷新即可" class="headerlink" title="刷新即可"></a>刷新即可</h2><img src="/2025/01/09/Zabbix-Nginx%E7%9B%91%E6%8E%A7/plus_3.png" class="" title="图片"><p>能看到已经自动添加了很多很多的监控项了，基本上每一个stream，每一个zone都有对应的监控，功能比单纯的status监控多得多</p>]]></content>
+    <content type="html"><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>在项目中使用Nginx之后，有时候我们需要知道Nginx具体的工作情况，这时候就需要使用zabbix进行Nginx的相关监控<br>这边我们有两种方法</p><ol><li>使用普通的http请求的方式获取基本信息</li><li>如果使用了Nginx Plus，就可以通过Nginx Plus的接口获取更多的信息</li></ol><h1 id="普通方式"><a href="#普通方式" class="headerlink" title="普通方式"></a>普通方式</h1><p>参考链接： <a href="https://www.zabbix.com/integrations/nginx#nginx_agent">https://www.zabbix.com/integrations/nginx#nginx_agent</a></p><h2 id="确认nginx是否开启with-http-stub-status-module模块"><a href="#确认nginx是否开启with-http-stub-status-module模块" class="headerlink" title="确认nginx是否开启with-http_stub_status_module模块"></a>确认nginx是否开启with-http_stub_status_module模块</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nginx -V 2&gt;&amp;1 | grep -o with-http_stub_status_module</span><br></pre></td></tr></table></figure><p>如果出现with-http_stub_status_module，说明已经开启了该module，即可进行下一步</p><h2 id="配置nginx"><a href="#配置nginx" class="headerlink" title="配置nginx"></a>配置nginx</h2><p>在80端口对应的配置项里加入如下配置</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">location = /basic_status &#123;</span><br><span class="line">        stub_status;</span><br><span class="line">        allow 127.0.0.1;</span><br><span class="line">        allow ::1;</span><br><span class="line">        deny all;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2 id="修改宏变量（可选）"><a href="#修改宏变量（可选）" class="headerlink" title="修改宏变量（可选）"></a>修改宏变量（可选）</h2><p>默认情况下，不需要修改任何宏变量，因为他就是指向了localhost&#x2F;basic_status<br>不过如果修改了端口或者location的话，需要修改对应的配置</p><h1 id="Nginx-Plus方式"><a href="#Nginx-Plus方式" class="headerlink" title="Nginx Plus方式"></a>Nginx Plus方式</h1><p>这个方式比较厉害，能看到的东西非常多，但是有个巨大的问题，就是这不是免费的！<br>如果没有用这个的话，建议可以直接放弃<br>参考链接： <a href="https://www.zabbix.com/integrations/nginx#nginx_plus_http">https://www.zabbix.com/integrations/nginx#nginx_plus_http</a></p><h2 id="配置-重启nginx"><a href="#配置-重启nginx" class="headerlink" title="配置&#x2F;重启nginx"></a>配置&#x2F;重启nginx</h2><p>添加如下配置</p><img src="/2025/01/09/Zabbix-%E7%9B%91%E6%8E%A7Nginx/plus_0.png" class="" title="图片"><p>保存并重启nginx<br>restart&#x2F;reload nginx之后，我们可以尝试访问如下页面，可以看到是有数据传输的</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://&lt;IP&gt;:8080/dashboard.html#upstreams</span><br></pre></td></tr></table></figure><img src="/2025/01/09/Zabbix-%E7%9B%91%E6%8E%A7Nginx/plus_1.png" class="" title="图片"><h2 id="绑定template"><a href="#绑定template" class="headerlink" title="绑定template"></a>绑定template</h2><p>这一步非常简单，就把这个template绑定到对应的host上去即可</p><h2 id="修改宏变量"><a href="#修改宏变量" class="headerlink" title="修改宏变量"></a>修改宏变量</h2><p>我们需要把template中的这个宏改成如下格式</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">`&lt;scheme&gt;://&lt;host&gt;:&lt;port&gt;/&lt;location&gt;/`.</span><br></pre></td></tr></table></figure><img src="/2025/01/09/Zabbix-%E7%9B%91%E6%8E%A7Nginx/plus_2.png" class="" title="图片"><h2 id="刷新即可"><a href="#刷新即可" class="headerlink" title="刷新即可"></a>刷新即可</h2><img src="/2025/01/09/Zabbix-%E7%9B%91%E6%8E%A7Nginx/plus_3.png" class="" title="图片"><p>能看到已经自动添加了很多很多的监控项了，基本上每一个stream，每一个zone都有对应的监控，功能比单纯的status监控多得多</p>]]></content>
     
     
       
@@ -179,6 +491,8 @@
     
     <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
     
+    <category term="Zabbix" scheme="https://maydaychen.github.io/tags/Zabbix/"/>
+    
   </entry>
   
   <entry>
@@ -186,7 +500,7 @@
     <link href="https://maydaychen.github.io/2025/01/02/Grafana-%E5%AF%B9%E6%8E%A5MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E4%B8%80%E4%BA%9B%E6%B3%A8%E6%84%8F%E7%82%B9/"/>
     <id>https://maydaychen.github.io/2025/01/02/Grafana-%E5%AF%B9%E6%8E%A5MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E4%B8%80%E4%BA%9B%E6%B3%A8%E6%84%8F%E7%82%B9/</id>
     <published>2025-01-02T08:02:23.000Z</published>
-    <updated>2025-01-02T09:25:23.000Z</updated>
+    <updated>2025-02-11T06:19:57.501Z</updated>
     
     <content type="html"><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>之前zabbix有一个需求是监控每一笔交易的耗时，即结束时间-开始时间，现在由于业务需求，需要在Grafana中统计所有交易时间的占比，分组并展示<br>但是接入的zabbix插件并不支持该功能，zabbix插件只能够查询出每个interval间隔内的数据并展示，并不能将所有时间内的数据汇总并分析，所以冥思苦想之下，只能接入zabbix的mysql，用sql脚本的形式获取数据</p><h1 id="设计思路"><a href="#设计思路" class="headerlink" title="设计思路"></a>设计思路</h1><p>思路就是，把对应的host group中的所有的host对应的每一个item，从item表中取出并在history表中查询一段时间内的所有数据，并按照大小进行分组</p><h1 id="接入Zabbix数据源"><a href="#接入Zabbix数据源" class="headerlink" title="接入Zabbix数据源"></a>接入Zabbix数据源</h1><p>data source选择mysql，然后只需要填入API信息以及用户名密码，点击最下面的save&amp;test就可以看连接是否成功了</p><img src="/2025/01/02/Grafana-%E5%AF%B9%E6%8E%A5MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E4%B8%80%E4%BA%9B%E6%B3%A8%E6%84%8F%E7%82%B9/1.png" class="" title="mysql"><h1 id="最终实现"><a href="#最终实现" class="headerlink" title="最终实现"></a>最终实现</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">SELECT </span><br><span class="line">    i.name AS item_name,                      -- Item 名称</span><br><span class="line">    CASE </span><br><span class="line">        WHEN hu.value BETWEEN 0 AND 1000 THEN &#x27;[0s-1s]&#x27; </span><br><span class="line">        WHEN hu.value BETWEEN 1000 AND 2000 THEN &#x27;[1s-2s]&#x27; </span><br><span class="line">        WHEN hu.value BETWEEN 2000 AND 3000 THEN &#x27;[2s-3s]&#x27; </span><br><span class="line">        WHEN hu.value BETWEEN 3000 AND 4000 THEN &#x27;[3s-4s]&#x27; </span><br><span class="line">        WHEN hu.value BETWEEN 4000 AND 5000 THEN &#x27;[4s-5s]&#x27;</span><br><span class="line">        ELSE &#x27;Other&#x27; </span><br><span class="line">    END AS value_range,</span><br><span class="line">    COUNT(*) AS count</span><br><span class="line">FROM </span><br><span class="line">    history hu</span><br><span class="line">JOIN </span><br><span class="line">    items i ON hu.itemid = i.itemid</span><br><span class="line">JOIN </span><br><span class="line">    hosts h ON i.hostid = h.hostid</span><br><span class="line">JOIN </span><br><span class="line">    hosts_groups hg ON h.hostid = hg.hostid</span><br><span class="line">JOIN </span><br><span class="line">    hstgrp g ON hg.groupid = g.groupid</span><br><span class="line">WHERE </span><br><span class="line">    g.name IN (&#x27;host group name&#x27;)</span><br><span class="line">    AND i.name REGEXP &#x27;^transaction time \\[$TXN_TYPE\\]&#x27; </span><br><span class="line">    AND hu.clock BETWEEN &#x27;$__unixEpochFrom()&#x27; AND &#x27;$__unixEpochTo()&#x27;</span><br><span class="line">GROUP BY </span><br><span class="line">    value_range</span><br><span class="line">ORDER BY </span><br><span class="line">    value_range; </span><br></pre></td></tr></table></figure><h1 id="问题记录"><a href="#问题记录" class="headerlink" title="问题记录"></a>问题记录</h1><h2 id="transaction-time-TXN-TYPE-无法获取到数据"><a href="#transaction-time-TXN-TYPE-无法获取到数据" class="headerlink" title="^transaction time [$TXN_TYPE]  无法获取到数据"></a>^transaction time [$TXN_TYPE]  无法获取到数据</h2><h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>在 MySQL 中，使用 REGEXP 时，特殊字符（如方括号 [ ]）具有特定的含义。例如，[ ] 通常用于定义字符集（例如，[a-z] 匹配所有小写字母）。因此，您的正则表达式 ^Transaction Time of type [Sale] 中的方括号被解释为字符集匹配，而不是字面匹配。<br>为了让 MySQL 将方括号视为普通字符，而不是正则表达式的特殊符号，需要对它们进行 转义。</p><p>正确写法如下：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">i.name REGEXP &#x27;^transaction time \\[$TXN_TYPE\\]&#x27; </span><br></pre></td></tr></table></figure><h2 id="timeFilter-hu-clock-没有作用"><a href="#timeFilter-hu-clock-没有作用" class="headerlink" title="$__timeFilter(hu.clock)没有作用"></a>$__timeFilter(hu.clock)没有作用</h2><p>本来没有定义查询的时间范围，后来想要根据Grafana上的时间自动修改时间，于是想着用上$__timeFilter(hu.clock)这个方法，但是始终检索不出来任何结果，于是看了下它的查询</p><h3 id="调查"><a href="#调查" class="headerlink" title="调查"></a>调查</h3><p>发现他会把这个方法转换成如下的语句</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">AND</span> hu.clock <span class="keyword">BETWEEN</span> FROM_UNIXTIME(<span class="number">1704179643</span>) <span class="keyword">AND</span> FROM_UNIXTIME(<span class="number">1735802043</span>)</span><br></pre></td></tr></table></figure><blockquote><p>from_unixtime是MySQL里的时间函数date为需要处理的参数（该参数是Unix 时间戳），可以是字段名，也可以直接是Unix 时间戳字符串后面的 &#39;%Y%m%d&#39; 主要是将返回值格式化。<br>百度百科附上： <a href="https://baike.baidu.com/item/from_unixtime/1801387?fr=ge_ala">https://baike.baidu.com/item/from_unixtime/1801387?fr=ge_ala</a></p></blockquote><p>但是在数据库中，该clock字段就是按照时间戳来保存的，所以说根本就不需要转换成字符串格式</p><h3 id="修改sql语句"><a href="#修改sql语句" class="headerlink" title="修改sql语句"></a>修改sql语句</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">AND</span> hu.clock <span class="keyword">BETWEEN</span> <span class="string">&#x27;$__timeFrom()&#x27;</span> <span class="keyword">AND</span> <span class="string">&#x27;$__timeTo()&#x27;</span></span><br></pre></td></tr></table></figure><p>依旧无效,于是查看<a href="https://grafana.com/docs/grafana/latest/datasources/mysql/#macros">官网上的说明</a>，发现$__timeFrom()其实还是会转换成FROM_UNIXTIME(1494410783)<br>这边我们应该用的是$__unixEpochFrom()和$__unixEpochTo()</p><h3 id="最终解决方案"><a href="#最终解决方案" class="headerlink" title="最终解决方案"></a>最终解决方案</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AND hu.clock BETWEEN &#x27;$__unixEpochFrom()&#x27; AND &#x27;$__unixEpochTo()&#x27;</span><br></pre></td></tr></table></figure>]]></content>
     
@@ -203,305 +517,7 @@
     
     <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
     
-  </entry>
-  
-  <entry>
-    <title>Docker-把image上传到阿里云仓库并在国内服务器下载</title>
-    <link href="https://maydaychen.github.io/2024/12/31/Docker-%E6%8A%8Aimage%E4%B8%8A%E4%BC%A0%E5%88%B0%E9%98%BF%E9%87%8C%E4%BA%91%E4%BB%93%E5%BA%93%E5%B9%B6%E5%9C%A8%E5%9B%BD%E5%86%85%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8B%E8%BD%BD/"/>
-    <id>https://maydaychen.github.io/2024/12/31/Docker-%E6%8A%8Aimage%E4%B8%8A%E4%BC%A0%E5%88%B0%E9%98%BF%E9%87%8C%E4%BA%91%E4%BB%93%E5%BA%93%E5%B9%B6%E5%9C%A8%E5%9B%BD%E5%86%85%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8B%E8%BD%BD/</id>
-    <published>2024-12-31T03:17:02.000Z</published>
-    <updated>2024-12-31T06:04:52.000Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>由于众所周知的原因，目前国内的服务器拉docker镜像非常困难，基本可以说是完全没法用<br>因此，怎么把image下载下来成了很多人头疼的问题，这里分享一下一种解决办法，就是在已有该镜像的服务器上把镜像推给阿里云，然后再从阿里云上下载该镜像</p><h1 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h1><h2 id="进入容器镜像服务"><a href="#进入容器镜像服务" class="headerlink" title="进入容器镜像服务"></a>进入容器镜像服务</h2><p>在阿里云的控制台找到容器镜像服务</p><img src="/2024/12/31/Docker-%E6%8A%8Aimage%E4%B8%8A%E4%BC%A0%E5%88%B0%E9%98%BF%E9%87%8C%E4%BA%91%E4%BB%93%E5%BA%93%E5%B9%B6%E5%9C%A8%E5%9B%BD%E5%86%85%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8B%E8%BD%BD/1.png" class="" title="容器镜像服务"><h2 id="创建个人实例"><a href="#创建个人实例" class="headerlink" title="创建个人实例"></a>创建个人实例</h2><p>进入以后可以看到有个人实例跟企业实例选项，在这里我们选择个人实例</p><img src="/2024/12/31/Docker-%E6%8A%8Aimage%E4%B8%8A%E4%BC%A0%E5%88%B0%E9%98%BF%E9%87%8C%E4%BA%91%E4%BB%93%E5%BA%93%E5%B9%B6%E5%9C%A8%E5%9B%BD%E5%86%85%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8B%E8%BD%BD/2.png" class="" title="个人实例"><p>注意，在这边应该会选区域，请务必选择跟你服务器所在地一样的区域，否则无法连接</p><p>看了一下，个人实例有命名空间和镜像数量限制，但是对我们个人而言已经绰绰有余</p><img src="/2024/12/31/Docker-%E6%8A%8Aimage%E4%B8%8A%E4%BC%A0%E5%88%B0%E9%98%BF%E9%87%8C%E4%BA%91%E4%BB%93%E5%BA%93%E5%B9%B6%E5%9C%A8%E5%9B%BD%E5%86%85%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8B%E8%BD%BD/3.png" class="" title="个人实例"><h2 id="创建命名空间"><a href="#创建命名空间" class="headerlink" title="创建命名空间"></a>创建命名空间</h2><img src="/2024/12/31/Docker-%E6%8A%8Aimage%E4%B8%8A%E4%BC%A0%E5%88%B0%E9%98%BF%E9%87%8C%E4%BA%91%E4%BB%93%E5%BA%93%E5%B9%B6%E5%9C%A8%E5%9B%BD%E5%86%85%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8B%E8%BD%BD/4.png" class="" title="个人实例"><h2 id="创建镜像仓库"><a href="#创建镜像仓库" class="headerlink" title="创建镜像仓库"></a>创建镜像仓库</h2><img src="/2024/12/31/Docker-%E6%8A%8Aimage%E4%B8%8A%E4%BC%A0%E5%88%B0%E9%98%BF%E9%87%8C%E4%BA%91%E4%BB%93%E5%BA%93%E5%B9%B6%E5%9C%A8%E5%9B%BD%E5%86%85%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8B%E8%BD%BD/5.png" class="" title="个人实例"><p>镜像仓库 -&gt; 创建镜像仓库 -&gt; 填写相关内容<br>仓库名称：可以是image name<br>仓库类型：公有或者私有<br>填写完成后点击下一步</p><img src="/2024/12/31/Docker-%E6%8A%8Aimage%E4%B8%8A%E4%BC%A0%E5%88%B0%E9%98%BF%E9%87%8C%E4%BA%91%E4%BB%93%E5%BA%93%E5%B9%B6%E5%9C%A8%E5%9B%BD%E5%86%85%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8B%E8%BD%BD/6.png" class="" title="个人实例"><p>在这边你可以选择镜像的来源，比如GitHub或者本地，由于我在其他服务器上已经下载过了，所以我选择本地仓库</p><h2 id="上传-下载镜像"><a href="#上传-下载镜像" class="headerlink" title="上传&#x2F;下载镜像"></a>上传&#x2F;下载镜像</h2><p>这一段我直接复制官网的说法</p><ol><li><p>登录阿里云Docker Registry</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker login --username=xxxx*****@xx.com [公网地址]</span></span><br></pre></td></tr></table></figure><p>用于登录的用户名为阿里云账号全名，密码为开通服务时设置的密码。<br>(您可以在访问凭证页面修改凭证密码)</p></li><li><p>从Registry中拉取镜像</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker pull [公网地址]/maydaychen/postgres:[镜像版本号]</span></span><br></pre></td></tr></table></figure></li><li><p>将镜像推送到Registry</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker login --username=2458*****@qq.com [公网地址]</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker tag [ImageId] [公网地址]/maydaychen/postgres:[镜像版本号]</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker push [公网地址]/maydaychen/postgres:[镜像版本号]</span></span><br><span class="line">请根据实际镜像信息替换示例中的[ImageId]和[镜像版本号]参数。</span><br></pre></td></tr></table></figure></li><li><p>选择合适的镜像仓库地址<br>从ECS推送镜像时，可以选择使用镜像仓库内网地址。推送速度将得到提升并且将不会损耗您的公网流量。 如果您使用的机器位于VPC网络，请使用 [专有网络] 作为Registry的域名登录。</p></li><li><p>示例<br>使用”docker tag”命令重命名镜像，并将它通过专有网络地址推送至Registry。</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker images</span></span><br><span class="line">REPOSITORY                                                         TAG                 IMAGE ID            CREATED             VIRTUAL SIZE</span><br><span class="line">registry.aliyuncs.com/acs/agent                                    0.7-dfb6816         37bb9c63c8b2        7 days ago          37.89 MB</span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker tag 37bb9c63c8b2 [专有地址]/acs/agent:0.7-dfb6816</span></span><br></pre></td></tr></table></figure><p>使用 “docker push” 命令将该镜像推送至远程。</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker push [专有地址]/acs/agent:0.7-dfb6816</span></span><br></pre></td></tr></table></figure></li></ol>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;由于众所周知的原因，目前国内的服务器拉docker镜像非常困难，基本可以说是完全没法用&lt;br&gt;因此，怎么把image下载下来成了很多人头疼的</summary>
-      
-    
-    
-    
-    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-    <category term="Docker" scheme="https://maydaychen.github.io/tags/Docker/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>RockyLinux9安装docker及docker-compose</title>
-    <link href="https://maydaychen.github.io/2024/12/31/RockyLinux9%E5%AE%89%E8%A3%85docker%E5%8F%8Adocker-compose/"/>
-    <id>https://maydaychen.github.io/2024/12/31/RockyLinux9%E5%AE%89%E8%A3%85docker%E5%8F%8Adocker-compose/</id>
-    <published>2024-12-31T01:34:38.000Z</published>
-    <updated>2024-12-31T02:01:28.142Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="Docker的安装"><a href="#Docker的安装" class="headerlink" title="Docker的安装"></a>Docker的安装</h1><p>如果是Rocky Linux9的话，目前使用podman而不是docker，所以命令变成了</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dnf install podman</span><br></pre></td></tr></table></figure><img src="/2024/12/31/RockyLinux9%E5%AE%89%E8%A3%85docker%E5%8F%8Adocker-compose/1.png" class="" title="Rocky"><p>如果不是用的Rocky而是别的操作系统的话，命令会有些许的不同，如下图</p><img src="/2024/12/31/RockyLinux9%E5%AE%89%E8%A3%85docker%E5%8F%8Adocker-compose/2.png" class="" title="AmazonLinux2023"><h2 id="启动并设置开机自启"><a href="#启动并设置开机自启" class="headerlink" title="启动并设置开机自启"></a>启动并设置开机自启</h2><p>启动 Docker 服务并设置 Docker 服务开机自启：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl start docker</span><br><span class="line">systemctl enable docker</span><br></pre></td></tr></table></figure><h1 id="Docker-compose"><a href="#Docker-compose" class="headerlink" title="Docker-compose"></a>Docker-compose</h1><h2 id="检查最新版本号"><a href="#检查最新版本号" class="headerlink" title="检查最新版本号"></a>检查最新版本号</h2><p>前往 <a href="https://github.com/docker/compose/releases%EF%BC%8C">https://github.com/docker/compose/releases，</a> 查看最新的release信息</p><img src="/2024/12/31/RockyLinux9%E5%AE%89%E8%A3%85docker%E5%8F%8Adocker-compose/3.png" class="" title="docker-compose"><h2 id="下载最新的release包"><a href="#下载最新的release包" class="headerlink" title="下载最新的release包"></a>下载最新的release包</h2><h3 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo curl -L &quot;https://github.com/docker/compose/releases/download/v[版本号]/docker-compose-$(uname -s)-$(uname -m)&quot; -o /usr/local/bin/docker-compose</span><br></pre></td></tr></table></figure><h3 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/bin/</span><br><span class="line">wget https://github.com/docker/compose/releases/download/v[版本号]/docker-compose-linux-x86_64</span><br></pre></td></tr></table></figure><h3 id="方法三"><a href="#方法三" class="headerlink" title="方法三"></a>方法三</h3><p>手动下载，通过SFTP发送到服务器</p><h2 id="设置可执行权限"><a href="#设置可执行权限" class="headerlink" title="设置可执行权限"></a>设置可执行权限</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo chmod +x /usr/local/bin/docker-compose</span><br></pre></td></tr></table></figure><h2 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose --version</span><br></pre></td></tr></table></figure><p>如果配置生效，就会显示docker compose的版本号</p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h1 id=&quot;Docker的安装&quot;&gt;&lt;a href=&quot;#Docker的安装&quot; class=&quot;headerlink&quot; title=&quot;Docker的安装&quot;&gt;&lt;/a&gt;Docker的安装&lt;/h1&gt;&lt;p&gt;如果是Rocky Linux9的话，目前使用podman而不是docker，所以命令</summary>
-      
-    
-    
-    
-    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-    <category term="Linux" scheme="https://maydaychen.github.io/tags/Linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>食谱-鱼香肉丝非标准版</title>
-    <link href="https://maydaychen.github.io/2024/12/30/%E9%A3%9F%E8%B0%B1-%E9%B1%BC%E9%A6%99%E8%82%89%E4%B8%9D%E9%9D%9E%E6%A0%87%E5%87%86%E7%89%88/"/>
-    <id>https://maydaychen.github.io/2024/12/30/%E9%A3%9F%E8%B0%B1-%E9%B1%BC%E9%A6%99%E8%82%89%E4%B8%9D%E9%9D%9E%E6%A0%87%E5%87%86%E7%89%88/</id>
-    <published>2024-12-30T15:33:33.000Z</published>
-    <updated>2024-12-30T15:50:29.013Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="食材"><a href="#食材" class="headerlink" title="食材"></a>食材</h1><ul><li>猪通脊肉 250g（三个人感觉吃不完）</li><li>笋丝（也可以直接买笋）</li><li>木耳</li><li>葱姜蒜</li><li>美人蕉</li><li>淀粉</li><li>油</li><li>番茄酱</li><li>白糖&#x2F;味精&#x2F;醋&#x2F;酱油</li><li>蚝油(非必须)</li><li>小苏打(非必须)</li></ul><h1 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h1><ol><li>将猪通脊肉切丝，清水洗，控完水之后加盐+味精，搅拌，加水再搅拌</li><li>直到水进到肉里了，肉有粘滑感的时候，over</li><li>(非必须) 可以加点小苏打， 一丢丢的量就行，然后静置一小时 </li><li>加淀粉，用手掌心揉肉丝，保证每一根肉丝都有淀粉 </li><li>倒入适量油，防止肉丝发干，也可保证滑油时不会散开 </li><li>锅里加一勺油，热锅凉油（锅中油烧热至冒烟，再加一勺凉油） </li><li>关小火，倒入肉丝，定型后开大火，待肉丝变色后把肉丝拨到一边，倒入美人蕉&#x2F;葱姜蒜末，煸炒后倒入番茄酱上色 </li><li>翻炒均匀后倒入焯水之后的笋丝和木耳，关小火，加入酱油和醋（比例约1:1，爱吃酸的人可以1:1.5） </li><li>加入白糖&#x2F;味精&#x2F;盐&#x2F;胡椒粉，（非必须）也可加入适量蚝油提鲜，翻炒均匀</li><li>大伙勾芡，可以再加一丢丢油，然后炒两下就可以出锅了</li></ol><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ol><li>笋丝跟木耳记得先焯水</li><li>焯水的时候可以把葱姜蒜和美人蕉都切了，反正没事干</li><li>别忘记勾芡！不然太干了</li><li>如果没有美人蕉，我用的一根小米辣+一点红椒，感觉味道也不差</li><li>笋丝可真不好买啊</li></ol>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h1 id=&quot;食材&quot;&gt;&lt;a href=&quot;#食材&quot; class=&quot;headerlink&quot; title=&quot;食材&quot;&gt;&lt;/a&gt;食材&lt;/h1&gt;&lt;ul&gt;
-&lt;li&gt;猪通脊肉 250g（三个人感觉吃不完）&lt;/li&gt;
-&lt;li&gt;笋丝（也可以直接买笋）&lt;/li&gt;
-&lt;li&gt;木耳&lt;/li&gt;
-&lt;li&gt;葱姜</summary>
-      
-    
-    
-    
-    <category term="生活" scheme="https://maydaychen.github.io/categories/%E7%94%9F%E6%B4%BB/"/>
-    
-    
-    <category term="食谱" scheme="https://maydaychen.github.io/tags/%E9%A3%9F%E8%B0%B1/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Hexo-如何使用本地图片进行展示</title>
-    <link href="https://maydaychen.github.io/2024/12/29/Hexo-%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87%E8%BF%9B%E8%A1%8C%E5%B1%95%E7%A4%BA/"/>
-    <id>https://maydaychen.github.io/2024/12/29/Hexo-%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87%E8%BF%9B%E8%A1%8C%E5%B1%95%E7%A4%BA/</id>
-    <published>2024-12-29T06:45:54.000Z</published>
-    <updated>2024-12-30T15:30:46.630Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>由于图床的使用可能会导致一定的风险，再加上莫名其妙的裂图问题，因为近期内没有时间去查看这个问题，所以不得不采用本地图片文件的方案，所幸目前看来问题不大</p><h1 id="具体操作"><a href="#具体操作" class="headerlink" title="具体操作"></a>具体操作</h1><h2 id="修改hexo配置"><a href="#修改hexo配置" class="headerlink" title="修改hexo配置"></a>修改hexo配置</h2><p>修改_config.yml文件，找到这个参数并且修改为true</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">post_asset_folder: true</span><br></pre></td></tr></table></figure><p>在修改完上述配置后，每次通过命令hexo new xxx都会生成一个xxx文件夹，该文件夹用来存放对应的资源文件</p><img src="/2024/12/29/Hexo-%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87%E8%BF%9B%E8%A1%8C%E5%B1%95%E7%A4%BA/1.png" class="" title="图片示例"><h2 id="安装插件"><a href="#安装插件" class="headerlink" title="安装插件"></a>安装插件</h2><p>插件地址： <a href="https://github.com/yiyungent/hexo-asset-img/blob/main/README_zh.md">https://github.com/yiyungent/hexo-asset-img/blob/main/README_zh.md</a><br>在readme中可以看到，我们只需要把图片放到对应的资源文件中，然后在md内容中通过这样的方式进行饮用</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% asset_img xxx.png 描述 %&#125;</span><br></pre></td></tr></table></figure>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;由于图床的使用可能会导致一定的风险，再加上莫名其妙的裂图问题，因为近期内没有时间去查看这个问题，所以不得不采用本地图片文件的方案，所幸目前看</summary>
-      
-    
-    
-    
-    <category term="博客相关" scheme="https://maydaychen.github.io/categories/%E5%8D%9A%E5%AE%A2%E7%9B%B8%E5%85%B3/"/>
-    
-    
-    <category term="Hexo" scheme="https://maydaychen.github.io/tags/Hexo/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Zabbix-小知识点记录(持续更新)</title>
-    <link href="https://maydaychen.github.io/2024/12/27/Zabbix-%E5%B0%8F%E7%9F%A5%E8%AF%86%E7%82%B9%E8%AE%B0%E5%BD%95-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/"/>
-    <id>https://maydaychen.github.io/2024/12/27/Zabbix-%E5%B0%8F%E7%9F%A5%E8%AF%86%E7%82%B9%E8%AE%B0%E5%BD%95-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/</id>
-    <published>2024-12-27T08:27:15.000Z</published>
-    <updated>2024-12-27T08:30:40.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="User-type区别"><a href="#User-type区别" class="headerlink" title="User type区别"></a>User type区别</h2><table><thead><tr><th>Zabbix User</th><th>可以访问“Monitoring”，默认情况下无权访问任何资源</th></tr></thead><tbody><tr><td>Zabbix Admin</td><td>可以访问“Monitoring”和“Configuration”，默认情况下无权访问任何资源</td></tr><tr><td>Zabbix Super Admin</td><td>可以访问所有内容，对所有主机具有读写访问权限</td></tr></tbody></table><h3 id="Zabbix-Alert限制"><a href="#Zabbix-Alert限制" class="headerlink" title="Zabbix Alert限制"></a>Zabbix Alert限制</h3><p>Zabbix只会把报警发送给对这个Host至少有“Read”权限的用户</p><h3 id="Discovery-actions跟Autoregistration-actions"><a href="#Discovery-actions跟Autoregistration-actions" class="headerlink" title="Discovery actions跟Autoregistration actions"></a>Discovery actions跟Autoregistration actions</h3><p>auto-registration can only find the servers installed agent or proxy, but network discovery can find not only servers, but also VM or others<br>auto-registration can configure some actions after it find and add the servers, such as link template or others, but network discovery can’t</p><h2 id="公示计算"><a href="#公示计算" class="headerlink" title="公示计算"></a>公示计算</h2><p>最好是计算具有相同update time的item，不然的话<code>如果部分item数据已更新但另一部分没有</code>，容易导致计算错误</p><h2 id="默认账号"><a href="#默认账号" class="headerlink" title="默认账号"></a>默认账号</h2><p>Account: Admin<br>Pass: zabbix</p><h3 id="Zabbix组件"><a href="#Zabbix组件" class="headerlink" title="Zabbix组件"></a>Zabbix组件</h3><table><thead><tr><th>Zabbix Server</th><th>根据监控规模和数据量确定服务器配置，建议数据库使用SSD存储，并合理调整相关参数，如MySQL的“innodb buffer pool size”大小，一般为主机内存的75% - 80%。</th></tr></thead><tbody><tr><td>Zabbix Proxy</td><td>配置需考虑监控主机数量和NVPS（每秒新值数量），建议一个proxy上的NVPS不要超过2000。</td></tr><tr><td>Zabbix Agent</td><td>版本应与Zabbix Server或Proxy兼容，大版本不能高于Server</td></tr></tbody></table>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h2 id=&quot;User-type区别&quot;&gt;&lt;a href=&quot;#User-type区别&quot; class=&quot;headerlink&quot; title=&quot;User type区别&quot;&gt;&lt;/a&gt;User type区别&lt;/h2&gt;&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Zabbix User&lt;</summary>
-      
-    
-    
-    
-    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-    <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Zabbix-K8S监控浅尝</title>
-    <link href="https://maydaychen.github.io/2024/12/26/Zabbix-K8S%E7%9B%91%E6%8E%A7%E6%B5%85%E5%B0%9D/"/>
-    <id>https://maydaychen.github.io/2024/12/26/Zabbix-K8S%E7%9B%91%E6%8E%A7%E6%B5%85%E5%B0%9D/</id>
-    <published>2024-12-26T08:41:05.000Z</published>
-    <updated>2024-12-27T07:43:15.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>由于项目中需要使用AWS EKS进行部署，传统的在服务器上安装zabbix agent的方法变得不再使用，还好Zabbix从6.0LTS开始就开始适配K8S，所以正好尝试一下</p><h2 id="为什么不用Prometheus"><a href="#为什么不用Prometheus" class="headerlink" title="为什么不用Prometheus"></a>为什么不用Prometheus</h2><p>诚然，在K8S监控领域，Prometheus可以说是绝对的主流，但是我主要有以下几点顾虑，仅为个人观点，欢迎讨论</p><ol><li>监控人员没有EKS manager服务器的权限，这就意味着，没法上服务器修改配置文件，每次有配置变更会很被动</li><li>监控人员需要有较强的K8S知识才能修改相关的配置，比如alertmanager，而Zabbix从界面上进行配置，会简单很多</li><li>Zabbix对各种自定义监控项的支持比较好，例如自定义shell，各种API health check等，而在prometheus中这些都需要自定义exporter，略显繁琐<br>综上所述，导致了我希望可以尝试用Zabbix去监控K8S中的各项指标，才有了这一次的尝试</li></ol><h2 id="尝试过程"><a href="#尝试过程" class="headerlink" title="尝试过程"></a>尝试过程</h2><p>321上链接 <a href="https://git.zabbix.com/projects/ZBX/repos/zabbix/browse/templates/app/kubernetes_http">https://git.zabbix.com/projects/ZBX/repos/zabbix/browse/templates/app/kubernetes_http</a><br>这个就是官方的步骤，跟着最下面的setup一步步做就行</p><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>Install the kubectl and helm tools following the instructions.</p><p>Clone the repository:</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd ~</span><br><span class="line">git clone https://git.zabbix.com/scm/zt/kubernetes-helm.git</span><br><span class="line">cd kubernetes-helm</span><br></pre></td></tr></table></figure><p>Export the default values of the chart helm-zabbix to the file $HOME&#x2F;zabbix_values.yaml:</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">helm show values . &gt; $HOME/zabbix_values.yaml</span><br></pre></td></tr></table></figure><p>Change the zabbixProxy.env.ZBX_SERVER_HOST environment variable value in the file $HOME&#x2F;zabbix_values.yaml to the address of the Zabbix server that is used for monitoring and which is reachable by the Zabbix proxy. Other values can be changed according to the environment if needed.</p><p>List the namespaces of the cluster.</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get namespaces</span><br></pre></td></tr></table></figure><p>Create the namespace monitoring if it does not exist in the cluster.</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create namespace monitoring</span><br></pre></td></tr></table></figure><p>Deploy the chart in the Kubernetes cluster (update the YAML files paths if necessary).</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">helm install zabbix . --dependency-update -f $HOME/zabbix_values.yaml -n monitoring</span><br></pre></td></tr></table></figure><p>Get the token automatically created for the service account.</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get secret zabbix-service-account -n monitoring -o jsonpath=&#123;.data.token&#125; | base64 -d</span><br></pre></td></tr></table></figure><h3 id="导入模版"><a href="#导入模版" class="headerlink" title="导入模版"></a>导入模版</h3><p>这一步其实没必要，新的zabbix都会自带这些模版，如果没有再下载导入即可</p><h3 id="获取token"><a href="#获取token" class="headerlink" title="获取token"></a>获取token</h3><p>就是上面的最后一步</p><h3 id="创建一个proxy"><a href="#创建一个proxy" class="headerlink" title="创建一个proxy"></a>创建一个proxy</h3><p>我们将转到Administration -&gt; Proxies来添加Proxy</p><img src="/2024/12/26/Zabbix-K8S%E7%9B%91%E6%8E%A7%E6%B5%85%E5%B0%9D/proxy.png" class="" title="图片"><p>因为这默认是主动Proxy，所以我们只需要根据zabbix_values.yaml文件中的- name: ZBX_HOSTNAME字段填入对应的Proxy name，其他的保持默认即可<br>(默认名称为zabbix-proxy)</p><h3 id="创建一个监控node的host"><a href="#创建一个监控node的host" class="headerlink" title="创建一个监控node的host"></a>创建一个监控node的host</h3><p>我们需要创建一个主机，用来采集与监控Kubernetes节点相关的指标，并且我们将使用Zabbix低级别自动发现来发现节点并创建新主机</p><img src="/2024/12/26/Zabbix-K8S%E7%9B%91%E6%8E%A7%E6%B5%85%E5%B0%9D/host.png" class="" title="图片"><p>给此主机命名Kubernetes Nodes,并关联模板kubernetes nodes by HTTP.<br>在这个模版里，有两个宏需要被修改</p><ol><li>{KUBE.API.ENDPOINT.URL}, 应该设置为Kubernetes API endpoint, 例如<a href="https://kubernetes.default.svc.cluster.local/">https://kubernetes.default.svc.cluster.local:443</a></li><li>{$KUBE.API.TOKEN}, 应该设置为我们之前获取的token<br>添加完主机几分钟后，我们就可以在host页面看到很多新的host，每个host都代表一个node</li></ol><h3 id="创建一个监控cluster的host"><a href="#创建一个监控cluster的host" class="headerlink" title="创建一个监控cluster的host"></a>创建一个监控cluster的host</h3><p>创建一个新的host，该host将代表通过Kubernetes API和kube-state-metrics端点可用的指标</p><ol><li>再次单击Create Host按钮，将此主机命名为k8s-cluster-host。 </li><li>同样选择之前创建的proxy </li><li>为该主机关联模板Kubernetes cluster state by HTTP </li><li>在Macro部分中，将kube.api.url更改为我们之前使用的相同内容，但这次在末尾省略&#x2F;api。简单地：default.svc.cluster.local:443。 </li><li>{$KUBE.API.TOKEN} 设置为同样的内容<img src="/2024/12/26/Zabbix-K8S%E7%9B%91%E6%8E%A7%E6%B5%85%E5%B0%9D/cluster.png" class="" title="图片"></li></ol><h2 id="问题Todo"><a href="#问题Todo" class="headerlink" title="问题Todo"></a>问题Todo</h2><ol><li>Agent无法连接的问题<img src="/2024/12/26/Zabbix-K8S%E7%9B%91%E6%8E%A7%E6%B5%85%E5%B0%9D/agent.png" class="" title="图片"></li><li>Agent照理来说应该是DaemonSet自动创建的，但是现在只有proxy服务器的一个agent，其他node没有agent，很奇怪</li><li>Prometheus数据接入，怎么对接prometheus的exporter</li></ol>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h2 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h2&gt;&lt;p&gt;由于项目中需要使用AWS EKS进行部署，传统的在服务器上安装zabbix agent的方法变得不再使用，还好Zabbix从6.0LTS开始</summary>
-      
-    
-    
-    
-    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-    <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Zabbix-进程逐个理解</title>
-    <link href="https://maydaychen.github.io/2024/12/25/Zabbix-%E8%BF%9B%E7%A8%8B%E9%80%90%E4%B8%AA%E7%90%86%E8%A7%A3/"/>
-    <id>https://maydaychen.github.io/2024/12/25/Zabbix-%E8%BF%9B%E7%A8%8B%E9%80%90%E4%B8%AA%E7%90%86%E8%A7%A3/</id>
-    <published>2024-12-25T07:39:59.000Z</published>
-    <updated>2024-12-27T07:51:55.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>Zabbix服务端进程被分为不同的种类，每一种进程负责相应的任务，包括收集原始监控数据、对原始监控数据进行预处理、将预处理后的监控数据同步到数据库、对监控数据进行计算以生成事件、计算和获取内部监控数据，以及对数据库中的数据进行清理等。</p><h2 id="zabbix-agentd"><a href="#zabbix-agentd" class="headerlink" title="zabbix_agentd"></a>zabbix_agentd</h2><p>客户端守护进程，此进程收集客户端数据，例如cpu负载、内存、硬盘使用情况等</p><h2 id="zabbix-get"><a href="#zabbix-get" class="headerlink" title="zabbix_get"></a>zabbix_get</h2><p>zabbix工具，单独使用的命令，通常在server或者proxy端执行获取远程客户端信息的命令。通常用户排错。例如在server端获取不到客户端的内存数据，我们可以使用zabbix_get获取客户端的内容的方式来做故障排查。</p><h2 id="zabbix-sender"><a href="#zabbix-sender" class="headerlink" title="zabbix_sender"></a>zabbix_sender</h2><p>zabbix工具，用于发送数据给server或者proxy，通常用于耗时比较长的检查。很多检查非常耗时间，导致zabbix超时。于是我们在脚本执行完毕之后，使用sender主动提交数据。</p><h2 id="zabbix-server"><a href="#zabbix-server" class="headerlink" title="zabbix_server"></a>zabbix_server</h2><p>zabbix服务端守护进程。zabbix_agentd、zabbix_get、zabbix_sender、zabbix_proxy、zabbix_java_gateway的数据最终都是提交到server<br>备注：当然不是数据都是主动提交给zabbix_server,也有的是server主动去取数据。</p><h2 id="zabbix-proxy"><a href="#zabbix-proxy" class="headerlink" title="zabbix_proxy"></a>zabbix_proxy</h2><p>zabbix代理守护进程。功能类似server，唯一不同的是它只是一个中转站，它需要把收集到的数据提交&#x2F;被提交到server里。为什么要用代理？代理是做什么的？卖个关子，请继续关注运维生存时间zabbix教程系列。</p><h2 id="zabbix-java-gateway"><a href="#zabbix-java-gateway" class="headerlink" title="zabbix_java_gateway"></a>zabbix_java_gateway</h2><p>zabbix2.0之后引入的一个功能。顾名思义：Java网关，类似agentd，但是只用于Java方面。需要特别注意的是，它只能主动去获取数据，而不能被动获取数据。它的数据最终会给到server或者proxy。</p><h2 id="监控数据的收集进程"><a href="#监控数据的收集进程" class="headerlink" title="监控数据的收集进程"></a><strong>监控数据的收集进程</strong></h2><p>Zabbix服务器的重要任务之一就是被动接收由Zabbix代理和各种Zabbix客户端发送的监控数据，以及主动向Zabbix代理、Zabbix java gateway和Zabbix客户端等数据源请求数据，其中被动接收数据由trapper类进程实现，主动请求数据则由poller类进程实现。</p><p>trapper类进程通过监听TCP套接字来捕获符合通信协议的原始监控数据，poller类进程则使用ConfigCache作为输入，根据缓存信息实现完善的任务调度。trapper类和poller类进程的下游是预处理进程，这两类进程需要将收集到的原始监控数据发送到预处理进程。trapper类进程和poller类进程都会在进程内部维护一个静态变量cached_message，用于暂存待发送的监控数据，并在各种必要的时机将该变量中的消息发送到预处理进程。</p><h2 id="trapper类进程"><a href="#trapper类进程" class="headerlink" title="trapper类进程"></a><strong>trapper类进程</strong></h2><p>Zabbix服务器端的trapper进程负责接收来自Zabbix Agent、Zabbix Proxy、zabbix_sender及其他外部进程发来的请求并进行处理，按照Zabbix 5.0的通信协议规范，trapper进程只能接收JSON格式字符串的请求。</p><p>trapper进程由配置文件中的StartTrappers参数决定其启动数量（允许启动0～1000个进程，默认为5个）</p><p>注意：至少要运行一个trapper进程用于在web前端展示服务器可用性和队列视图</p><p>总体而言，trapper进程所做的事情就是循环从TCP 套接字读取请求消息，然后根据消息类型调用不同的函数进行处理，处理完毕后关闭该套接字连接。即每个循环处理一个请求，每个请求的处理都是在新的连接中进行通信的。</p><p>数据处理：</p><ul><li>处理agent data和sender data请求：两者处理过程类似，唯一区别是验证过程，agent data要求监控项属于主动客户端（active agent）类型，而发送者数据（sender data）要求监控项属于Zabbix trapper类型。请求的过程中，trapper进程的作用在于验证数据的有效性，包括监控项状态、监控项类型和主机状态等。</li><li>处理proxy config请求：将Zabbix服务器的配置信息传输到Zabbix代理。可以由Zabbix代理发送到Zabbix服务器(主动模式，默认)，也可以由Zabbix服务器发送到Zabbix代理（被动模式）。</li><li>处理proxy data请求：可能由Zabbix服务器或者被动模式下的Zabbix代理来处理。如果是Zabbix服务器，说明它接收了一批来自Zabbix代理的监控值，此时需要将数据写入缓存或者进行LLD(Low-level discovery，自动发现)处理；如果是被动代理，说明它接收了Zabbix服务器发送的数据请求，此时需要做的是将监控数据回复给Zabbix服务器。从Zabbix 5.0开始，Zabbix代理具有了预处理的能力，所以proxy data中的监控值其实是已经预处理过的，不需要在Zabbix服务器端再次预处理。</li></ul><h2 id="snmp-trapper进程"><a href="#snmp-trapper进程" class="headerlink" title="snmp trapper进程"></a><strong>snmp trapper进程</strong></h2><p>snmp trapper进程由配置参数StartSNMPTrapper决定其启动数量（允许0或1个进程），默认为0。该进程的工作方式是循环调用get_latest_data()和read_traps()函数，从trap文件（文件路径由SNMPTrapperFile配置参数决定）中读取数据，然后调用parse_traps()函数进行解析处理</p><h2 id="poller类进程"><a href="#poller类进程" class="headerlink" title="poller类进程"></a><strong>poller类进程</strong></h2><p>poller类进程是指以主动方式获取原始监控数据的进程，包括poller进程、unreachable poller进程、ipmi manager&#x2F;poller进程、icmp pinger进程、javapoller进程、proxy poller进程和http poller进程，一共有7种，它们各自负责采集不同类型的监控项数据。与trapper类进程不同的是，poller类进程需要自己执行监控数据采集逻辑，每一种监控项都需要调用不同的函数进行处理才能得到监控数据，而trapper类进程可以直接接收监控数据。从这个角度来说，对于同样数量的监控任务，使用poller工作方式要比使用trapper工作方式的负载更高</p><h2 id="unreachable-poller进程"><a href="#unreachable-poller进程" class="headerlink" title="unreachable poller进程"></a><strong>unreachable poller进程</strong></h2><p>在网络通信良好并且各方服务正常的情况下，poller进程所处理的Zabbix客户端和SNMP客户端监控项，以及IPMI进程处理的IPMI客户端（IPMIagent）监控项和java poller进程处理的JMX监控项，都能够成功执行并获取监控数据。但是，当出现agent服务故障时，如果继续由原来的poller类进程处理对应的监控项，大量的连接超时就有可能引起整体服务水平下降。unreachable poller进程就是对该问题的解决方案，当客户端（包括Zabbix客户端、SNMP客户端、IPMI客户端和JMX客户端）服务不可用时，对应的监控项会转移到unreachable poller队列中处理。当unreachable poller进程发现某个客户端已经恢复正常时，则将对应的监控项再转移回原始队列中。</p><p>一般情况下，由于大部分客户端状态是良好的，因此unreachable poller进程的负载并不高。但是，一旦发生大面积网络故障，会有大量监控项转移到unreachablepoller进程的任务队列中，此时进程的负载会飙升。如果要降低负载，可以考虑增加UnavailableDelay参数值，或者增加unreachable poller进程的启动数量。</p><h2 id="预处理进程"><a href="#预处理进程" class="headerlink" title="预处理进程"></a><strong>预处理进程</strong></h2><p>预处理（preprocessing）进程是从Zabbix 3.4开始新增的一种进程类型，它用于对原始的监控数据进行各种形式的变换和计算，并通过共享内存，将输出结果传递到history syncer进程进行处理。在Zabbix的早期版本中，预处理进程只能运行在Zabbix服务器端，当数据量大时会给Zabbix服务器端造成较大的压力。因此从Zabbix 4.2版本开始，预处理进程可以同时运行在Zabbix服务器端和Zabbix代理端。在这种情况下，由Zabbix代理负责采集的监控数据在传输到Zabbix服务器端之前就已经完成了预处理，直接从Zabbix客户端传输到Zabbix服务器端的数据则需要由Zabbix服务器端完成预处理。</p><p>preprocessing进程由1个preprocessing manager(管理者进程)和多个preprocessing worker(工作者进程)进程组成。</p><p>processing manager进程负责监听预处理所使用的Unix域套接字并处理由poller &#x2F; trapper进程和preprocessing worker进程发送过来的消息。还会向lld manager进程发送消息，因为原始监控数据中同时包含LLD规则监控项数据，这些数据在预处理完毕以后还需要进行LLD处理（由lld manager和lld worker进程完成）</p><p>预处理工作者（preprocessing worker）进程的数量由配置参数StartPreprocessors决定，允许1～1 000个进程。工作者进程负责读取管理者进程发送的进程间通信服务消息，并执行所获得的任务。</p><h2 id="LLD进程"><a href="#LLD进程" class="headerlink" title="LLD进程"></a><strong>LLD进程</strong></h2><p>LLD进程是从Zabbix 5.0开始出现的专门负责LLD规则（LLD rule）监控数据处理的进程，由于底层发现（Low Level Discovery，LLD）得到越来越多的应用，因此这类数据的处理压力随之增加，将这些工作交给单独的进程来处理将有利于性能的提升和将来的进一步扩展。</p><p>LLD进程包括lld manager进程和lld worker进程两种，其中管理者进程是唯一的，工作者进程可以启动多个。LLD进程只能运行在Zabbix服务器端，它们位于预处理进程的下游，接收预处理进程发送的消息作为输入，而输出则是对各项监控配置的更新操作。本质上，<strong>LLD就是通过解析LLD规则监控项（一种特殊类型的监控项，其配置信息存储在items表中，其监控值不用于存储，只用于更新监控配置）返回的特殊格式的字符串，创建、更新或者删除监控项、触发器、图表或主机，使之与返回结果保持一致。</strong>由于LLD规则监控值会按照设定的频率进行更新，因此Zabbix可以随着数据的更新而动态调整监控对象、监控指标和监控参数等。从Zabbix 4.2开始，LLD规则的监控值跟普通监控项一样可以进行预处理，在预处理结束以后，LLD进程再对数据进行解析并更新配置信息，这一方式赋予用户更多对LLD规则数据进行处理的能力，从而增强了底层发现的功能。</p><p>lld manager进程虽然只有一个，但是其需要完成的任务有多种，包括注册lldworker进程、接收其他进程发送的消息、给lld worker进程分配任务、处理lldworker进程返回的结果以及响应队列长度请求等。</p><p>lld worker进程负责处理lld manager进程分配的任务，即接收并处理通过进程间通信服务发送过来的code 1100消息。总体的处理过程包括解析消息，验证LLD规则有效性（通过ConfigCache），加载filter、LLD macros和overrides，解析LLD消息的JSON数组，进行配置信息更新，以及根据LLD规则监控项状态生成内部事件。lld worker进程的工作机制是被动模式，即发出注册消息以后，并不会主动向管理者进程请求任务，而是等待管理者进程分配任务。</p><p>预处理进程和LLD进程处于poller类进程和trapper类进程的下游，负责处理poller类进程和trapper类进程获取的原始监控数据。预处理进程按照用户设置的处理规则对数据进行变换和计算，处理之后的数据传递给history syncer进程处理。预处理进程通过进程间通信服务方式与上游进程通信。处理之后的数据写入共享内存，供下游进程使用。</p><h2 id="history-syncer进程"><a href="#history-syncer进程" class="headerlink" title="history syncer进程"></a><strong>history syncer进程</strong></h2><p>history syncer进程是Zabbix服务器端最为核心的进程，它负责将监控数据（包括趋势数据）写入数据库和写入缓存、生成并处理事件，以及处理动作（action）并生成升级序列（escalation）等。<strong>如果没有history syncer进程，Zabbix服务器将什么也做不了：既不能处理监控数据，又不能生成事件，也不能进行告警。</strong>history syncer进程位于预处理进程的下游，它将预处理进程写入HistoryCache和HistoryIndexCache的数据作为输入。</p><p>history syncer进程的启动数量由配置文件中的StartDBSyncers参数控制，允许1～100个进程。history syncer进程的作用是将HistoryCache和HistoryIndexCache中的监控值写入数据库中的history表和trends表，同时根据监控值计算触发器表达式，决定是否触发事件。该进程在Zabbix服务器端和Zabbix代理端都存在，但是有所不同，在Zabbix服务器端时，该进程既需要处理监控值（values），也需要处理触发器（triggers），在Zabbix代理端时，该进程只需要处理监控值，而不需要处理触发器，因为触发器表达式统一由Zabbix服务器端处理</p><h2 id="处理动作相关进程"><a href="#处理动作相关进程" class="headerlink" title="处理动作相关进程"></a><strong>处理动作相关进程</strong></h2><p>escalator进程用于处理事件触发的整个动作序列，该进程读取escalations表中的数据并进行处理，并将生成的警报消息插入alerts表中，供alerter进程使用。所以，escalator进程并不实际发送警报消息，而只生成警报。</p><h2 id="alerter进程"><a href="#alerter进程" class="headerlink" title="alerter进程"></a><strong>alerter进程</strong></h2><p>alerter进程族用于实际发送警报，该进程族包括alert syncer进程、alert manger进程和alerter进程</p><ul><li>alert syncer进程负责将数据库中的警报信息和媒体类型信息同步到alert manager进程，具体方法是从数据库读取数据，然后构造为进程间通信服务消息并发送到alert manager进程。</li><li>alert manager进程负责向alerter进程分发警报处理任务，并接收alerter进程反馈的结果。</li><li>alerter进程负责按照alertmanager分配的任务处理警报并反馈结果。task manager进程运行在Zabbix服务器端和Zabbix代理端，它负责处理存储在数据库task表中的远程命令（remote command）、立即检查（check now）、问题确认（problem acknowledge）和问题关闭（problem close）等任务。</li></ul>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;Zabbix服务端进程被分为不同的种类，每一种进程负责相应的任务，包括收集原始监控数据、对原始监控数据进行预处理、将预处理后的监控数据同步到数据库、对监控数据进行计算以生成事件、计算和获取内部监控数据，以及对数据库中的数据进行清理等。&lt;/p&gt;
-&lt;h2 id=&quot;zabbix-</summary>
-      
-    
-    
-    
-    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-    <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Zabbix-Proxy相关</title>
-    <link href="https://maydaychen.github.io/2024/12/24/Zabbix-Proxy%E7%9B%B8%E5%85%B3/"/>
-    <id>https://maydaychen.github.io/2024/12/24/Zabbix-Proxy%E7%9B%B8%E5%85%B3/</id>
-    <published>2024-12-24T07:52:38.000Z</published>
-    <updated>2024-12-27T08:22:50.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>服务器一多以及服务器分布在各个不同地区，便需要考虑使用分布式监控，那么我们到底选择proxy还是nodes呢,请看如下的对照表，看完之后，我想你能选到一个你满意的方式</p><table><thead><tr><th></th><th>Proxy</th><th>Node</th><th>描述</th></tr></thead><tbody><tr><td>Lightweight&#x2F;轻量级</td><td>Yes</td><td>No</td><td>安装完毕即可,Proxy必须更轻量级</td></tr><tr><td>GUI&#x2F;图形界面</td><td>No</td><td>Yes</td><td>proxy的配置都在servers上，而node是一个完整的server</td></tr><tr><td>Works independently&#x2F;独立工作</td><td>Yes</td><td>Yes</td><td></td></tr><tr><td>Easy maintenance&#x2F;易于维护</td><td>Yes</td><td>No</td><td></td></tr><tr><td>Automatic DB creation&#x2F;自动生成数据库</td><td>Yes</td><td>No</td><td></td></tr><tr><td>Local administration&#x2F;本地管理</td><td>No</td><td>Yes</td><td></td></tr><tr><td>Ready for embedded hardware</td><td>Yes</td><td>No</td><td></td></tr><tr><td>One way TCP connections</td><td>Yes</td><td>Yes</td><td></td></tr><tr><td>Centralised configuration&#x2F;集中配置</td><td>Yes</td><td>No</td><td>proxy配置全部集中在server上，node自己维护自己的配置</td></tr><tr><td>Generates notifications&#x2F;通知</td><td>No</td><td>Yes</td><td></td></tr></tbody></table><h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><ul><li>监控远程区域设备</li><li>监控本地网络不稳定区域</li><li>当zabbix监控上千设备时，使用它来减轻server的压力</li><li>简化zabbix的维护</li></ul><h2 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h2><p>zabbix proxy仅仅需要一条tcp连接到zabbix server,所以防火墙上仅仅需要加上一条规则即可.zabbix proxy数据库必须和server分开，否则数据会被破坏，毕竟这两个数据库的表大部分都相同。总之记住，数据库分开即可。</p><p>proxy收集到数据之后，首先将数据缓存在本地，然后在一定得时间之后传递给zabbix server.这个时间由proxy配置文件中参数ProxyLocalBuffer and ProxyOfflineBuffer决定.</p><p>zabbix proxy是一个数据收集器，它不计算触发器、不处理事件、不发送报警</p><aside>⚠️ 使用agent active模式，一定要记住在agent的配置文件参数ServerActive加上proxy的IP地址.切记</aside>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h2 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot; title=&quot;概述&quot;&gt;&lt;/a&gt;概述&lt;/h2&gt;&lt;p&gt;服务器一多以及服务器分布在各个不同地区，便需要考虑使用分布式监控，那么我们到底选择proxy还是nodes呢,请看如下的对照表，看完之后，我</summary>
-      
-    
-    
-    
-    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-    <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Zabbix-密码重置</title>
-    <link href="https://maydaychen.github.io/2024/12/23/Zabbix-%E5%AF%86%E7%A0%81%E9%87%8D%E7%BD%AE/"/>
-    <id>https://maydaychen.github.io/2024/12/23/Zabbix-%E5%AF%86%E7%A0%81%E9%87%8D%E7%BD%AE/</id>
-    <published>2024-12-23T08:18:55.000Z</published>
-    <updated>2025-01-24T07:12:40.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>在使用 zabbix 的过程中由于默认密码过于简单，往往会修改密码并配置为自动登录，时间一长往往忘记密码，造成无法登录的情况，这种情况就需要重置密码。</p><p>Zabbix 的密码存储在数据库中，可通过数据库重置。<strong>在 Zabbix 5.0 版本之前，zabbix 用户密码使用 MD5 加密方式存储，从 5.0 版本开始使用 Bcrypt 加密方式</strong>。</p><p>BCrypt 是一种跨平台的文件加密工具，使用的是布鲁斯 · 施内尔在 1993 年发布的 Blowfish 加密算法。它是一种可生成随机盐值的单向 Hash 加密算法，Hash 值中包含了上一步生成的盐值（22 个字符）的不可逆加密算法。同一种明文，每次被加密后的密文都不一样，并且不可反向破解生成明文，破解难度非常大。大大提升了系统的安全性，因此要重置 5.0 以后版本的用户密码就需要注意，不能再使用 MD5 加密方式生成的密码。</p><p>可按照以下方法对 zabbix 的 Admin 用户密码进行重置 MySQL 数据库</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mysql -uzabbix -p</span><br><span class="line">use zabbix;</span><br><span class="line">updateusersSET passwd=&#x27;$2y$10$92nDno4n0Zm7Ej7Jfsz8WukBfgSS/U0QkIuu8WkJPihXBb2A1UrEK&#x27;where userid=1;</span><br><span class="line">quit;</span><br></pre></td></tr></table></figure><p>PostgreSQL</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">su - postgres</span><br><span class="line">psql</span><br><span class="line">c zabbix;</span><br><span class="line">updateusersSET passwd=&#x27;$2y$10$92nDno4n0Zm7Ej7Jfsz8WukBfgSS/U0QkIuu8WkJPihXBb2A1UrEK&#x27;where userid=1;</span><br><span class="line">、q</span><br></pre></td></tr></table></figure><p>重置后即可使用账号：Admin 密码：zabbix 登录系统，注意账号 Admin 的 A 为大写，区分大小写。</p><p>{&quot;AlarmName&quot;:&quot;AWS&#x2F;WAF HostingProviderIPList BlockedRequests is more than 300 in 5 mins&quot;,&quot;AlarmDescription&quot;:null,&quot;AWSAccountId&quot;:&quot;861276109353&quot;,&quot;AlarmConfigurationUpdatedTimestamp&quot;:&quot;2025-01-23T06:39:17.195+0000&quot;,&quot;NewStateValue&quot;:&quot;OK&quot;,&quot;NewStateReason&quot;:&quot;Threshold Crossed: 1 out of the last 1 datapoints [1.0 (23&#x2F;01&#x2F;25 06:35:00)] was not greater than the threshold (300.0) (minimum 1 datapoint for ALARM -&gt; OK transition).&quot;,&quot;StateChangeTime&quot;:&quot;2025-01-23T06:40:06.454+0000&quot;,&quot;Region&quot;:&quot;Asia Pacific (Singapore)&quot;,&quot;AlarmArn&quot;:&quot;arn:aws:cloudwatch:ap-southeast-1:861276109353:alarm:AWS&#x2F;WAF HostingProviderIPList BlockedRequests is more than 300 in 5 mins&quot;,&quot;OldStateValue&quot;:&quot;ALARM&quot;,&quot;OKActions&quot;:[&quot;arn:aws:sns:ap-southeast-1:861276109353:Monitoring-Prod-CloudWatch&quot;],&quot;AlarmActions&quot;:[&quot;arn:aws:sns:ap-southeast-1:861276109353:Monitoring-Prod-CloudWatch&quot;],&quot;InsufficientDataActions&quot;:[],&quot;Trigger&quot;:{&quot;MetricName&quot;:&quot;BlockedRequests&quot;,&quot;Namespace&quot;:&quot;AWS&#x2F;WAFV2&quot;,&quot;StatisticType&quot;:&quot;Statistic&quot;,&quot;Statistic&quot;:&quot;SUM&quot;,&quot;Unit&quot;:null,&quot;Dimensions&quot;:[{&quot;value&quot;:&quot;apx-prod-web-acl&quot;,&quot;name&quot;:&quot;WebACL&quot;},{&quot;value&quot;:&quot;ap-southeast-1&quot;,&quot;name&quot;:&quot;Region&quot;},{&quot;value&quot;:&quot;HostingProviderIPList&quot;,&quot;name&quot;:&quot;LabelName&quot;},{&quot;value&quot;:&quot;awswaf:managed:aws:anonymous-ip-list&quot;,&quot;name&quot;:&quot;LabelNamespace&quot;}],&quot;Period&quot;:300,&quot;EvaluationPeriods&quot;:1,&quot;DatapointsToAlarm&quot;:1,&quot;ComparisonOperator&quot;:&quot;GreaterThanThreshold&quot;,&quot;Threshold&quot;:300.0,&quot;TreatMissingData&quot;:&quot;notBreaching&quot;,&quot;EvaluateLowSampleCountPercentile&quot;:&quot;&quot;}}</p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;在使用 zabbix 的过程中由于默认密码过于简单，往往会修改密码并配置为自动登录，时间一长往往忘记密码，造成无法登录的情况，这种情况就需要重置密码。&lt;/p&gt;
-&lt;p&gt;Zabbix 的密码存储在数据库中，可通过数据库重置。&lt;strong&gt;在 Zabbix 5.0 版本之前，z</summary>
-      
-    
-    
-    
-    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-    <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Zabbix-性能优化相关</title>
-    <link href="https://maydaychen.github.io/2024/12/22/Zabbix-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E7%9B%B8%E5%85%B3/"/>
-    <id>https://maydaychen.github.io/2024/12/22/Zabbix-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E7%9B%B8%E5%85%B3/</id>
-    <published>2024-12-22T07:46:19.000Z</published>
-    <updated>2025-02-08T15:56:52.840Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="Zabbix进程及其功能"><a href="#Zabbix进程及其功能" class="headerlink" title="Zabbix进程及其功能"></a>Zabbix进程及其功能</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">报警器(alerter)                                该类型的进程是用来发送报警通知的；</span><br><span class="line">配置同步器(configuration syncer)               用于将配置文件中的配置信息同步到内存中缓存；</span><br><span class="line">数据发送器(data sender)                        服务器代理节点用于发送数据的进程（服务器端没有这类进程）；</span><br><span class="line">数据库看门狗(db watchdog)                      该进程用于监视zabbix系统的数据库状态，当数据库状态变为不可用时，发送警告信息（服务器代理端不支持这类型进程）。</span><br><span class="line">自动发现器(discoverer)                         用于自动发现设备的进程；</span><br><span class="line">步骤(escalator)                               用于处理动作中的步骤的进程；</span><br><span class="line">心跳发送器(heartbeat sender)                   服务器代理端用于发送心跳信息（服务器端没有这类型的进程）；</span><br><span class="line">历史数据同步器(<span class="built_in">history</span> syncer)                 用于写历史数据表；</span><br><span class="line">管家(housekeeper)                             用于清理过期的历史数据的进程；</span><br><span class="line">HTTP 轮询器(http poller)                      用于轮询web类的监控项目；</span><br><span class="line">Ping检查器(icmp pinger)                       用于定期的进行ICMP PING检查；</span><br><span class="line">ipmi 轮询器（ipmi poller）                     用于定期进行ipmi监控项目的检查；</span><br><span class="line">java 轮询器(java poller)                      用于轮询java 监控项目；</span><br><span class="line">分布式节点看守器(node watcher)                  用于在不同的分布式节点发送历史数据和配置信息更新的进程；</span><br><span class="line">轮询器(poller)                                用于普通的被动监控项目的轮询；</span><br><span class="line">服务器代理轮询(proxy poller)                   用于服务器代理的被动轮询；</span><br><span class="line">自我监控(self-monitoring)                     用于收集Zabbix系统内部的监控信息；</span><br><span class="line">定时器(timer)                                 用于处理触发器中也时间相关的函数和维护模式的进程；</span><br><span class="line">陷入器(trapper)                               用于处理主动采集、陷入以及分布式节点间或服务器代理的通信；</span><br><span class="line">不可到达轮询器(unreachable poller)             用于轮询不可到达到的设备；</span><br><span class="line">vmware 收集器(vmware collector)               负责从vmware服务进程中收集数据（服务器代理端不支持这种类型的进程）；</span><br></pre></td></tr></table></figure><h2 id="配置文件解析"><a href="#配置文件解析" class="headerlink" title="配置文件解析"></a>配置文件解析</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">StartTrappers=20                     Trappers初始子进程数</span><br><span class="line">StartPollers=20                      初始化时启动子进程数量，数量越多，则服务端吞吐能力越强，系统资源消耗越大</span><br><span class="line">StartIPMIPollers=1                   主要用于IPMI技术用于获取硬件状态场景，如果无相关监控项，建议设置为0</span><br><span class="line">StartDiscoverers=1                   用于设置自动发现主机的子进程数量</span><br><span class="line">StartPingers=10                      用于设置启用icmp协议PING主机方式启动子进程数量</span><br><span class="line">StartHTTPPollers=1                   HTTP主动监测的进程数</span><br><span class="line">StartProxyPollers=1                  启用多少子进程与代理端通信</span><br><span class="line">StartPollersUnreachable=10           默认情况下，zabbix会启动指定进程用于探测某些不可达主机（含IPMI场景）；若场景中含有代理端，建议使用默认，若直接agent较多，根据值调整</span><br><span class="line">StartDBSyncers=4                     DB同步进程数量</span><br></pre></td></tr></table></figure><h2 id="Zabbix-Server"><a href="#Zabbix-Server" class="headerlink" title="Zabbix Server"></a>Zabbix Server</h2><p>配置详解： <a href="http://t.zoukankan.com/Rohn-p-14788840.html">http://t.zoukankan.com/Rohn-p-14788840.html</a><br>下面是部分参数的展示</p><table><thead><tr><th>配置</th><th>默认值</th><th>推荐值</th></tr></thead><tbody><tr><td>StartDBSyncers</td><td>4</td><td>8，不宜太高，默认值已能处理4000 NVPS</td></tr><tr><td>StartAlerters</td><td>3</td><td>6</td></tr><tr><td>StartDiscoverers</td><td>1</td><td>3</td></tr><tr><td>StartPollers</td><td>5</td><td>12</td></tr><tr><td>StartPreprocessors</td><td>3</td><td>6</td></tr><tr><td>StartProxyPollers</td><td>1</td><td>3</td></tr><tr><td>StartTrappers</td><td>5</td><td>12</td></tr><tr><td>StartLLDProcessors</td><td>2</td><td>3</td></tr><tr><td>StartEscalators</td><td>1</td><td>1</td></tr></tbody></table><table><thead><tr><th>CacheSize</th><th>256M</th><th>缓存大小, 单位为字节。 用于存储主机、监控项、触发器数据的共享内存大小。 Zabbix2.2.3以前的版本最大可配置值为2GB。</th></tr></thead><tbody><tr><td>CacheUpdateFrequency</td><td>60</td><td>Zabbix 配置缓存更新频率, 单位为秒</td></tr><tr><td>DebugLevel</td><td>3</td><td>指定调试等级: 0 - Zabbix进程的起停基本信息 1 - 严重（Critical）信息 2 - 错误（Error）信息 3 - 警告（Warning）信息 4 - 调试（Debug）信息 (产生大量信息) 5 - 扩展调试 (产生更多信息)</td></tr><tr><td>ExportFileSize</td><td>1G</td><td>每个导出文件的最大限制，单位为字节。仅当ExportDir参数设置后才使用，用于轮转生成导出的文件。 此参数从Zabbix 4.0.0开始支持。</td></tr><tr><td>HistoryCacheSize</td><td>128M</td><td>历史缓存数据大小, 单位为字节。</td></tr><tr><td>HistoryIndexCacheSize</td><td>16M</td><td>历史索引缓存大小, 单位为字节。缓存一个item大概需要大小为100字节的空间。 该参数从Zabbix 3.0.0开始支持。</td></tr><tr><td>HistoryStorageDateIndex</td><td>1</td><td>启用历史数据预处理，可以将数据存储到不同的基于时间的索引: 0 - 禁止 1 - 允许</td></tr><tr><td>HistoryStorageURL</td><td>你的ES URL</td><td>历史数据存储 HTTP[S] URL，用于把历史数据存储到ElasticSearch。 这个参数参考 <a href="https://www.zabbix.com/documentation/5.0/manual/appendix/install/elastic_search_setup">Elasticsearch</a>进行配置。</td></tr><tr><td>HistoryStorageTypes</td><td>uint,dbl,str,log,text</td><td>以逗号分隔的列表配置哪些类型的历史数据需要存储到Elasticsearch。 这个参数参考 <a href="https://www.zabbix.com/documentation/5.0/manual/appendix/install/elastic_search_setup">Elasticsearch</a> 进行配置</td></tr><tr><td>HousekeepingFrequency</td><td>3</td><td>Zabbix 执行 housekeeping 的频率 (单位为小时)。 housekeeping负责从数据库中删除过期的信息。<em>注意</em>: 为了防止 housekeeper 负载过大 (例如, 当历史和趋势周期大大减小时), 对于每一个监控项，不会在一个housekeeping周期内删除超过4倍HousekeepingFrequency 的过期数据。 因此, 如果 HousekeepingFrequency 是 1小时, 一个周期内不会删除超过4小时的过期信息 (从最旧的数据开始) 。  <em>备注</em>: 为降低 server压力， housekeeping将在server启动以后，延迟30分钟执行。 因此, 如果 HousekeepingFrequency 是1小时,server启动30分后执行第一次 housekeeping , 然后按1小时为周期重复执行。从Zabbix 2.4.0以后有了这种延迟行为。 从Zabbix 3.0.0开始，可以设置HousekeepingFrequency为0来禁止自动housekeeping。 此时 housekeeping 只能通过 <em>housekeeper_execute</em> 启动， 在一个housuekeeping周期内删除的过期信息时长为从最后一次housekeeping以来到配置周期的4倍,不少于4小时且不大于4天。 也可参见<a href="https://www.zabbix.com/documentation/5.0/manual/concepts/server#server_process">运行控制</a> 选项。</td></tr><tr><td>LogFile</td><td></td><td>日志文件名称。</td></tr><tr><td>LogFileSize</td><td>128</td><td>日志文件大小，单位 MB。 0 - 禁止日志文件自动回滚. <em>注意</em>: 如果日志文件达到限定的大小，文件回滚失败, 不管是什么原因, 现有的日志会被截断，并重新记录日志。</td></tr><tr><td>LogType</td><td>file</td><td>日志输出类型: <em>file</em>  - 写入LogFile 参数指定的日志文件中, <em>system</em> - 写入syslog, <em>console</em> - 控制台输出. 从Zabbix 3.0.0开始支持该参数。</td></tr><tr><td>LogSlowQueries</td><td>3000</td><td>数据库查询消耗时间，大于该时间将会记入日志 (毫秒)。 0 - 不记录慢查询日志。 DebugLevel&#x3D;3时该选项可用。 从Zabbix 1.8.2开始支持该参数</td></tr><tr><td>MaxHousekeeperDelete</td><td>5000</td><td>一个housekeeping周期内，一个任务删除的最大行数 （相应的表名，字段名，值）。 如果设置为0，不限制删除的行数，这种情况，你必须清楚这样做的影响! 从Zabbix 1.8.2 开始支持该参数，仅在对已经被删除的监控项进行历史和趋势数据删除操作时有效</td></tr><tr><td>ProxyConfigFrequency</td><td>180</td><td>Zabbix server 多少秒向Zabbix proxy 发送一次配置数据，用于被动模式的proxy 。 从Zabbix 1.8.3开始支持该参数。</td></tr><tr><td>ProxyDataFrequency</td><td>1</td><td>Zabbix server 多少秒向Zabbix proxy请求一次历史数据， 用于被动模式的proxy。从Zabbix 1.8.3开始支持该参数。</td></tr><tr><td>StartDBSyncers</td><td>8</td><td>数据库进程的初始实例数量。 在版本1.8.5之前，上限是64。 这个参数从Zabbix 1.8.3开始得到了支持</td></tr><tr><td>StartAlerters</td><td>12</td><td>报警进程的初始实例数量。 从Zabbix 3.4.0开始支持该参数</td></tr><tr><td>StartDiscoverers</td><td>12</td><td>发现进程的初始实例数量。 在Zabbix 1.8.5版本之前，最大能设置为255。</td></tr><tr><td>StartEscalators</td><td>12</td><td>escalators进程的初始实例数量。 从Zabbix 3.0.0开始支持该参数</td></tr><tr><td>StartHTTPPollers</td><td>6</td><td>HTTP 轮询进程的初始实例数量. 在Zabbix 1.8.5版本之前，最大能设置为255。</td></tr><tr><td>StartIPMIPollers</td><td>3</td><td>IPMI 轮询进程的初始实例数量。 在Zabbix 1.8.5版本之前，最大能设置为255。</td></tr><tr><td>StartJavaPollers</td><td>6</td><td>Java 轮询子进程的初始实例数量。. 从Zabbix 2.0.0开始支持该参数。</td></tr><tr><td>StartLLDProcessors</td><td>2</td><td>Number of pre-forked instances of low-level discovery (LLD) workers<a href="https://www.zabbix.com/documentation/5.0/zh/manual/appendix/config/zabbix_server#footnotes"><strong>1</strong></a>. The LLD manager process is automatically started when an LLD worker is started. This parameter is supported since Zabbix 4.2.0.</td></tr><tr><td>StartPingers</td><td>12</td><td>ICMP pingers进程的初始实例数量<a href="https://www.zabbix.com/documentation/5.0/zh/manual/appendix/config/zabbix_server#footnotes"><strong>1</strong></a>. 在Zabbix 1.8.5版本之前，最大能设置为255。</td></tr><tr><td>StartPollersUnreachable</td><td>6</td><td>不可达主机 (包括IPMI 和 Java)的轮询进程的初始实例数量。<a href="https://www.zabbix.com/documentation/5.0/zh/manual/appendix/config/zabbix_server#footnotes"><strong>1</strong></a>. 从Zabbix 2.4.0开始，如果IPMI或Java轮询器启动，那么至少有一个针对不可访问主机的轮询进程必须运行。 在Zabbix 1.8.5版本之前，最大能设置为255。 这个参数从Zabbix 1.8.3版本缺失。</td></tr><tr><td>StartPollers</td><td>12</td><td>轮询进程的初始实例数量。.<em>注意</em>如果要内部，聚合，计算的监控项能正常工作，这个参数值必须非0。</td></tr><tr><td>StartPreprocessors</td><td>12</td><td>预处理工作进程的初始实例数量。预处理管理进程将跟随预处理工作进程启动. 从Zabbix 3.4.0开始支持该参数。</td></tr></tbody></table><h2 id="数据库优化"><a href="#数据库优化" class="headerlink" title="数据库优化"></a>数据库优化</h2><p>如果数据库和zabbix在一台机器，可以使用socket连接，速度会提高。数据库zabbix来说，选择InnoDB引擎，效率是其它引擎的1.5倍</p><p>对history类型的(history、history_uint等)大表进行拆分操作，关闭housekeeper禁止自动定期清除历史记录数据，因为对于数据库特别是对于InnoDB引擎大数据删除貌似很蛋疼。</p><p>可以对数据库配置文件调优，因为都要提交到数据库中，当机器很多时，数据库压力会很大</p><p>如果还是太多，可以考虑将mysql单独一台，并设置读写分离，可以用中间件实现。</p><h2 id="服务端配置优化"><a href="#服务端配置优化" class="headerlink" title="服务端配置优化"></a>服务端配置优化</h2><h3 id="关闭服务端的housekeep"><a href="#关闭服务端的housekeep" class="headerlink" title="关闭服务端的housekeep"></a><strong>关闭服务端的housekeep</strong></h3><p>housekeep是清理历史的机制，配置文件中，默认是每小时启动一次，然后清除监控项设置之外的多余历史记录。比如mysql监控项默认保存90天，他会清除90天以外的，这会导致经常去清理，有时会报错：Zabbix housekeeper processes more than 75% busy</p><h3 id="调整监控项"><a href="#调整监控项" class="headerlink" title="调整监控项"></a><strong>调整监控项</strong></h3><p>很多监控项都是无用的或者目前用不到的，像redis监控模板中的调阅&#x2F;发布监控项应该去掉。</p><p>监控项的类型最好使用数字，尽量避免使用字符。字符在数据库中的存储空间使用较大，在设置trigger时也相对麻烦，并且zabbix本身处理数字的效率要相对高。如果业务需要字符类型的监控项，可以适当的降低数据采集的时间间隔以提高处理效率</p><p>Trigger中，正则表达式函数last(),nodata()的速度最快，min()、max()、avg()的速度最慢。在使用过程中，尽量选择速度较快的函数。配置Trigger时，也应注意使用正确的逻辑，错误的逻辑可能导致数据库查询较慢的现象。</p><p>item监控性默认大部分都是保留90d（天）或者1w（周）的历史数据，趋势图数据保留365天。</p><p>其实有趋势图数据即可，历史数据保留7天足够了，采集频率，像磁盘，文件大小等很久才变化的，采集频率可以加大，以达到缓解压力和节省空间的作用</p><h3 id="如果主机数量太多，采用代理"><a href="#如果主机数量太多，采用代理" class="headerlink" title="如果主机数量太多，采用代理"></a><strong>如果主机数量太多，采用代理</strong></h3><p>如果主机数量太多，可以考虑分机房，分业务，分组的方式来用代理中转。zabbix_proxy可以代替服务端收集数据和监控，但是监控结果还是发送到服务端汇总，代理是没有web界面的。</p><p>如果机器太多，可以用主动模式，当前所有默认都是被动模式的，客户端启动10051端口，服务端需要去10051取数据。</p><ul><li>减少 history 保存时间</li><li>减少 item 获取间隔时间</li><li>减少不必要的监控项</li></ul>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h2 id=&quot;Zabbix进程及其功能&quot;&gt;&lt;a href=&quot;#Zabbix进程及其功能&quot; class=&quot;headerlink&quot; title=&quot;Zabbix进程及其功能&quot;&gt;&lt;/a&gt;Zabbix进程及其功能&lt;/h2&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;t</summary>
-      
-    
-    
-    
-    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-    <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Zabbix-Maintenance维护周期</title>
-    <link href="https://maydaychen.github.io/2024/12/21/Zabbix-Maintenance%E7%BB%B4%E6%8A%A4%E5%91%A8%E6%9C%9F/"/>
-    <id>https://maydaychen.github.io/2024/12/21/Zabbix-Maintenance%E7%BB%B4%E6%8A%A4%E5%91%A8%E6%9C%9F/</id>
-    <published>2024-12-21T07:48:55.000Z</published>
-    <updated>2024-12-27T07:51:55.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>我们可以给某些Hosts（Group）设置维护时间,zabbix提供两种维护类型：</p><ul><li>依旧收集数据</li><li>暂停收集数据</li></ul><p>在 服务器维护期间不会生成报警（前提：触发器设置了’Maintenance status &#x3D; not in “maintenance”’），如果在维护期间出现故障，并且没有解决掉，那么在维护周期结束之后，服务器<code>会生成报警</code>.如果你想在维护期间也能收到报 警，那么触发器不需要设置’Maintenance status &#x3D; not in “maintenance”’.</p><h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>配置维护周期</p><p>点击Configuration（配置） → Maintenance（维护）—&gt;点击Create maintenance period （创建维护周期）</p><img src="/2024/12/21/Zabbix-Maintenance%E7%BB%B4%E6%8A%A4%E5%91%A8%E6%9C%9F/1.png" class="" title="如图所示"><table><thead><tr><th>参数</th><th>描述</th></tr></thead><tbody><tr><td>Name</td><td>维护名称</td></tr><tr><td>Maintenance type</td><td>两种维护类型可选:With data collection - 依旧收集数据No data collection - 暂停收集数据</td></tr><tr><td>Active since</td><td>维护周期开始时间</td></tr><tr><td>Active till</td><td>维护结束时间</td></tr></tbody></table><p>.Periods 选项卡是维护周期的，可以选择daily, weekly, monthly or one-time，如每周一凌晨6点开始维护，持续2个小时，也就是到八点结束.</p><p>如果你想每天执行，也可以选择daily或者在weekly 里选择周一到周天</p><h2 id="结果查看"><a href="#结果查看" class="headerlink" title="结果查看"></a>结果查看</h2><p>维护标识在inventory–&gt;HOSTS-&gt;host inventory的overview里面可以看到维护的标示（扳手）</p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h2 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot; title=&quot;概述&quot;&gt;&lt;/a&gt;概述&lt;/h2&gt;&lt;p&gt;我们可以给某些Hosts（Group）设置维护时间,zabbix提供两种维护类型：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;依旧收集数据&lt;/li&gt;
-&lt;li</summary>
-      
-    
-    
-    
-    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-    <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Zabbix-Graph相关知识</title>
-    <link href="https://maydaychen.github.io/2024/12/20/Zabbix-Graph%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/"/>
-    <id>https://maydaychen.github.io/2024/12/20/Zabbix-Graph%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/</id>
-    <published>2024-12-20T07:42:13.000Z</published>
-    <updated>2024-12-27T07:51:55.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="简易图表"><a href="#简易图表" class="headerlink" title="简易图表"></a>简易图表</h2><p>在zabbix中，所有数值item值都可以绘制成简易的图表。在Monitoring-&gt;Latest data-&gt;任意一个数值item列上有个Graph,点击便会出现一个简易图表。如下图：</p><h3 id="使用历史-趋势数据生成图表"><a href="#使用历史-趋势数据生成图表" class="headerlink" title="使用历史&#x2F;趋势数据生成图表"></a>使用历史&#x2F;趋势数据生成图表</h3><p>图表都是<code>基于历史或者趋势数据生成</code>的，在图表的右下角我们可以判断图表是使用什么数据生成的，如果是”data from history”表示使用历史数据生成。如果是“data from trends”表明图表数据来自趋势数据。</p><p>关于使用趋势数据:</p><ul><li>较老的item历史数据，例如item的历史记录只保留半年，这个时候你查看半年以前的数据，因为历史数据已经被删除了，所以只能使用趋势数据来绘制图表。</li><li><code>数据拥挤</code>，如果图表水平像素超过<code>3600/16</code>，那么不管你的历史记录是否存在，他一定会使用趋势记录，你想想，如果一个item每隔一秒去获取数据，你要查看他10天的数据，那张图片该多乱，这个时候使用趋势记录来绘制图片的效果实际上是一样的。</li><li>趋势记录被禁用，如果存在当前时间段item的历史数据，那么将会使用历史记录来绘制图表. 这个特性从Zabbix 2.2.1开始支持 (以往, 如果禁用了趋势记录，那么只会显示一张空白图表，不管历史记录是否存在.</li></ul><h2 id="自定义Graph"><a href="#自定义Graph" class="headerlink" title="自定义Graph"></a>自定义Graph</h2><h3 id="创建自定义图表步骤："><a href="#创建自定义图表步骤：" class="headerlink" title="创建自定义图表步骤："></a>创建自定义图表步骤：</h3><p>Configuration→Hosts（或者templates）,点击hosts&#x2F;template列的Graphs，点击右上角的Create graph</p><h3 id="自定义图标属性"><a href="#自定义图标属性" class="headerlink" title="自定义图标属性"></a>自定义图标属性</h3><table><thead><tr><th><strong>属性</strong></th><th><strong>描述</strong></th></tr></thead><tbody><tr><td><em>Name</em></td><td>图表名称（唯一）</td></tr><tr><td><em>Width</em></td><td>图表宽度（单位：像素）(仅用于预览和pie&#x2F;exploded图表).</td></tr><tr><td><em>Height</em></td><td>图表高度（单位：像素）</td></tr><tr><td><em>Graph type</em></td><td>图表类型</td></tr><tr><td><strong>Normal</strong> - 常规图表, 值显示为线条</td><td></td></tr><tr><td>Stacked - 叠图, 显示填充区域</td><td></td></tr><tr><td><strong>Pie</strong> - 饼图</td><td></td></tr><tr><td><strong>Exploded</strong> - “裂开的”饼图，显示部分切出的饼图</td><td></td></tr><tr><td><em>Show legend</em></td><td>显示图例,例如item名称与最大、平均、最小的数据，一般显示在图表的下方</td></tr><tr><td><em>Show working time</em></td><td>是否显示工作时间，如果选择这个复选框，那么非工作时间背景为灰色。备注：饼图和爆炸式饼图没有这个参数</td></tr><tr><td><em>Show triggers</em></td><td>如果选择现象，那么触发器将会用红线表示. 两种饼图不包含这个功能</td></tr><tr><td><em>Percentile line (left)</em></td><td>左Y轴百分数.</td></tr><tr><td><em>Percentile line (right)</em></td><td>右Y轴百分数</td></tr><tr><td><em>Y axis MIN value</em></td><td>Y轴最小值：<strong>Calculated</strong> - 自动计算Y轴最小值（取item最小值）Fixed - 固.定Y轴最小值. 饼图与裂变式饼图没有这个参数<strong>Item</strong> - 选中item的最新值（例如你选中某网卡，那么它的最小值将来自这个网卡item的最新值）</td></tr><tr><td><em>Y axis MAX value</em></td><td>Y轴最大值：<strong>Calculated</strong> - 自动计算Y轴最大值（取item最大值）Fixed - 固.定Y轴最大值. 饼图与裂变式饼图没有这个参数<strong>Item</strong> - 选中item的最新值（例如你选中某网卡，那么它的最大值将来自这个网卡item的最新值）</td></tr><tr><td><em>3D view</em></td><td>立体风格图表，仅适用于饼图与爆炸式饼图.</td></tr><tr><td><em>Items</em></td><td>监控项，图表的数据来源</td></tr></tbody></table><h3 id="自定义图标item属性（可以添加多个item）"><a href="#自定义图标item属性（可以添加多个item）" class="headerlink" title="自定义图标item属性（可以添加多个item）"></a>自定义图标item属性（可以添加多个item）</h3><table><thead><tr><th><strong>参数</strong></th><th><strong>描述</strong></th></tr></thead><tbody><tr><td><em>Sort order (0→100)</em></td><td>绘图顺序，可以上下拖动items来改变他们的顺序.这个顺序用来决定图层的顺序。</td></tr><tr><td><em>Name</em></td><td>item名称</td></tr><tr><td><em>Type</em></td><td>Type (仅用于两个饼图图表):<strong>Simple</strong> - 按比例显示<strong>Graph sum</strong> - 充满整个饼图一 张图表只允许有一个items是Graph sum，否则报错：ERROR: Cannot display more than one item with type “Graph sum”，通常用于影片，硬盘大小item使用Graph sum，剩余空间则使用simple。这样一个饼图的硬盘使用情况便一目了然。</td></tr><tr><td><em>Function</em></td><td>当一个item有多种数值时,选择一种数值用于图表展示<strong>all</strong> - 所有值 (最小、平均、最大)min - 仅最小值<strong>avg</strong> - 仅平均值<strong>max</strong> - 进最大值</td></tr><tr><td><em>Draw style</em></td><td>绘制风格(只有常规图表存在该选项):<strong>Line</strong> - 绘制线条Filled region - <strong>绘制填充区域Bold line</strong> - 画粗线Dot - 画点<strong>Dashed line</strong> - 画虚线</td></tr><tr><td><em>Y axis side</em></td><td>Y轴在左边还是右边</td></tr><tr><td><em>Colour</em></td><td>颜色</td></tr></tbody></table><h2 id="图表预览"><a href="#图表预览" class="headerlink" title="图表预览"></a>图表预览</h2><p>在创建图表的过程中，我们可以随时预览修改的配置图表，点击标签preview即可。备注：如果是template预览时没有意义的，毕竟没有任何数据。</p><aside>⚠️ 如果图表的高度小于120像素，那么图标上将不会展示触发器相关信息</aside>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h2 id=&quot;简易图表&quot;&gt;&lt;a href=&quot;#简易图表&quot; class=&quot;headerlink&quot; title=&quot;简易图表&quot;&gt;&lt;/a&gt;简易图表&lt;/h2&gt;&lt;p&gt;在zabbix中，所有数值item值都可以绘制成简易的图表。在Monitoring-&amp;gt;Latest data-&amp;gt;</summary>
-      
-    
-    
-    
-    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-    <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
+    <category term="Grafana" scheme="https://maydaychen.github.io/tags/Grafana/"/>
     
   </entry>
   
