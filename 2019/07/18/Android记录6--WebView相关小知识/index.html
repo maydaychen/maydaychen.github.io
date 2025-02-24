@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>Android记录6--WebView相关小知识 | Maydaychen Station</title>
+  <meta name="description" content="webview无法展示alert解决办法： 1mWebView.setWebChromeClient(new WebChromeClient());  Android webview支持获取本地图片或拍照注意：Android6.0以上需要首先获取摄像头权限，不然无法获取照片 12345678910111213141516171819202122232425262728293031323334353">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android记录6--WebView相关小知识">
+<meta property="og:url" content="https://maydaychen.github.io/2019/07/18/Android%E8%AE%B0%E5%BD%956--WebView%E7%9B%B8%E5%85%B3%E5%B0%8F%E7%9F%A5%E8%AF%86/index.html">
+<meta property="og:site_name" content="Hexotest">
+<meta property="og:description" content="webview无法展示alert解决办法： 1mWebView.setWebChromeClient(new WebChromeClient());  Android webview支持获取本地图片或拍照注意：Android6.0以上需要首先获取摄像头权限，不然无法获取照片 12345678910111213141516171819202122232425262728293031323334353">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-07-18T06:49:28.000Z">
+<meta property="article:modified_time" content="2025-02-24T15:28:45.969Z">
+<meta property="article:author" content="Maydaychen">
+<meta property="article:tag" content="Android">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://maydaychen.github.io/2019/07/18/Android%E8%AE%B0%E5%BD%956--WebView%E7%9B%B8%E5%85%B3%E5%B0%8F%E7%9F%A5%E8%AF%86/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexotest" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/maydaychen" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Maydaychen</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Developer &amp; Infra engineer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Wuxi, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/maydaychen" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://weibo.com/maydaychen1" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/heychenyi" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>此站点仅作为日常记录与经验分享用途</br>十分期待各位精英的评论留言</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AI/">AI</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Tools/">Tools</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8D%9A%E5%AE%A2%E7%9B%B8%E5%85%B3/">博客相关</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%80%E5%8F%91/">开发</a><span class="category-list-count">21</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%94%9F%E6%B4%BB/">生活</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a><span class="category-list-count">50</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AWS/" rel="tag">AWS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a><span class="tag-list-count">11</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ansible/" rel="tag">Ansible</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ELK/" rel="tag">ELK</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Grafana/" rel="tag">Grafana</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MacOS/" rel="tag">MacOS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NAS/" rel="tag">NAS</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Prometheus/" rel="tag">Prometheus</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/" rel="tag">Python</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Zabbix/" rel="tag">Zabbix</a><span class="tag-list-count">25</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9B%91%E6%8E%A7/" rel="tag">监控</a><span class="tag-list-count">36</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%A3%9F%E8%B0%B1/" rel="tag">食谱</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/AWS/" style="font-size: 13px;">AWS</a> <a href="/tags/Android/" style="font-size: 13.78px;">Android</a> <a href="/tags/Ansible/" style="font-size: 13.11px;">Ansible</a> <a href="/tags/Docker/" style="font-size: 13.11px;">Docker</a> <a href="/tags/ELK/" style="font-size: 13px;">ELK</a> <a href="/tags/Grafana/" style="font-size: 13.56px;">Grafana</a> <a href="/tags/Hexo/" style="font-size: 13.33px;">Hexo</a> <a href="/tags/Linux/" style="font-size: 13.67px;">Linux</a> <a href="/tags/MacOS/" style="font-size: 13.11px;">MacOS</a> <a href="/tags/NAS/" style="font-size: 13.22px;">NAS</a> <a href="/tags/Prometheus/" style="font-size: 13px;">Prometheus</a> <a href="/tags/Python/" style="font-size: 13.11px;">Python</a> <a href="/tags/Windows/" style="font-size: 13.11px;">Windows</a> <a href="/tags/Zabbix/" style="font-size: 13.89px;">Zabbix</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 13.44px;">前端</a> <a href="/tags/%E7%9B%91%E6%8E%A7/" style="font-size: 14px;">监控</a> <a href="/tags/%E9%A3%9F%E8%B0%B1/" style="font-size: 13px;">食谱</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/02/">二月 2025</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/01/">一月 2025</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/12/">十二月 2024</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/08/">八月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/04/">四月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">三月 2024</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/02/">二月 2024</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">一月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">十一月 2023</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/10/">十月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">八月 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">二月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">九月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a>
+              </p>
+              <p class="item-title">
+                <a href="/2025/02/24/AWS%E7%9F%A5%E8%AF%86%E7%82%B9%E8%AE%B0%E5%BD%951--HTTPCode-ELB-4XX-Count%E5%92%8CHTTPCode-Target-4XX-Count%E7%9A%84%E5%8C%BA%E5%88%AB/" class="title">AWS知识点记录1--HTTPCode_ELB_4XX_Count和HTTPCode_Target_4XX_Count的区别</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2025-02-24T09:27:53.000Z" itemprop="datePublished">2025-02-24</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a>
+              </p>
+              <p class="item-title">
+                <a href="/2025/02/24/Zabbix%E7%9B%91%E6%8E%A7%E4%B8%87%E7%89%A96--%E7%9B%91%E6%8E%A7Nginx/" class="title">Zabbix监控万物6--监控Nginx</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2025-02-24T07:01:16.000Z" itemprop="datePublished">2025-02-24</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a>
+              </p>
+              <p class="item-title">
+                <a href="/2025/02/24/Zabbix%E8%BF%9B%E9%98%B67--%E6%8E%A5%E5%85%A5DeepSeek%E5%88%86%E6%9E%90%E9%97%AE%E9%A2%98%E5%B9%B6%E6%8F%90%E4%BE%9B%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" class="title">Zabbix进阶7--接入DeepSeek分析问题并提供解决方案</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2025-02-24T05:54:53.000Z" itemprop="datePublished">2025-02-24</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a>
+              </p>
+              <p class="item-title">
+                <a href="/2025/02/24/Zabbix%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%954--HttpRequest%EF%BC%8Cheader%E6%B7%BB%E5%8A%A0%E6%97%A0%E6%95%88/" class="title">Zabbix踩坑记录4--HttpRequest，header添加无效</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2025-02-24T03:13:30.000Z" itemprop="datePublished">2025-02-24</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a>
+              </p>
+              <p class="item-title">
+                <a href="/2025/02/15/Prometheus%E5%8F%91%E9%80%81%E6%8A%A5%E8%AD%A61--%E5%A6%82%E4%BD%95%E5%8F%91%E9%80%81%E6%8A%A5%E8%AD%A6%E5%88%B0Teams/" class="title">Prometheus发送报警1--如何发送报警到Teams</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2025-02-15T06:20:49.000Z" itemprop="datePublished">2025-02-15</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#webview%E6%97%A0%E6%B3%95%E5%B1%95%E7%A4%BAalert"><span class="toc-number">1.</span> <span class="toc-text">webview无法展示alert</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Android-webview%E6%94%AF%E6%8C%81%E8%8E%B7%E5%8F%96%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87%E6%88%96%E6%8B%8D%E7%85%A7"><span class="toc-number">2.</span> <span class="toc-text">Android webview支持获取本地图片或拍照</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#webview%E7%82%B9%E5%87%BB%E9%93%BE%E6%8E%A5%E8%B7%B3%E8%BD%AC%E7%B3%BB%E7%BB%9F%E6%B5%8F%E8%A7%88%E5%99%A8%E8%A7%A3%E5%86%B3"><span class="toc-number">3.</span> <span class="toc-text">webview点击链接跳转系统浏览器解决</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#webview%E6%9C%89%E4%BA%9B%E5%9B%BE%E7%89%87%E4%B8%8D%E6%98%BE%E7%A4%BA%E9%97%AE%E9%A2%98"><span class="toc-number">4.</span> <span class="toc-text">webview有些图片不显示问题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BD%91%E9%A1%B5%E8%B0%83%E7%94%A8%E6%8B%A8%E6%89%93%E7%94%B5%E8%AF%9D"><span class="toc-number">5.</span> <span class="toc-text">网页调用拨打电话</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-Android记录6--WebView相关小知识" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Android记录6--WebView相关小知识
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2019/07/18/Android%E8%AE%B0%E5%BD%956--WebView%E7%9B%B8%E5%85%B3%E5%B0%8F%E7%9F%A5%E8%AF%86/" class="article-date">
+	  <time datetime="2019-07-18T06:49:28.000Z" itemprop="datePublished">2019-07-18</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/%E5%BC%80%E5%8F%91/">开发</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/Android/" rel="tag">Android</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2019/07/18/Android%E8%AE%B0%E5%BD%956--WebView%E7%9B%B8%E5%85%B3%E5%B0%8F%E7%9F%A5%E8%AF%86/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="webview无法展示alert"><a href="#webview无法展示alert" class="headerlink" title="webview无法展示alert"></a>webview无法展示alert</h1><p>解决办法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mWebView.setWebChromeClient(<span class="keyword">new</span> <span class="title class_">WebChromeClient</span>());</span><br></pre></td></tr></table></figure>
+
+<h1 id="Android-webview支持获取本地图片或拍照"><a href="#Android-webview支持获取本地图片或拍照" class="headerlink" title="Android webview支持获取本地图片或拍照"></a>Android webview支持获取本地图片或拍照</h1><p>注意：Android6.0以上需要首先获取摄像头权限，不然无法获取照片</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br></pre></td><td class="code"><pre><span class="line">package com.wshoto.user.anyong.ui.activity;</span><br><span class="line"></span><br><span class="line">public class BBSActivity extends InitActivity &#123;</span><br><span class="line"></span><br><span class="line">    @BindView(R.id.wv_bbs)</span><br><span class="line">    WebView mWvBbs;</span><br><span class="line">    private ValueCallback&lt;Uri&gt; mUploadMessage;// 表单的数据信息</span><br><span class="line">    private ValueCallback&lt;Uri[]&gt; mUploadCallbackAboveL;</span><br><span class="line">    private final static int FILECHOOSER_RESULTCODE = 1;// 表单的结果回调</span><br><span class="line">    private Uri imageUri;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void initView(Bundle savedInstanceState) &#123;</span><br><span class="line">        setContentView(R.layout.activity_bbs);</span><br><span class="line">        ButterKnife.bind(this);</span><br><span class="line">        init();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void initData() &#123;</span><br><span class="line">        mWvBbs.loadUrl(&quot;https://xxx&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    private void init() &#123;</span><br><span class="line">        WebSettings webSettings = mWvBbs.getSettings();</span><br><span class="line">        webSettings.setUseWideViewPort(true);//设置此属性，可任意比例缩放</span><br><span class="line">        webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);</span><br><span class="line"></span><br><span class="line">        webSettings.setUseWideViewPort(true);</span><br><span class="line">        webSettings.setLoadWithOverviewMode(true);</span><br><span class="line">        webSettings.setJavaScriptEnabled(true);</span><br><span class="line">        webSettings.setAppCacheMaxSize(1024 * 1024 * 8);</span><br><span class="line">        String appCachePath = getApplicationContext().getCacheDir().getAbsolutePath();</span><br><span class="line">        webSettings.setAppCachePath(appCachePath);</span><br><span class="line">        webSettings.setAllowFileAccess(true);</span><br><span class="line">        webSettings.setSupportZoom(true);</span><br><span class="line">        webSettings.setJavaScriptCanOpenWindowsAutomatically(true);</span><br><span class="line">        webSettings.setTextSize(WebSettings.TextSize.NORMAL);</span><br><span class="line"></span><br><span class="line">        mWvBbs.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);</span><br><span class="line">        //open dom storage</span><br><span class="line">        webSettings.setDomStorageEnabled(true);</span><br><span class="line">        //priority high</span><br><span class="line">        webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);</span><br><span class="line">        webSettings.setAppCacheEnabled(true);</span><br><span class="line">        webSettings.setDatabaseEnabled(true);</span><br><span class="line">        webSettings.setDatabasePath(BBSActivity.this.getApplicationContext().getCacheDir().getAbsolutePath());</span><br><span class="line">        //add by wjj end</span><br><span class="line">        String ua = webSettings.getUserAgentString();</span><br><span class="line">        mWvBbs.setWebChromeClient(new WebChromeClient() &#123;</span><br><span class="line"></span><br><span class="line">            @Override</span><br><span class="line">            public boolean onShowFileChooser(WebView webView,</span><br><span class="line">                                             ValueCallback&lt;Uri[]&gt; filePathCallback,</span><br><span class="line">                                             FileChooserParams fileChooserParams) &#123;</span><br><span class="line">                mUploadCallbackAboveL = filePathCallback;</span><br><span class="line">                take();</span><br><span class="line">                return true;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            public void openFileChooser(ValueCallback&lt;Uri&gt; uploadMsg) &#123;</span><br><span class="line">                mUploadMessage = uploadMsg;</span><br><span class="line">                take();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            public void openFileChooser(ValueCallback&lt;Uri&gt; uploadMsg, String acceptType) &#123;</span><br><span class="line">                mUploadMessage = uploadMsg;</span><br><span class="line">                take();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            public void openFileChooser(ValueCallback&lt;Uri&gt; uploadMsg, String acceptType, String capture) &#123;</span><br><span class="line">                mUploadMessage = uploadMsg;</span><br><span class="line">                take();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        mWvBbs.setWebViewClient(new WebViewClient() &#123;</span><br><span class="line"></span><br><span class="line">            @Override</span><br><span class="line">            public boolean shouldOverrideUrlLoading(WebView view, String url) &#123;</span><br><span class="line">                //该方法在Build.VERSION_CODES.LOLLIPOP以前有效，从Build.VERSION_CODES.LOLLIPOP起，建议使用shouldOverrideUrlLoading(WebView, WebResourceRequest)&#125; instead</span><br><span class="line">                //返回false，意味着请求过程里，不管有多少次的跳转请求（即新的请求地址），均交给webView自己处理，这也是此方法的默认处理</span><br><span class="line">                //返回true，说明你自己想根据url，做新的跳转，比如在判断url符合条件的情况下，我想让webView加载http://ask.csdn.net/questions/178242</span><br><span class="line">                return false;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            @Override</span><br><span class="line">            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) &#123;</span><br><span class="line">                //返回false，意味着请求过程里，不管有多少次的跳转请求（即新的请求地址），均交给webView自己处理，这也是此方法的默认处理</span><br><span class="line">                //返回true，说明你自己想根据url，做新的跳转，比如在判断url符合条件的情况下，我想让webView加载https://maydaychen.github.io/</span><br><span class="line">                if (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.LOLLIPOP) &#123;</span><br><span class="line">                    if (request.getUrl().toString().contains(&quot;github.io&quot;)) &#123;</span><br><span class="line">                        view.loadUrl(&quot;https://maydaychen.github.io/&quot;);</span><br><span class="line">                        return true;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                return false;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void onActivityResult(int requestCode, int resultCode, Intent data) &#123;</span><br><span class="line">        super.onActivityResult(requestCode, resultCode, data);</span><br><span class="line">        if (requestCode == FILECHOOSER_RESULTCODE) &#123;</span><br><span class="line">            if (null == mUploadMessage &amp;&amp; null == mUploadCallbackAboveL) return;</span><br><span class="line">            Uri result = data == null || resultCode != RESULT_OK ? null : data.getData();</span><br><span class="line">            if (mUploadCallbackAboveL != null) &#123;</span><br><span class="line">                onActivityResultAboveL(requestCode, resultCode, data);</span><br><span class="line">            &#125; else if (mUploadMessage != null) &#123;</span><br><span class="line">                if (result != null) &#123;</span><br><span class="line">                    String path = getPath(getApplicationContext(), result);</span><br><span class="line">                    Uri uri = Uri.fromFile(new File(path));</span><br><span class="line">                    mUploadMessage.onReceiveValue(uri);</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    mUploadMessage.onReceiveValue(imageUri);</span><br><span class="line">                &#125;</span><br><span class="line">                mUploadMessage = null;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    @SuppressWarnings(&quot;null&quot;)</span><br><span class="line">    @TargetApi(Build.VERSION_CODES.BASE)</span><br><span class="line">    private void onActivityResultAboveL(int requestCode, int resultCode, Intent data) &#123;</span><br><span class="line">        if (requestCode != FILECHOOSER_RESULTCODE</span><br><span class="line">                || mUploadCallbackAboveL == null) &#123;</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        Uri[] results = null;</span><br><span class="line">        if (resultCode == Activity.RESULT_OK) &#123;</span><br><span class="line">            if (data == null) &#123;</span><br><span class="line">                results = new Uri[]&#123;imageUri&#125;;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                String dataString = data.getDataString();</span><br><span class="line">                ClipData clipData = data.getClipData();</span><br><span class="line">                if (clipData != null) &#123;</span><br><span class="line">                    results = new Uri[clipData.getItemCount()];</span><br><span class="line">                    for (int i = 0; i &lt; clipData.getItemCount(); i++) &#123;</span><br><span class="line">                        ClipData.Item item = clipData.getItemAt(i);</span><br><span class="line">                        results[i] = item.getUri();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                if (dataString != null)</span><br><span class="line">                    results = new Uri[]&#123;Uri.parse(dataString)&#125;;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        if (results != null) &#123;</span><br><span class="line">            mUploadCallbackAboveL.onReceiveValue(results);</span><br><span class="line">            mUploadCallbackAboveL = null;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            results = new Uri[]&#123;imageUri&#125;;</span><br><span class="line">            mUploadCallbackAboveL.onReceiveValue(results);</span><br><span class="line">            mUploadCallbackAboveL = null;</span><br><span class="line">        &#125;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    private void take() &#123;</span><br><span class="line">        File imageStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), &quot;MyApp&quot;);</span><br><span class="line">        // Create the storage directory if it does not exist</span><br><span class="line">        if (!imageStorageDir.exists()) &#123;</span><br><span class="line">            imageStorageDir.mkdirs();</span><br><span class="line">        &#125;</span><br><span class="line">        File file = new File(imageStorageDir + File.separator + &quot;IMG_&quot; + String.valueOf(System.currentTimeMillis()) + &quot;.jpg&quot;);</span><br><span class="line">        imageUri = Uri.fromFile(file);</span><br><span class="line">        final List&lt;Intent&gt; cameraIntents = new ArrayList&lt;Intent&gt;();</span><br><span class="line">        final Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);</span><br><span class="line">        final PackageManager packageManager = getPackageManager();</span><br><span class="line">        final List&lt;ResolveInfo&gt; listCam = packageManager.queryIntentActivities(captureIntent, 0);</span><br><span class="line">        for (ResolveInfo res : listCam) &#123;</span><br><span class="line">            final String packageName = res.activityInfo.packageName;</span><br><span class="line">            final Intent i = new Intent(captureIntent);</span><br><span class="line">            i.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));</span><br><span class="line">            i.setPackage(packageName);</span><br><span class="line">            i.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);</span><br><span class="line">            cameraIntents.add(i);</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        Intent i = new Intent(Intent.ACTION_GET_CONTENT);</span><br><span class="line">        i.addCategory(Intent.CATEGORY_OPENABLE);</span><br><span class="line">        i.setType(&quot;image/*&quot;);</span><br><span class="line">        Intent chooserIntent = Intent.createChooser(i, &quot;Image Chooser&quot;);</span><br><span class="line">        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, cameraIntents.toArray(new Parcelable[]&#123;&#125;));</span><br><span class="line">        BBSActivity.this.startActivityForResult(chooserIntent, FILECHOOSER_RESULTCODE);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @SuppressLint(&quot;NewApi&quot;)</span><br><span class="line">    @TargetApi(Build.VERSION_CODES.KITKAT)</span><br><span class="line">    public static String getPath(final Context context, final Uri uri) &#123;</span><br><span class="line">        final boolean isKitKat = Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.KITKAT;</span><br><span class="line">        // DocumentProvider</span><br><span class="line">        if (isKitKat &amp;&amp; DocumentsContract.isDocumentUri(context, uri)) &#123;</span><br><span class="line">            // ExternalStorageProvider</span><br><span class="line">            if (isExternalStorageDocument(uri)) &#123;</span><br><span class="line">                final String docId = DocumentsContract.getDocumentId(uri);</span><br><span class="line">                final String[] split = docId.split(&quot;:&quot;);</span><br><span class="line">                final String type = split[0];</span><br><span class="line">                if (&quot;primary&quot;.equalsIgnoreCase(type)) &#123;</span><br><span class="line">                    return Environment.getExternalStorageDirectory() + &quot;/&quot; + split[1];</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            // DownloadsProvider</span><br><span class="line">            else if (isDownloadsDocument(uri)) &#123;</span><br><span class="line"></span><br><span class="line">                final String id = DocumentsContract.getDocumentId(uri);</span><br><span class="line">                final Uri contentUri = ContentUris.withAppendedId(Uri.parse(&quot;content://downloads/public_downloads&quot;), Long.valueOf(id));</span><br><span class="line">                return getDataColumn(context, contentUri, null, null);</span><br><span class="line">            &#125;</span><br><span class="line">            // MediaProvider</span><br><span class="line">            else if (isMediaDocument(uri)) &#123;</span><br><span class="line">                final String docId = DocumentsContract.getDocumentId(uri);</span><br><span class="line">                final String[] split = docId.split(&quot;:&quot;);</span><br><span class="line">                final String type = split[0];</span><br><span class="line">                Uri contentUri = null;</span><br><span class="line">                if (&quot;image&quot;.equals(type)) &#123;</span><br><span class="line">                    contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;</span><br><span class="line">                &#125; else if (&quot;video&quot;.equals(type)) &#123;</span><br><span class="line">                    contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;</span><br><span class="line">                &#125; else if (&quot;audio&quot;.equals(type)) &#123;</span><br><span class="line">                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;</span><br><span class="line">                &#125;</span><br><span class="line">                final String selection = &quot;_id=?&quot;;</span><br><span class="line">                final String[] selectionArgs = new String[]&#123;split[1]&#125;;</span><br><span class="line">                return getDataColumn(context, contentUri, selection, selectionArgs);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        // MediaStore (and general)</span><br><span class="line">        else if (&quot;content&quot;.equalsIgnoreCase(uri.getScheme())) &#123;</span><br><span class="line">            return getDataColumn(context, uri, null, null);</span><br><span class="line">        &#125;</span><br><span class="line">        // File</span><br><span class="line">        else if (&quot;file&quot;.equalsIgnoreCase(uri.getScheme())) &#123;</span><br><span class="line">            return uri.getPath();</span><br><span class="line">        &#125;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * Get the value of the data column for this Uri. This is useful for</span><br><span class="line">     * MediaStore Uris, and other file-based ContentProviders.</span><br><span class="line">     *</span><br><span class="line">     * @param context       The context.</span><br><span class="line">     * @param uri           The Uri to query.</span><br><span class="line">     * @param selection     (Optional) Filter used in the query.</span><br><span class="line">     * @param selectionArgs (Optional) Selection arguments used in the query.</span><br><span class="line">     * @return The value of the _data column, which is typically a file path.</span><br><span class="line">     */</span><br><span class="line">    public static String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) &#123;</span><br><span class="line">        Cursor cursor = null;</span><br><span class="line">        final String column = &quot;_data&quot;;</span><br><span class="line">        final String[] projection = &#123;column&#125;;</span><br><span class="line"></span><br><span class="line">        try &#123;</span><br><span class="line">            cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null);</span><br><span class="line">            if (cursor != null &amp;&amp; cursor.moveToFirst()) &#123;</span><br><span class="line">                final int column_index = cursor.getColumnIndexOrThrow(column);</span><br><span class="line">                return cursor.getString(column_index);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; finally &#123;</span><br><span class="line">            if (cursor != null) cursor.close();</span><br><span class="line">        &#125;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * @param uri The Uri to check.</span><br><span class="line">     * @return Whether the Uri authority is ExternalStorageProvider.</span><br><span class="line">     */</span><br><span class="line">    public static boolean isExternalStorageDocument(Uri uri) &#123;</span><br><span class="line">        return &quot;com.android.externalstorage.documents&quot;.equals(uri.getAuthority());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * @param uri The Uri to check.</span><br><span class="line">     * @return Whether the Uri authority is DownloadsProvider.</span><br><span class="line">     */</span><br><span class="line">    public static boolean isDownloadsDocument(Uri uri) &#123;</span><br><span class="line">        return &quot;com.android.providers.downloads.documents&quot;.equals(uri.getAuthority());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * @param uri The Uri to check.</span><br><span class="line">     * @return Whether the Uri authority is MediaProvider.</span><br><span class="line">     */</span><br><span class="line">    public static boolean isMediaDocument(Uri uri) &#123;</span><br><span class="line">        return &quot;com.android.providers.media.documents&quot;.equals(uri.getAuthority());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="webview点击链接跳转系统浏览器解决"><a href="#webview点击链接跳转系统浏览器解决" class="headerlink" title="webview点击链接跳转系统浏览器解决"></a>webview点击链接跳转系统浏览器解决</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">webView.setWebViewClient(<span class="keyword">new</span> <span class="title class_">WebViewClient</span>());</span><br></pre></td></tr></table></figure>
+
+<h1 id="webview有些图片不显示问题"><a href="#webview有些图片不显示问题" class="headerlink" title="webview有些图片不显示问题"></a>webview有些图片不显示问题</h1><p>一般是由于Android端使用了https头，而H5端使用了http头，需要两端保持一致<br>在5.0以上的系统中使用混合模式也能解决此问题</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if(Build.VERSION.SDK_INT&gt;=Build.VERSION_CODES.LOLLIPOP）&#123;</span><br><span class="line">getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="网页调用拨打电话"><a href="#网页调用拨打电话" class="headerlink" title="网页调用拨打电话"></a>网页调用拨打电话</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"> <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">shouldOverrideUrlLoading</span><span class="params">(WebView view, String url)</span> &#123;</span><br><span class="line">     <span class="keyword">if</span> (url.startsWith(<span class="string">&quot;tel:&quot;</span>)) &#123;</span><br><span class="line">         <span class="type">Intent</span> <span class="variable">intent</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Intent</span>(Intent.ACTION_DIAL, Uri.parse(url));</span><br><span class="line">         startActivity(intent);</span><br><span class="line">         <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">return</span> <span class="built_in">super</span>.shouldOverrideUrlLoading(view, url);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://maydaychen.github.io/2019/07/18/Android%E8%AE%B0%E5%BD%956--WebView%E7%9B%B8%E5%85%B3%E5%B0%8F%E7%9F%A5%E8%AF%86/" title="Android记录6--WebView相关小知识" target="_blank" rel="external">https://maydaychen.github.io/2019/07/18/Android记录6--WebView相关小知识/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/maydaychen" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/maydaychen" target="_blank"><span class="text-dark">Maydaychen</span><small class="ml-1x">Developer &amp; Infra engineer</small></a></h3>
+        <div>前Android/Vue开发，现Infra从业人员，主营监控/AWS</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2019/08/22/Android%E8%AE%B0%E5%BD%957--LinearLayout%E8%AE%BE%E7%BD%AEselector%E5%B9%B6%E5%B0%86%E7%8A%B6%E6%80%81%E4%BC%A0%E9%80%92%E5%88%B0%E5%AD%90view/" title="Android记录7--LinearLayout设置selector并将状态传递到子view"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2019/06/12/Android%E8%AE%B0%E5%BD%955--View%E7%9B%B8%E5%85%B3%E5%B0%8F%E7%9F%A5%E8%AF%86/" title="Android记录5--View相关小知识"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">    <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/maydaychen" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://weibo.com/maydaychen1" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/heychenyi" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2025 Maydaychen
+        
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: 'iQQzwxOn1A8OTubGOzrZ6HBx-gzGzoHsz',
+    appKey: '2cExUKFH9fnrzWbn0gIsHteF',
+    placeholder: '如果爱，请深爱，如果喷，请轻喷！',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>
