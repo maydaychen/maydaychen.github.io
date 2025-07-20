@@ -6,7 +6,7 @@
   <link href="https://maydaychen.github.io/atom.xml" rel="self"/>
   
   <link href="https://maydaychen.github.io/"/>
-  <updated>2025-02-24T09:38:17.000Z</updated>
+  <updated>2025-06-27T05:59:24.000Z</updated>
   <id>https://maydaychen.github.io/</id>
   
   <author>
@@ -15,6 +15,250 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Zabbix进阶11--在ARM下安装Zabbix server</title>
+    <link href="https://maydaychen.github.io/2025/06/27/Zabbix%E8%BF%9B%E9%98%B611--%E5%9C%A8ARM%E4%B8%8B%E5%AE%89%E8%A3%85Zabbix-server/"/>
+    <id>https://maydaychen.github.io/2025/06/27/Zabbix%E8%BF%9B%E9%98%B611--%E5%9C%A8ARM%E4%B8%8B%E5%AE%89%E8%A3%85Zabbix-server/</id>
+    <published>2025-06-27T05:58:48.000Z</published>
+    <updated>2025-06-27T05:59:24.000Z</updated>
+    
+    <content type="html"><![CDATA[<p><strong>安装nginx</strong></p><p>安装yum-utils：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install yum-utils</span><br></pre></td></tr></table></figure><p>创建nginx官方镜像源：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">/etc/yum.repos.d/nginx.repo</span><br><span class="line"></span><br><span class="line">[nginx-stable]</span><br><span class="line">name=nginx stable repo</span><br><span class="line">baseurl=http://nginx.org/packages/centos/$releasever/$basearch/</span><br><span class="line">gpgcheck=1</span><br><span class="line">enabled=1</span><br><span class="line">gpgkey=https://nginx.org/keys/nginx_signing.key</span><br><span class="line">module_hotfixes=true</span><br><span class="line"></span><br><span class="line">[nginx-mainline]</span><br><span class="line">name=nginx mainline repo</span><br><span class="line">baseurl=http://nginx.org/packages/mainline/centos/$releasever/$basearch/</span><br><span class="line">gpgcheck=1</span><br><span class="line">enabled=0</span><br><span class="line">gpgkey=https://nginx.org/keys/nginx_signing.key</span><br><span class="line">module_hotfixes=true</span><br></pre></td></tr></table></figure><p>安装nginx：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install nginx</span><br></pre></td></tr></table></figure><hr><p><strong>安装PostgreSQL+TimescaleDB</strong></p><p>PostgreSQL安装：</p><p>Install the repository RPM:</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo dnf install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm</span><br></pre></td></tr></table></figure><p>Disable the built-in PostgreSQL module:</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo dnf -qy module disable postgresql</span><br></pre></td></tr></table></figure><p>Install PostgreSQL:</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo dnf install -y postgresql17-server</span><br></pre></td></tr></table></figure><p>Optionally initialize the database and enable automatic start:</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo /usr/pgsql-17/bin/postgresql-17-setup initdb</span><br><span class="line">sudo systemctl enable postgresql-17</span><br><span class="line">sudo systemctl start postgresql-17</span><br><span class="line">sudo systemctl status postgresql-17</span><br></pre></td></tr></table></figure><p>TimescaleDB安装：</p><p>添加 TimescaleDB 存储库</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">sudo tee /etc/yum.repos.d/timescale_timescaledb.repo &lt;&lt;EOL</span><br><span class="line">[timescale_timescaledb]</span><br><span class="line">name=timescale_timescaledb</span><br><span class="line">baseurl=https://packagecloud.io/timescale/timescaledb/el/$(rpm -E %&#123;rhel&#125;)/\$basearch</span><br><span class="line">repo_gpgcheck=1</span><br><span class="line">gpgcheck=0</span><br><span class="line">enabled=1</span><br><span class="line">gpgkey=https://packagecloud.io/timescale/timescaledb/gpgkey</span><br><span class="line">sslverify=1</span><br><span class="line">sslcacert=/etc/pki/tls/certs/ca-bundle.crt</span><br><span class="line">metadata_expire=300</span><br><span class="line">EOL</span><br></pre></td></tr></table></figure><p>更新本地仓库列表</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum update</span><br></pre></td></tr></table></figure><p>安装 TimescaleDB</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install timescaledb-2-postgresql-17</span><br></pre></td></tr></table></figure><p>为 TimescaleDB 优化 PostgreSQL 实例</p><p>这个命令执行后全部输入Yes会将配置修改为推荐的设置</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo timescaledb-tune --pg-config=/usr/pgsql-17/bin/pg_config</span><br></pre></td></tr></table></figure><p>重启Postgresql：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl restart postgresql-17</span><br><span class="line">sudo systemctl status postgresql-17</span><br></pre></td></tr></table></figure><p>以 postgres 身份登录 PostgreSQL</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo -u postgres psql</span><br></pre></td></tr></table></figure><p>设置 postgres 的密码</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\password postgres</span><br></pre></td></tr></table></figure><p>设置密码后，键入 \q 退出</p><p>强制使用密码登录</p><p>配置认证方法：</p><p>在 pg_hba.conf 文件中配置认证方法。</p><p>这个文件通常位于 PostgreSQL 数据目录中</p><p>例如</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/var/lib/pgsql/17/data/pg_hba.conf</span><br></pre></td></tr></table></figure><p>你需要为相应的用户和数据库配置使用密码认证的方法。</p><p>例如，要允许所有用户使用密码认证登录，可以添加或修改以下行：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">host    all             all             0.0.0.0/0               md5</span><br></pre></td></tr></table></figure><p>这里 md5 表示使用 MD5 加密的密码进行认证。你也可以使用 scram-sha-256，这是 PostgreSQL 17 推荐的认证方法 。</p><p>重启 PostgreSQL 服务：</p><p>修改 pg_hba.conf 文件后，需要重启 PostgreSQL 服务以使更改生效。</p><p>在大多数系统上，你可以使用以下命令来重启服务：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl restart postgresql-17</span><br></pre></td></tr></table></figure><p>或者根据你的系统环境使用相应的命令。</p><p>测试连接：使用新设置的密码测试连接，以确保配置正确。</p><p>可以使用 psql 命令行工具连接到数据库：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo -u postgres psql</span><br><span class="line">psql -U postgres -h localhost -d postgres</span><br></pre></td></tr></table></figure><p>系统会提示你输入密码，这时应该输入你为 postgres 用户设置的密码。</p><p>请注意，出于安全考虑，不建议在生产环境中使用 trust 方法，因为它允许任何用户无需密码即可连接到数据库。始终使用密码认证，并确保密码足够复杂，以防止未经授权的访问 。</p><p>创建初始数据库</p><p>在数据库主机上运行以下代码。</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo -u postgres createuser --pwprompt zabbix</span><br><span class="line">sudo -u postgres createdb -O zabbix zabbix_db</span><br></pre></td></tr></table></figure><p>切换到zabbix_db</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\c zabbix_db</span><br></pre></td></tr></table></figure><p>将 TimescaleDB 添加到数据库</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CREATE EXTENSION IF NOT EXISTS timescaledb;</span><br></pre></td></tr></table></figure><p>检查是否已安装 TimescaleDB</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\dx</span><br></pre></td></tr></table></figure><p>您将看到已安装扩展的列表：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">List of installed extensions</span><br><span class="line">Name     | Version |   Schema   |                                      Description                                      </span><br><span class="line">-------------+---------+------------+---------------------------------------------------------------------------------------</span><br><span class="line">plpgsql     | 1.0     | pg_catalog | PL/pgSQL procedural language</span><br><span class="line">timescaledb | 2.17.2  | public     | Enables scalable inserts and complex queries for time-series data (Community Edition)</span><br></pre></td></tr></table></figure><p>查看分区情况</p><p>查看分区表的概览信息，可以查询<code>timescaledb_information.hypertables</code>视图。这将显示所有已创建的超表（即被转换为支持时间序列数据存储的表）的元数据。</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM timescaledb_information.hypertables;</span><br></pre></td></tr></table></figure><p>postgresql启用socket连接：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/var/lib/pgsql/17/data/postgresql.conf</span><br><span class="line"></span><br><span class="line">取消注释以下选项并重启：</span><br><span class="line">unix_socket_directories = &#x27;/run/postgresql&#x27; # comma-separated list of directories</span><br></pre></td></tr></table></figure><hr><p><strong>安装zabbix：</strong></p><p>安装Zabbix源</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rpm -Uvh https://repo.zabbix.com/zabbix/7.0/rhel/8/x86_64/zabbix-release-latest-7.0.el8.noarch.rpm</span><br><span class="line">dnf clean all</span><br></pre></td></tr></table></figure><p>切换PHP的DNF模块版本</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dnf module switch-to php:8.2</span><br></pre></td></tr></table></figure><p>安装Zabbix server, frontend, agent2</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dnf install zabbix-server-pgsql zabbix-web-pgsql zabbix-nginx-conf zabbix-sql-scripts zabbix-selinux-policy zabbix-agent2</span><br></pre></td></tr></table></figure><p>安装Zabbix agent 2插件</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dnf install zabbix-agent2-plugin-mongodb zabbix-agent2-plugin-mssql zabbix-agent2-plugin-postgresql</span><br><span class="line"></span><br><span class="line">yum install zabbix-agent2-plugin-*</span><br></pre></td></tr></table></figure><p>导入初始架构和数据，系统将提示您输入新创建的密码。</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zcat /usr/share/zabbix-sql-scripts/postgresql/server.sql.gz | sudo -u zabbix psql zabbix_db</span><br></pre></td></tr></table></figure><p>源码安装zabbix导入初始架构和数据：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd database/postgresql</span><br><span class="line">cat schema.sql | sudo -u zabbix psql zabbix_db</span><br><span class="line"># 如果您正在为 Zabbix 代理创建数据库，请在此处停止</span><br><span class="line">cat images.sql | sudo -u zabbix psql zabbix_db</span><br><span class="line">cat data.sql | sudo -u zabbix psql zabbix_db</span><br></pre></td></tr></table></figure><p>对于新安装，运行 postgresql&#x2F;timescaledb&#x2F;schema.sql 脚本。 该脚本必须在使用初始模式&#x2F;数据创建常规 PostgreSQL 数据库之后运行。</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /usr/share/zabbix-sql-scripts/postgresql/timescaledb/schema.sql | sudo -u zabbix psql zabbix_db</span><br></pre></td></tr></table></figure><p>为Zabbix server配置数据库</p><p>编辑配置文件</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/etc/zabbix/zabbix_server.conf</span><br><span class="line"></span><br><span class="line">DBPassword=password</span><br></pre></td></tr></table></figure><p>启动Zabbix server和agent进程</p><p>启动Zabbix server和agent进程，并为它们设置开机自启：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart zabbix-server zabbix-agent2 nginx php-fpm</span><br><span class="line">systemctl enable zabbix-server zabbix-agent2 nginx php-fpm</span><br><span class="line">systemctl status zabbix-server zabbix-agent2 nginx php-fpm</span><br></pre></td></tr></table></figure><hr><p>报错解决：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">报错信息</span><br><span class="line">/usr/sbin/zabbix_server: /lib64/libpq.so.5: no version information available (required by /usr/sbin/zabbix_server)</span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;&lt;strong&gt;安装nginx&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;安装yum-utils：&lt;/p&gt;
+&lt;figure class=&quot;highlight plaintext&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line</summary>
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Linux操作记录8--为AmazonLinux2做OSPatch</title>
+    <link href="https://maydaychen.github.io/2025/06/21/Linux%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%958--%E4%B8%BAAmazonLinux2%E5%81%9AOSPatch/"/>
+    <id>https://maydaychen.github.io/2025/06/21/Linux%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%958--%E4%B8%BAAmazonLinux2%E5%81%9AOSPatch/</id>
+    <published>2025-06-21T06:08:48.000Z</published>
+    <updated>2025-07-01T05:49:07.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>在每次漏洞扫描之后，每一个运维人都会怀着激动而又紧张的心情来看这一份报告，毕竟这决定了他们的工作量<br>那么，我们会怎么给每一台服务器打补丁呢？这边记录一下工作中用到的两种方法</p><h1 id="手动Patch"><a href="#手动Patch" class="headerlink" title="手动Patch"></a>手动Patch</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"># 除了Amazon Linux2023</span><br><span class="line">sudo yum update</span><br><span class="line"># Amazon Linux2023</span><br><span class="line">dnf upgrade --releasever=2023.7.20250623</span><br><span class="line"></span><br><span class="line"># 2. reboot</span><br><span class="line"></span><br><span class="line"># 3. execute the 3 command below</span><br><span class="line">uname -r</span><br><span class="line">rpm -q kernel</span><br><span class="line">sudo package-cleanup --oldkernels --count=1 -y</span><br><span class="line">## For Amazon Linux2023</span><br><span class="line">sudo dnf remove --oldinstallonly --setopt installonly_limit=2 kernel -y</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 4. check the running status of each service(fail2ban/xxx)</span><br><span class="line"># 5. test to login to other servers</span><br></pre></td></tr></table></figure><h1 id="AWS-自动Patch"><a href="#AWS-自动Patch" class="headerlink" title="AWS 自动Patch"></a>AWS 自动Patch</h1><p><a href="https://ap-southeast-1.console.aws.amazon.com/systems-manager/home?region=ap-southeast-1#welcome">https://ap-southeast-1.console.aws.amazon.com/systems-manager/home?region=ap-southeast-1#welcome</a><br>参考这个网址上的内容，使用AWS Patch manager</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;在每次漏洞扫描之后，每一个运维人都会怀着激动而又紧张的心情来看这一份报告，毕竟这决定了他们的工作量&lt;br&gt;那么，我们会怎么给每一台服务器打补丁呢？这边记录一下工作中用到的两种方法&lt;/p&gt;
+&lt;h1 id=&quot;手动Patch&quot;&gt;&lt;a href=&quot;#手动Patch&quot; class=&quot;</summary>
+      
+    
+    
+    
+    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+    <category term="Linux" scheme="https://maydaychen.github.io/tags/Linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Zabbix进阶10--设置MFA登录</title>
+    <link href="https://maydaychen.github.io/2025/06/20/Zabbix%E8%BF%9B%E9%98%B610--%E8%AE%BE%E7%BD%AEMFA%E7%99%BB%E5%BD%95/"/>
+    <id>https://maydaychen.github.io/2025/06/20/Zabbix%E8%BF%9B%E9%98%B610--%E8%AE%BE%E7%BD%AEMFA%E7%99%BB%E5%BD%95/</id>
+    <published>2025-06-20T02:42:54.000Z</published>
+    <updated>2025-06-20T06:06:52.397Z</updated>
+    
+    <content type="html"><![CDATA[<p>当我们需要将Zabbix或者Grafana暴露在公网之时，为账号设置MFA就变得非常重要了，毕竟相比于密码，MFA可以说是更加安全一些<br>上一篇我们说了怎么为Grafana设置MFA，这一篇我们来说一下如何为Zabbix设置MFA<br>从Zabbix 6.0开始，MFA的功能就成了built-in功能，我们也不需要接入任何的第三方，直接使用即可</p><h1 id="添加MFA选项"><a href="#添加MFA选项" class="headerlink" title="添加MFA选项"></a>添加MFA选项</h1><img src="/2025/06/20/Zabbix%E8%BF%9B%E9%98%B610--%E8%AE%BE%E7%BD%AEMFA%E7%99%BB%E5%BD%95/MFA1.png" class="" title="图片"><p>进入User-&gt; Authentication,勾选“Enable multi-factor authentication”,并且添加一个Method如下</p><img src="/2025/06/20/Zabbix%E8%BF%9B%E9%98%B610--%E8%AE%BE%E7%BD%AEMFA%E7%99%BB%E5%BD%95/MFA2.png" class="" title="图片"><h1 id="创建用户组"><a href="#创建用户组" class="headerlink" title="创建用户组"></a>创建用户组</h1><p>我们需要在Zabbix中创建一个用户组，并且做如下操作：</p><ul><li>把需要设置MFA的用户都添加到该组中</li><li>Multi-factor authentication选择刚才我们创建的method<img src="/2025/06/20/Zabbix%E8%BF%9B%E9%98%B610--%E8%AE%BE%E7%BD%AEMFA%E7%99%BB%E5%BD%95/MFA3.png" class="" title="图片">保存过后，用户的下一次登录需要启用MFA，并且在每次登录时必须输入MFA</li></ul><h1 id="登录设置MFA"><a href="#登录设置MFA" class="headerlink" title="登录设置MFA"></a>登录设置MFA</h1><img src="/2025/06/20/Zabbix%E8%BF%9B%E9%98%B610--%E8%AE%BE%E7%BD%AEMFA%E7%99%BB%E5%BD%95/MFA4.png" class="" title="图片">]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;当我们需要将Zabbix或者Grafana暴露在公网之时，为账号设置MFA就变得非常重要了，毕竟相比于密码，MFA可以说是更加安全一些&lt;br&gt;上一篇我们说了怎么为Grafana设置MFA，这一篇我们来说一下如何为Zabbix设置MFA&lt;br&gt;从Zabbix 6.0开始，MF</summary>
+      
+    
+    
+    
+    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+    <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
+    
+    <category term="Zabbix" scheme="https://maydaychen.github.io/tags/Zabbix/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Grafana使用日志10--接入keycloak验证</title>
+    <link href="https://maydaychen.github.io/2025/06/19/Grafana%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%9710--%E6%8E%A5%E5%85%A5keycloak%E9%AA%8C%E8%AF%81/"/>
+    <id>https://maydaychen.github.io/2025/06/19/Grafana%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%9710--%E6%8E%A5%E5%85%A5keycloak%E9%AA%8C%E8%AF%81/</id>
+    <published>2025-06-19T02:40:34.000Z</published>
+    <updated>2025-06-20T02:42:45.726Z</updated>
+    
+    <content type="html"><![CDATA[<p>众所周知，在Grafana中自带的账号体系是没有办法支持MFA的，只能通过第三方来支持MFA，</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;众所周知，在Grafana中自带的账号体系是没有办法支持MFA的，只能通过第三方来支持MFA，&lt;/p&gt;
+</summary>
+      
+    
+    
+    
+    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+    <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
+    
+    <category term="Grafana" scheme="https://maydaychen.github.io/tags/Grafana/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Zabbix踩坑记录5--监控Windows文件导致IO过高的经验记录</title>
+    <link href="https://maydaychen.github.io/2025/04/14/Zabbix%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%955--%E7%9B%91%E6%8E%A7Windows%E6%96%87%E4%BB%B6%E5%AF%BC%E8%87%B4IO%E8%BF%87%E9%AB%98%E7%9A%84%E7%BB%8F%E9%AA%8C%E8%AE%B0%E5%BD%95/"/>
+    <id>https://maydaychen.github.io/2025/04/14/Zabbix%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%955--%E7%9B%91%E6%8E%A7Windows%E6%96%87%E4%BB%B6%E5%AF%BC%E8%87%B4IO%E8%BF%87%E9%AB%98%E7%9A%84%E7%BB%8F%E9%AA%8C%E8%AE%B0%E5%BD%95/</id>
+    <published>2025-04-14T09:06:41.000Z</published>
+    <updated>2025-04-14T09:47:14.734Z</updated>
+    
+    <content type="html"><![CDATA[<p>在Windows中，如果增加logrt之类的监控，会导致CPU一场上升，经过了数日的调查，终于找到了解决方案，在此记录一下</p><h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>由于需要在windows中添加对transaction的监控，而transaction的log是被记录在一个总的folder中的，现在如果在这个folder中加入了很多的monitoring item，会导致IO一场升高，最终导致CPU的异常使用</p><h1 id="调查"><a href="#调查" class="headerlink" title="调查"></a>调查</h1><p>调查中发现，</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;在Windows中，如果增加logrt之类的监控，会导致CPU一场上升，经过了数日的调查，终于找到了解决方案，在此记录一下&lt;/p&gt;
+&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;由</summary>
+      
+    
+    
+    
+    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+    <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
+    
+    <category term="Zabbix" scheme="https://maydaychen.github.io/tags/Zabbix/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Zabbix进阶9--处理Prometheus行协议格式数据</title>
+    <link href="https://maydaychen.github.io/2025/04/01/Zabbix%E8%BF%9B%E9%98%B69--%E5%A4%84%E7%90%86Prometheus%E8%A1%8C%E5%8D%8F%E8%AE%AE%E6%A0%BC%E5%BC%8F%E6%95%B0%E6%8D%AE/"/>
+    <id>https://maydaychen.github.io/2025/04/01/Zabbix%E8%BF%9B%E9%98%B69--%E5%A4%84%E7%90%86Prometheus%E8%A1%8C%E5%8D%8F%E8%AE%AE%E6%A0%BC%E5%BC%8F%E6%95%B0%E6%8D%AE/</id>
+    <published>2025-04-01T02:43:48.000Z</published>
+    <updated>2025-04-01T02:57:44.932Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>在K8S环境中，所有的metric都是通过&#x2F;metrics API来获取，大部分的API都返回了prometheus行协议格式的数据，因此我们需要针对返回的格式做进一步处理</p><h1 id="详细操作"><a href="#详细操作" class="headerlink" title="详细操作"></a>详细操作</h1><h2 id="Item"><a href="#Item" class="headerlink" title="Item"></a>Item</h2><h2 id="Preprocessing"><a href="#Preprocessing" class="headerlink" title="Preprocessing"></a>Preprocessing</h2><p>在这一步我们需要选择Prometheus pattern，然后在Parameters中通过PromQL语句去查询<br>最后在右边有一些方法可选，下面是具体的</p><table><thead><tr><th>序号</th><th>名称</th><th>用途</th></tr></thead><tbody><tr><td>1</td><td>value</td><td>返回指标的值（当匹配到多行记录时，会引发错误）</td></tr><tr><td>2</td><td>label</td><td>在标签字段中指定的标签返回值（当匹配到多个指标时，会引发错误）</td></tr><tr><td>3</td><td>sum</td><td>返回值的总和</td></tr><tr><td>4</td><td>min</td><td>返回最小值</td></tr><tr><td>5</td><td>max</td><td>返回最大值</td></tr><tr><td>6</td><td>avg</td><td>返回平均值</td></tr><tr><td>7</td><td>count</td><td>返回值的计数</td></tr></tbody></table>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;在K8S环境中，所有的metric都是通过&amp;#x2F;metrics API来获取，大部分的API都返回了prometheus行协议格式的数</summary>
+      
+    
+    
+    
+    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+    <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
+    
+    <category term="Zabbix" scheme="https://maydaychen.github.io/tags/Zabbix/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Mac软件推荐1--ProNotes让你用上更好用的记事本</title>
+    <link href="https://maydaychen.github.io/2025/03/05/Mac%E8%BD%AF%E4%BB%B6%E6%8E%A8%E8%8D%901-ProNotes%E8%AE%A9%E4%BD%A0%E7%94%A8%E4%B8%8A%E6%9B%B4%E5%A5%BD%E7%94%A8%E7%9A%84%E8%AE%B0%E4%BA%8B%E6%9C%AC/"/>
+    <id>https://maydaychen.github.io/2025/03/05/Mac%E8%BD%AF%E4%BB%B6%E6%8E%A8%E8%8D%901-ProNotes%E8%AE%A9%E4%BD%A0%E7%94%A8%E4%B8%8A%E6%9B%B4%E5%A5%BD%E7%94%A8%E7%9A%84%E8%AE%B0%E4%BA%8B%E6%9C%AC/</id>
+    <published>2025-03-05T05:25:34.000Z</published>
+    <updated>2025-03-05T05:27:27.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><h1 id="下载地址"><a href="#下载地址" class="headerlink" title="下载地址"></a>下载地址</h1><p><a href="https://www.pronotes.app/">https://www.pronotes.app/</a></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;h1 id=&quot;下载地址&quot;&gt;&lt;a href=&quot;#下载地址&quot; class=&quot;headerlink&quot; title=&quot;下载地址&quot;&gt;&lt;/a&gt;下载地址&lt;/h</summary>
+      
+    
+    
+    
+    <category term="Tools" scheme="https://maydaychen.github.io/categories/Tools/"/>
+    
+    
+    <category term="MacOS" scheme="https://maydaychen.github.io/tags/MacOS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Homebrew常用操作记录</title>
+    <link href="https://maydaychen.github.io/2025/03/01/Homebrew%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/"/>
+    <id>https://maydaychen.github.io/2025/03/01/Homebrew%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/</id>
+    <published>2025-03-01T01:57:52.000Z</published>
+    <updated>2025-03-01T02:22:46.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="自身操作"><a href="#自身操作" class="headerlink" title="自身操作"></a>自身操作</h1><h2 id="Homebrew更新自身"><a href="#Homebrew更新自身" class="headerlink" title="Homebrew更新自身"></a>Homebrew更新自身</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew update</span><br></pre></td></tr></table></figure><h1 id="软件包操作"><a href="#软件包操作" class="headerlink" title="软件包操作"></a>软件包操作</h1><h2 id="列出所有的软件包"><a href="#列出所有的软件包" class="headerlink" title="列出所有的软件包"></a>列出所有的软件包</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew list</span><br></pre></td></tr></table></figure><h2 id="查看单个软件包信息"><a href="#查看单个软件包信息" class="headerlink" title="查看单个软件包信息"></a>查看单个软件包信息</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew info python@3.12</span><br></pre></td></tr></table></figure><h2 id="列出所有可以更新的软件包"><a href="#列出所有可以更新的软件包" class="headerlink" title="列出所有可以更新的软件包"></a>列出所有可以更新的软件包</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew outdated</span><br></pre></td></tr></table></figure><h2 id="更新所有软件包"><a href="#更新所有软件包" class="headerlink" title="更新所有软件包"></a>更新所有软件包</h2><p>如果你想一次性更新所有已安装的软件包：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew upgrade</span><br></pre></td></tr></table></figure><p>这个命令会更新所有软件包</p><h2 id="更新单个软件包"><a href="#更新单个软件包" class="headerlink" title="更新单个软件包"></a>更新单个软件包</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew upgrade python@3.12</span><br></pre></td></tr></table></figure><h2 id="清理旧版本"><a href="#清理旧版本" class="headerlink" title="清理旧版本"></a>清理旧版本</h2><p>注：新版本的homebrew从日志来看upgrade之后能够自动运行cleanup命令，所以可以自动清理</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew cleanup</span><br></pre></td></tr></table></figure><p>这会删除Homebrew不再使用的旧版本软件，并节省磁盘空间。<br>如果你想检查可以清理多少空间：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew cleanup -n</span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;自身操作&quot;&gt;&lt;a href=&quot;#自身操作&quot; class=&quot;headerlink&quot; title=&quot;自身操作&quot;&gt;&lt;/a&gt;自身操作&lt;/h1&gt;&lt;h2 id=&quot;Homebrew更新自身&quot;&gt;&lt;a href=&quot;#Homebrew更新自身&quot; class=&quot;headerlink&quot; </summary>
+      
+    
+    
+    
+    <category term="开发" scheme="https://maydaychen.github.io/categories/%E5%BC%80%E5%8F%91/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Grafana使用日志9--Zabbix插件可配置参数学习</title>
+    <link href="https://maydaychen.github.io/2025/02/25/Grafana%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%979--Zabbix%E6%8F%92%E4%BB%B6%E5%8F%AF%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0%E5%AD%A6%E4%B9%A0/"/>
+    <id>https://maydaychen.github.io/2025/02/25/Grafana%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%979--Zabbix%E6%8F%92%E4%BB%B6%E5%8F%AF%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0%E5%AD%A6%E4%B9%A0/</id>
+    <published>2025-02-25T08:54:29.000Z</published>
+    <updated>2025-02-25T10:02:09.035Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="详解"><a href="#详解" class="headerlink" title="详解"></a>详解</h1><h2 id="全局配置"><a href="#全局配置" class="headerlink" title="全局配置"></a>全局配置</h2><img src="/2025/02/25/Grafana%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%979--Zabbix%E6%8F%92%E4%BB%B6%E5%8F%AF%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0%E5%AD%A6%E4%B9%A0/1.png" class="" title="图片"><ol><li>Max data points（最大数据点数）<br>定义：表示在查询时间范围内返回的最大数据点数。<br>作用：用于控制查询结果的精度和数据量。如果数据点过多，Grafana会自动对数据进行降采样（downsampling），以减少数据量并提高性能。<br>示例：<br>   如果时间范围是7天，Max data points设置为1000，则Grafana会尝试将7天的数据压缩为最多1000个点。<br>   如果原始数据点超过1000，Grafana会通过聚合（如平均值、最大值等）来减少数据点数量。</li><li>Min interval（最小间隔）<br>定义：表示查询的最小时间间隔。<br>作用：用于限制查询的时间粒度，避免查询过于频繁或返回过多数据。<br>示例：<br>   如果 Min interval 设置为 1m，则查询的时间间隔不会小于1分钟。<br>   如果时间范围较大（如1年），Grafana会根据 Min interval 自动调整查询的时间间隔。</li><li>Interval（间隔）<br>定义：表示查询的时间间隔。<br>作用：用于指定查询的时间粒度。较小的间隔会返回更多的数据点，较大的间隔会返回较少的数据点。<br>示例：<br>   如果 Interval 设置为 5m，则每5分钟查询一次数据。<br>   如果 Interval 设置为 1h，则每小时查询一次数据。</li><li>Relative time（相对时间）<br>定义：表示查询的时间范围，相对于当前时间。如果设置了这个时间，那么这个panel跟右上角的time range选择就脱节了，只会显示固定time range的数据<br>作用：用于动态设置查询的时间范围。<br>示例：<br>   如果 Relative time 设置为 now-7d，则查询的时间范围是从当前时间往前推7天到当前时间。<br>   如果 Relative time 设置为 now-1h，则查询的时间范围是从当前时间往前推1小时到当前时间。</li><li>Time shift（时间偏移）<br>定义：表示将查询的时间范围整体偏移一定的时间。<br>作用：用于比较不同时间段的数据。<br>示例：<br>   如果 Time shift 设置为 1d，则查询的时间范围会整体往前偏移1天。<br>   例如，原始时间范围是 now-7d 到 now，加上 Time shift 后，时间范围变为 now-8d 到 now-1d。</li></ol><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;详解&quot;&gt;&lt;a href=&quot;#详解&quot; class=&quot;headerlink&quot; title=&quot;详解&quot;&gt;&lt;/a&gt;详解&lt;/h1&gt;&lt;h2 id=&quot;全局配置&quot;&gt;&lt;a href=&quot;#全局配置&quot; class=&quot;headerlink&quot; title=&quot;全局配置&quot;&gt;&lt;/a&gt;全局配置&lt;/h</summary>
+      
+    
+    
+    
+    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+    <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
+    
+    <category term="Grafana" scheme="https://maydaychen.github.io/tags/Grafana/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Zabbix进阶8--使用history.push推送数据</title>
+    <link href="https://maydaychen.github.io/2025/02/25/Zabbix%E8%BF%9B%E9%98%B68-%E4%BD%BF%E7%94%A8history-push%E6%8E%A8%E9%80%81%E6%95%B0%E6%8D%AE/"/>
+    <id>https://maydaychen.github.io/2025/02/25/Zabbix%E8%BF%9B%E9%98%B68-%E4%BD%BF%E7%94%A8history-push%E6%8E%A8%E9%80%81%E6%95%B0%E6%8D%AE/</id>
+    <published>2025-02-25T07:12:02.000Z</published>
+    <updated>2025-02-25T09:36:37.249Z</updated>
+    
+    
+    
+    
+    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+    <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
+    
+    <category term="Zabbix" scheme="https://maydaychen.github.io/tags/Zabbix/"/>
+    
+  </entry>
   
   <entry>
     <title>AWS知识点记录1--HTTPCode_ELB_4XX_Count和HTTPCode_Target_4XX_Count的区别</title>
@@ -72,9 +316,9 @@
     <link href="https://maydaychen.github.io/2025/02/24/Zabbix%E8%BF%9B%E9%98%B67--%E6%8E%A5%E5%85%A5DeepSeek%E5%88%86%E6%9E%90%E9%97%AE%E9%A2%98%E5%B9%B6%E6%8F%90%E4%BE%9B%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/"/>
     <id>https://maydaychen.github.io/2025/02/24/Zabbix%E8%BF%9B%E9%98%B67--%E6%8E%A5%E5%85%A5DeepSeek%E5%88%86%E6%9E%90%E9%97%AE%E9%A2%98%E5%B9%B6%E6%8F%90%E4%BE%9B%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</id>
     <published>2025-02-24T05:54:53.000Z</published>
-    <updated>2025-02-24T15:12:51.570Z</updated>
+    <updated>2025-02-25T03:08:23.469Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>由于现在AI的爆火，怎么有效使用AI来提高我们的工作成了很关键的一点，用好了，工作都能少做很多，所以我们尝试在Zabbix中接入DeepSeek来获取报警的相关知识<br>参考文章： <a href="https://blog.zabbix.com/creating-a-personal-assistant-in-zabbix-with-artificial-intelligence/29596/">https://blog.zabbix.com/creating-a-personal-assistant-in-zabbix-with-artificial-intelligence/29596/</a><br>文章中使用了Gemini,而我们这回选择改成Deepseek，看能不能实现相同的功能</p><h1 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h1><h2 id="创建script"><a href="#创建script" class="headerlink" title="创建script"></a>创建script</h2><p>Alert -&gt; Script<br>创建一个手动执行的script，也就是说只有当你手动选择执行script的时候才能够运行该脚本</p><img src="/2025/02/24/Zabbix%E8%BF%9B%E9%98%B67--%E6%8E%A5%E5%85%A5DeepSeek%E5%88%86%E6%9E%90%E9%97%AE%E9%A2%98%E5%B9%B6%E6%8F%90%E4%BE%9B%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/Zabbix_AI_1.png" class="" title="图片"><h2 id="修改timeout"><a href="#修改timeout" class="headerlink" title="修改timeout"></a>修改timeout</h2><p>timeout参数必须修改，尤其是推理模型的时候，因为可能网络问题或者性能问题，默认的30s timeout时间是不够的，所以咱们尽可能改大一点，60s最大</p><h2 id="修改Parameters参数"><a href="#修改Parameters参数" class="headerlink" title="修改Parameters参数"></a>修改Parameters参数</h2><p>在Parameters中输入以下两个参数：</p><ul><li>alert_subject， {TRIGGER.NAME}, 即alert的名称，用来分析报错原因，所以alert的名称需要设置的正确</li><li>api_key: API token， sk-xxxxx</li><li>model: 模型名称</li></ul><h2 id="编辑脚本内容"><a href="#编辑脚本内容" class="headerlink" title="编辑脚本内容"></a>编辑脚本内容</h2><p>在Script中输入以下内容<br>值得一说的是，这个是接入了阿里云的deepseep，如果你接入的是其他的平台，记得修改API地址以及接口格式</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line">var DeepSeek = &#123;</span><br><span class="line">    params: &#123;&#125;,</span><br><span class="line">    setParams: function (params) &#123;</span><br><span class="line">        if (typeof params !== &#x27;object&#x27;) &#123;</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        DeepSeek.params = params;</span><br><span class="line">        if (typeof DeepSeek.params.api_key !== &#x27;string&#x27; || DeepSeek.params.api_key === &#x27;&#x27;) &#123;</span><br><span class="line">            throw &#x27;API key for DeepSeek is required.&#x27;;</span><br><span class="line">        &#125;</span><br><span class="line">        DeepSeek.params.url = &#x27;https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions&#x27;;</span><br><span class="line">    &#125;,</span><br><span class="line">    request: function (data) &#123;</span><br><span class="line">        if (!DeepSeek.params.api_key) &#123;</span><br><span class="line">            throw &#x27;API key is missing.&#x27;;</span><br><span class="line">        &#125;</span><br><span class="line">        var request = new HttpRequest();</span><br><span class="line">request.addHeader(&#x27;Content-Type: application/json&#x27;);</span><br><span class="line">        request.addHeader(&#x27;Authorization: Bearer &#x27; + DeepSeek.params.api_key);</span><br><span class="line">        var response = request.post(DeepSeek.params.url, JSON.stringify(data));</span><br><span class="line"></span><br><span class="line">        if (request.getStatus() &lt; 200 || request.getStatus() &gt;= 300) &#123;</span><br><span class="line">            throw &#x27;DeepSeek API request failed with status code &#x27; + request.getStatus() + &#x27;.&#x27;;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        try &#123;</span><br><span class="line">            response = JSON.parse(response);</span><br><span class="line">        &#125; catch (error) &#123;</span><br><span class="line">            Zabbix.log(4, &#x27;[ DeepSeek Webhook ] Failed to parse response.&#x27;);</span><br><span class="line">            response = null;</span><br><span class="line">        &#125;</span><br><span class="line">        return response;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">try &#123;</span><br><span class="line">    var params = JSON.parse(value),</span><br><span class="line">        data = &#123;&#125;,</span><br><span class="line">        result = &quot;&quot;,</span><br><span class="line">        required_params = [&#x27;alert_subject&#x27;];</span><br><span class="line"></span><br><span class="line">    Object.keys(params).forEach(function (key) &#123;</span><br><span class="line">        if (required_params.indexOf(key) !== -1 &amp;&amp; params[key] === &#x27;&#x27;) &#123;</span><br><span class="line">            throw &#x27;Parameter &quot;&#x27; + key + &#x27;&quot; cannot be empty.&#x27;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    data = &#123;</span><br><span class="line">        &quot;model&quot;: &quot;deepseek-v3&quot;,  // 指定模型</span><br><span class="line">        &quot;messages&quot;: [</span><br><span class="line">            &#123;</span><br><span class="line">                &quot;role&quot;: &quot;user&quot;,</span><br><span class="line">                &quot;content&quot;: &quot;Alert : &quot; + params.alert_subject + &quot; occurred on Zabbix. &quot; +</span><br><span class="line">                    &quot;Suggest possible causes and solutions to resolve this issue. &quot; +</span><br><span class="line">                    &quot;Provide concise points (10 lines max) including root causes, debug commands, and mitigation steps.&quot;</span><br><span class="line">            &#125;</span><br><span class="line">        ]</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    DeepSeek.setParams(&#123;api_key: params.api_key&#125;);</span><br><span class="line">Zabbix.log(3, &#x27;[ DeepSeek debug ] &#x27; + data);</span><br><span class="line">    var response = DeepSeek.request(data);</span><br><span class="line"></span><br><span class="line">    if (response &amp;&amp; response.choices &amp;&amp; response.choices.length &gt; 0) &#123;</span><br><span class="line">        result = response.choices[0].message.content.trim();</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        throw &#x27;No valid response from DeepSeek.&#x27;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return result;</span><br><span class="line"></span><br><span class="line">&#125; catch (error) &#123;</span><br><span class="line">    Zabbix.log(3, &#x27;[ DeepSeek Webhook ] ERROR: &#x27; + error);</span><br><span class="line">    throw &#x27;Sending failed: &#x27; + error;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2 id="测试脚本是否工作"><a href="#测试脚本是否工作" class="headerlink" title="测试脚本是否工作"></a>测试脚本是否工作</h2><p>Monitoring -&gt; Problems中，随便找一个问题，点击问题，会出现刚刚创建的script选项</p><img src="/2025/02/24/Zabbix%E8%BF%9B%E9%98%B67--%E6%8E%A5%E5%85%A5DeepSeek%E5%88%86%E6%9E%90%E9%97%AE%E9%A2%98%E5%B9%B6%E6%8F%90%E4%BE%9B%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/Zabbix_AI_2.png" class="" title="图片"><img src="/2025/02/24/Zabbix%E8%BF%9B%E9%98%B67--%E6%8E%A5%E5%85%A5DeepSeek%E5%88%86%E6%9E%90%E9%97%AE%E9%A2%98%E5%B9%B6%E6%8F%90%E4%BE%9B%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/Zabbix_AI_3.png" class="" title="图片"><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>这个个人感觉只是一个初阶版，只能根据该问题的title进行分析并给出对应的建议，无法结合其他信息进一步分析<br>而且，由于网络问题，API很容易超时，导致无法展示结果，因此对API的性能和网络有较高要求</p>]]></content>
+    <content type="html"><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>由于现在AI的爆火，怎么有效使用AI来提高我们的工作成了很关键的一点，用好了，工作都能少做很多，所以我们尝试在Zabbix中接入DeepSeek来获取报警的相关知识<br>参考文章： <a href="https://blog.zabbix.com/creating-a-personal-assistant-in-zabbix-with-artificial-intelligence/29596/">https://blog.zabbix.com/creating-a-personal-assistant-in-zabbix-with-artificial-intelligence/29596/</a><br>文章中使用了Gemini,而我们这回选择改成Deepseek，看能不能实现相同的功能</p><h1 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h1><h2 id="创建script"><a href="#创建script" class="headerlink" title="创建script"></a>创建script</h2><p>Alert -&gt; Script<br>创建一个手动执行的script，也就是说只有当你手动选择执行script的时候才能够运行该脚本</p><img src="/2025/02/24/Zabbix%E8%BF%9B%E9%98%B67--%E6%8E%A5%E5%85%A5DeepSeek%E5%88%86%E6%9E%90%E9%97%AE%E9%A2%98%E5%B9%B6%E6%8F%90%E4%BE%9B%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/Zabbix_AI_1.png" class="" title="图片"><h2 id="修改timeout"><a href="#修改timeout" class="headerlink" title="修改timeout"></a>修改timeout</h2><p>timeout参数必须修改，尤其是推理模型的时候，因为可能网络问题或者性能问题，默认的30s timeout时间是不够的，所以咱们尽可能改大一点，60s最大</p><h2 id="修改Parameters参数"><a href="#修改Parameters参数" class="headerlink" title="修改Parameters参数"></a>修改Parameters参数</h2><p>在Parameters中输入以下两个参数：</p><ul><li>alert_subject， {TRIGGER.NAME}, 即alert的名称，用来分析报错原因，所以alert的名称需要设置的正确</li><li>api_key: API token， sk-xxxxx</li><li>model: 模型名称</li></ul><h2 id="编辑脚本内容"><a href="#编辑脚本内容" class="headerlink" title="编辑脚本内容"></a>编辑脚本内容</h2><p>在Script中输入以下内容<br>值得一说的是，这个是接入了阿里云的deepseep，如果你接入的是其他的平台，记得修改API地址以及接口格式</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line">var DeepSeek = &#123;</span><br><span class="line">    params: &#123;&#125;,</span><br><span class="line">    setParams: function (params) &#123;</span><br><span class="line">        if (typeof params !== &#x27;object&#x27;) &#123;</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        DeepSeek.params = params;</span><br><span class="line">        if (typeof DeepSeek.params.api_key !== &#x27;string&#x27; || DeepSeek.params.api_key === &#x27;&#x27;) &#123;</span><br><span class="line">            throw &#x27;API key for DeepSeek is required.&#x27;;</span><br><span class="line">        &#125;</span><br><span class="line">        DeepSeek.params.url = &#x27;https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions&#x27;;</span><br><span class="line">    &#125;,</span><br><span class="line">    request: function (data) &#123;</span><br><span class="line">        if (!DeepSeek.params.api_key) &#123;</span><br><span class="line">            throw &#x27;API key is missing.&#x27;;</span><br><span class="line">        &#125;</span><br><span class="line">        var request = new HttpRequest();</span><br><span class="line">request.addHeader(&#x27;Content-Type: application/json&#x27;);</span><br><span class="line">        request.addHeader(&#x27;Authorization: Bearer &#x27; + DeepSeek.params.api_key);</span><br><span class="line">        var response = request.post(DeepSeek.params.url, JSON.stringify(data));</span><br><span class="line"></span><br><span class="line">        if (request.getStatus() &lt; 200 || request.getStatus() &gt;= 300) &#123;</span><br><span class="line">            throw &#x27;DeepSeek API request failed with status code &#x27; + request.getStatus() + &#x27;.&#x27;;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        try &#123;</span><br><span class="line">            response = JSON.parse(response);</span><br><span class="line">        &#125; catch (error) &#123;</span><br><span class="line">            Zabbix.log(4, &#x27;[ DeepSeek Webhook ] Failed to parse response.&#x27;);</span><br><span class="line">            response = null;</span><br><span class="line">        &#125;</span><br><span class="line">        return response;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">try &#123;</span><br><span class="line">    var params = JSON.parse(value),</span><br><span class="line">        data = &#123;&#125;,</span><br><span class="line">        result = &quot;&quot;,</span><br><span class="line">        required_params = [&#x27;alert_subject&#x27;];</span><br><span class="line"></span><br><span class="line">    Object.keys(params).forEach(function (key) &#123;</span><br><span class="line">        if (required_params.indexOf(key) !== -1 &amp;&amp; params[key] === &#x27;&#x27;) &#123;</span><br><span class="line">            throw &#x27;Parameter &quot;&#x27; + key + &#x27;&quot; cannot be empty.&#x27;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    data = &#123;</span><br><span class="line">        &quot;model&quot;: &quot;deepseek-v3&quot;,  // 指定模型</span><br><span class="line">        &quot;messages&quot;: [</span><br><span class="line">            &#123;</span><br><span class="line">                &quot;role&quot;: &quot;user&quot;,</span><br><span class="line">                &quot;content&quot;: &quot;Alert : &quot; + params.alert_subject + &quot; occurred on Zabbix. &quot; +</span><br><span class="line">                    &quot;Suggest possible causes and solutions to resolve this issue. &quot; +</span><br><span class="line">                    &quot;Provide concise points (10 lines max) including root causes, debug commands, and mitigation steps.&quot;</span><br><span class="line">            &#125;</span><br><span class="line">        ]</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    DeepSeek.setParams(&#123;api_key: params.api_key&#125;);</span><br><span class="line">Zabbix.log(3, &#x27;[ DeepSeek debug ] &#x27; + data);</span><br><span class="line">    var response = DeepSeek.request(data);</span><br><span class="line"></span><br><span class="line">    if (response &amp;&amp; response.choices &amp;&amp; response.choices.length &gt; 0) &#123;</span><br><span class="line">        result = response.choices[0].message.content.trim();</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        throw &#x27;No valid response from DeepSeek.&#x27;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return result;</span><br><span class="line"></span><br><span class="line">&#125; catch (error) &#123;</span><br><span class="line">    Zabbix.log(3, &#x27;[ DeepSeek Webhook ] ERROR: &#x27; + error);</span><br><span class="line">    throw &#x27;Sending failed: &#x27; + error;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2 id="测试脚本是否工作"><a href="#测试脚本是否工作" class="headerlink" title="测试脚本是否工作"></a>测试脚本是否工作</h2><p>Monitoring -&gt; Problems中，随便找一个问题，点击问题，会出现刚刚创建的script选项</p><img src="/2025/02/24/Zabbix%E8%BF%9B%E9%98%B67--%E6%8E%A5%E5%85%A5DeepSeek%E5%88%86%E6%9E%90%E9%97%AE%E9%A2%98%E5%B9%B6%E6%8F%90%E4%BE%9B%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/Zabbix_AI_2.png" class="" title="图片"><img src="/2025/02/24/Zabbix%E8%BF%9B%E9%98%B67--%E6%8E%A5%E5%85%A5DeepSeek%E5%88%86%E6%9E%90%E9%97%AE%E9%A2%98%E5%B9%B6%E6%8F%90%E4%BE%9B%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/Zabbix_AI_3.png" class="" title="图片"><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>这个个人感觉只是一个初阶版，只能根据该问题的title进行分析并给出对应的建议，无法结合其他信息进一步分析<br>而且，由于网络问题，API很容易超时，导致无法展示结果，因此对API的性能和网络有较高要求</p><h1 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h1><p>目前在Zabbix界面上，Webhook可配置的最大超时时间为60s，不过由于Deepseek思考时间可能较长(即便配置成V3依旧超时)，再加上第三方API的网络性能问题，往往60s也是不够的<br>这种情况下，可通过数据库方式直接配置为300s</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">根据脚本名称更新脚本超时时间为300s</span></span><br><span class="line">mysql -uzabbix -p</span><br><span class="line">use zabbix;</span><br><span class="line">update scripts set timeout=&#x27;300s&#x27; where name =&#x27;&#123;&#123;Script Name&#125;&#125;&#x27;;</span><br></pre></td></tr></table></figure>]]></content>
     
     
       
@@ -124,7 +368,7 @@
     <link href="https://maydaychen.github.io/2025/02/15/Prometheus%E5%8F%91%E9%80%81%E6%8A%A5%E8%AD%A61--%E5%A6%82%E4%BD%95%E5%8F%91%E9%80%81%E6%8A%A5%E8%AD%A6%E5%88%B0Teams/"/>
     <id>https://maydaychen.github.io/2025/02/15/Prometheus%E5%8F%91%E9%80%81%E6%8A%A5%E8%AD%A61--%E5%A6%82%E4%BD%95%E5%8F%91%E9%80%81%E6%8A%A5%E8%AD%A6%E5%88%B0Teams/</id>
     <published>2025-02-15T06:20:49.000Z</published>
-    <updated>2025-02-24T14:54:36.997Z</updated>
+    <updated>2025-04-01T02:39:23.687Z</updated>
     
     <content type="html"><![CDATA[<h1 id="MS-Teams中创建webhook"><a href="#MS-Teams中创建webhook" class="headerlink" title="MS Teams中创建webhook"></a>MS Teams中创建webhook</h1><p>参考地址：<br><a href="https://learn.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/add-incoming-webhook?tabs=newteams,dotnet">https://learn.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/add-incoming-webhook?tabs=newteams%2Cdotnet</a></p><h1 id="配置AlertManager"><a href="#配置AlertManager" class="headerlink" title="配置AlertManager"></a>配置AlertManager</h1><p>分为两个版本，旧版本和新版本</p><h2 id="老版本"><a href="#老版本" class="headerlink" title="老版本"></a>老版本</h2><p>老版本请参考这个工具<br><a href="https://github.com/prometheus-msteams/prometheus-msteams">https://github.com/prometheus-msteams/prometheus-msteams</a></p><h2 id="新版本"><a href="#新版本" class="headerlink" title="新版本"></a>新版本</h2><p>在新版本中，我们就可以直接使用teams配置来<br><a href="https://prometheus.io/docs/alerting/latest/configuration/#msteams_config">https://prometheus.io/docs/alerting/latest/configuration/#msteams_config</a></p><h3 id="配置receiver"><a href="#配置receiver" class="headerlink" title="配置receiver"></a>配置receiver</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">      - name: &#x27;teams&#x27;</span><br><span class="line">        msteams_configs:</span><br><span class="line">          - webhook_url: &#x27;&#123;&#123; webhook_url &#125;&#125;&#x27;</span><br><span class="line">            title: &#x27;&#123;&#123; template &quot;teams_alert_title&quot; . &#125;&#125;&#x27;</span><br><span class="line">            text: &#x27;&#123;&#123; template &quot;teams_alert_message&quot; . &#125;&#125;&#x27;</span><br><span class="line">templateFiles:</span><br><span class="line">teams_alert_title.tmpl: |-</span><br><span class="line">&#123;&#123; define &quot;teams_alert_title&quot; &#125;&#125;[&#123;&#123; .Status | toUpper &#125;&#125;] &#123;&#123; .CommonLabels.alertname &#125;&#125;&#123;&#123;- end &#125;&#125;</span><br><span class="line">teams_alert_message.tmpl: |-</span><br><span class="line">&#123;&#123; define &quot;teams_alert_message&quot; &#125;&#125;</span><br><span class="line">&#123;&#123; range .Alerts &#125;&#125;</span><br><span class="line">*Environment:* megatron-dev-eks-cluster</span><br><span class="line">*Namespace:* &#123;&#123; .Labels.namespace &#125;&#125;</span><br><span class="line">*Pod:* &#123;&#123; .Labels.pod &#125;&#125;</span><br><span class="line">*Summary:* &#123;&#123; .Annotations.summary &#125;&#125;</span><br><span class="line">*Description:* &#123;&#123; .Annotations.description &#125;&#125;</span><br><span class="line">*Runbook_Url:* &#123;&#123; .Annotations.runbook_url &#125;&#125;</span><br><span class="line">&#123;&#123; end &#125;&#125;</span><br><span class="line">&#123;&#123;- end &#125;&#125;</span><br></pre></td></tr></table></figure><p>webhook_url 为在Teams中创建的webhook<br>我们可以直接使用这个template，也可以加一些其他的内容</p><h3 id="配置route"><a href="#配置route" class="headerlink" title="配置route"></a>配置route</h3><pre><code>  routes:  - receiver: &#39;xxx&#39;    continue: true  - receiver: &#39;teams&#39;</code></pre><h3 id="测试是否可行"><a href="#测试是否可行" class="headerlink" title="测试是否可行"></a>测试是否可行</h3><p>经过上面的配置，在Teams中我们确实可以收到对应的alert，因此配置成功</p>]]></content>
     
@@ -261,254 +505,6 @@
       
     <summary type="html">&lt;p&gt;有时候由于服务器更新之类的，我们需要迁移一整套Grafana，这时候该怎么操作呢？&lt;br&gt;下面让我一步步说明下&lt;/p&gt;
 &lt;h1 id=&quot;安装Grafana&quot;&gt;&lt;a href=&quot;#安装Grafana&quot; class=&quot;headerlink&quot; title=&quot;安装Grafana&quot;&gt;</summary>
-      
-    
-    
-    
-    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-    <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
-    
-    <category term="Grafana" scheme="https://maydaychen.github.io/tags/Grafana/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Grafana使用日志7--接入OpenSearch</title>
-    <link href="https://maydaychen.github.io/2025/02/11/Grafana%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%977--%E6%8E%A5%E5%85%A5OpenSearch/"/>
-    <id>https://maydaychen.github.io/2025/02/11/Grafana%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%977--%E6%8E%A5%E5%85%A5OpenSearch/</id>
-    <published>2025-02-11T10:11:06.000Z</published>
-    <updated>2025-02-24T15:25:25.441Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="添加OpenSearch数据源"><a href="#添加OpenSearch数据源" class="headerlink" title="添加OpenSearch数据源"></a>添加OpenSearch数据源</h1><img src="/2025/02/11/Grafana%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%977--%E6%8E%A5%E5%85%A5OpenSearch/1.png" class="" title="图片"><h1 id="配置连接信息"><a href="#配置连接信息" class="headerlink" title="配置连接信息"></a>配置连接信息</h1><img src="/2025/02/11/Grafana%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%977--%E6%8E%A5%E5%85%A5OpenSearch/2.png" class="" title="图片"><ul><li>Name: 任意填写即可</li><li>URL: 在AWS OpenSearch中找到，endpoint信息</li><li>Access： 默认Server即可<br>其他可不填</li></ul><h1 id="配置认证信息"><a href="#配置认证信息" class="headerlink" title="配置认证信息"></a>配置认证信息</h1><h2 id="Basic模式"><a href="#Basic模式" class="headerlink" title="Basic模式"></a>Basic模式</h2><p>适合可以直接用账号密码登录OpenSearch的情况下使用</p><img src="/2025/02/11/Grafana%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%977--%E6%8E%A5%E5%85%A5OpenSearch/4.png" class="" title="图片"><p>直接在下面的Basic Auth Details里面填入用户名密码即可</p><h2 id="sigv4模式"><a href="#sigv4模式" class="headerlink" title="sigv4模式"></a>sigv4模式</h2><p>适合只接入了第三方，并且可能设置了MFA导致无法直接登录的情况下</p><img src="/2025/02/11/Grafana%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%977--%E6%8E%A5%E5%85%A5OpenSearch/3.png" class="" title="图片"><p>这边的Authentication Provider有三个选项，分别为</p><ul><li>Authentication Provider<ul><li>AWS SDK Default<br>  默认选项，会从环境变量，配置文件以及EC2 IAM Role中获得</li><li>Access &amp; Secrct Key<br>  该模式适合在Grafana配置中直接指定AWS凭证</li><li>Credentials file<br>  会从指定的AWS凭证文件中读取凭证,需要提供凭证文件的路径</li></ul></li><li>Assume Role ARN<br>  需要设定一个IAM Role的ARN，这个role需要有查询OpenSearch的权限，通常可以直接设置权限如下<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;Effect&quot;: &quot;Allow&quot;,</span><br><span class="line">  &quot;Action&quot;: &quot;es:*&quot;,</span><br><span class="line">  &quot;Resource&quot;: &quot;arn:aws:es:region:account-id:domain/domain-name/*&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">或者这样</span><br><span class="line">            &quot;Action&quot;: [</span><br><span class="line">                &quot;es:ESHttpGet&quot;,</span><br><span class="line">                &quot;es:ESHttpPost&quot;</span><br><span class="line">            ],</span><br></pre></td></tr></table></figure>其他的没有什么要特别设置的，直接save&amp;test即可</li></ul>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h1 id=&quot;添加OpenSearch数据源&quot;&gt;&lt;a href=&quot;#添加OpenSearch数据源&quot; class=&quot;headerlink&quot; title=&quot;添加OpenSearch数据源&quot;&gt;&lt;/a&gt;添加OpenSearch数据源&lt;/h1&gt;&lt;img src=&quot;/2025/02/11</summary>
-      
-    
-    
-    
-    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-    <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
-    
-    <category term="Grafana" scheme="https://maydaychen.github.io/tags/Grafana/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Linux操作记录7--用户增删改查相关操作</title>
-    <link href="https://maydaychen.github.io/2025/02/11/Linux%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%957--%E7%94%A8%E6%88%B7%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C/"/>
-    <id>https://maydaychen.github.io/2025/02/11/Linux%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%957--%E7%94%A8%E6%88%B7%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C/</id>
-    <published>2025-02-11T09:47:01.000Z</published>
-    <updated>2025-02-24T14:50:48.244Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="创建（管理员）用户"><a href="#创建（管理员）用户" class="headerlink" title="创建（管理员）用户"></a>创建（管理员）用户</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/sh</span></span><br><span class="line">USERNAME=[username]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">1代表有sudo权限，0代表普通用户</span></span><br><span class="line">SUDO_FLAG=1</span><br><span class="line"></span><br><span class="line">PUBKEY=&quot;ssh-rsa xxx&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if id &quot;$&#123;USERNAME&#125;&quot; &amp;&gt;/dev/null; then</span><br><span class="line">    echo &#x27;adduser: user &#x27;$&#123;USERNAME&#125;&#x27; already exists&#x27;</span><br><span class="line">    exit 0</span><br><span class="line">else</span><br><span class="line">    adduser $&#123;USERNAME&#125;</span><br><span class="line">    mkdir /home/$&#123;USERNAME&#125;/.ssh</span><br><span class="line">    chmod 700 /home/$&#123;USERNAME&#125;/.ssha</span><br><span class="line">    touch /home/$&#123;USERNAME&#125;/.ssh/authorized_keys</span><br><span class="line">    chmod 600 /home/$&#123;USERNAME&#125;/.ssh/authorized_keys</span><br><span class="line">    echo $&#123;PUBKEY&#125; &gt;&gt; /home/$&#123;USERNAME&#125;/.ssh/authorized_keys</span><br><span class="line">    chown $&#123;USERNAME&#125;:$&#123;USERNAME&#125; /home/$&#123;USERNAME&#125;/.ssh/*</span><br><span class="line">    chown $&#123;USERNAME&#125;:$&#123;USERNAME&#125; /home/$&#123;USERNAME&#125;/.ssh</span><br><span class="line"></span><br><span class="line">    #depends whether sudo right is needed for the user</span><br><span class="line">    if [ $SUDO_FLAG -eq 1 ]; then</span><br><span class="line">        touch /etc/sudoers.d/$&#123;USERNAME&#125;</span><br><span class="line">        echo $&#123;USERNAME&#125;&#x27; ALL=(ALL) NOPASSWD:ALL&#x27; &gt;&gt; /etc/sudoers.d/$&#123;USERNAME&#125;</span><br><span class="line">        echo yi.chen&#x27; ALL=(ALL) NOPASSWD:ALL&#x27; &gt;&gt; /etc/sudoers.d/yi.chen</span><br><span class="line">        chmod 640 /etc/sudoers.d/$&#123;USERNAME&#125;</span><br><span class="line">    fi</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">chage -I -1 -m 0 -M 99999 -E -1 $&#123;USERNAME&#125;</span><br><span class="line"></span><br><span class="line">if [ $? -eq 0 ]; then</span><br><span class="line">    echo &#x27;Success! Created user &#x27;$&#123;USERNAME&#125;&#x27; &#x27;</span><br><span class="line">else</span><br><span class="line">    echo &#x27;Failed! user:&#x27;$&#123;USERNAME&#125;&#x27;&#x27;</span><br><span class="line">fi</span><br><span class="line"></span><br></pre></td></tr></table></figure><h1 id="删除（管理员）用户"><a href="#删除（管理员）用户" class="headerlink" title="删除（管理员）用户"></a>删除（管理员）用户</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查询普通用户并删除</span></span><br><span class="line">cat /etc/passwd | grep username</span><br><span class="line">sudo userdel -r username</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看用户有没有设定定时任务，有的话记得删除</span></span><br><span class="line">sudo crontab -u username -l</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">删除与用户相关的sudoers文件</span></span><br><span class="line">sudo rm /etc/sudoers.d/username</span><br></pre></td></tr></table></figure>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h1 id=&quot;创建（管理员）用户&quot;&gt;&lt;a href=&quot;#创建（管理员）用户&quot; class=&quot;headerlink&quot; title=&quot;创建（管理员）用户&quot;&gt;&lt;/a&gt;创建（管理员）用户&lt;/h1&gt;&lt;figure class=&quot;highlight shell&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;t</summary>
-      
-    
-    
-    
-    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-    <category term="Linux" scheme="https://maydaychen.github.io/tags/Linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Zabbix踩坑记录2--运行一段时间后IO过高的问题解决</title>
-    <link href="https://maydaychen.github.io/2025/02/11/Zabbix%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%952--%E8%BF%90%E8%A1%8C%E4%B8%80%E6%AE%B5%E6%97%B6%E9%97%B4%E5%90%8EIO%E8%BF%87%E9%AB%98%E7%9A%84%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
-    <id>https://maydaychen.github.io/2025/02/11/Zabbix%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%952--%E8%BF%90%E8%A1%8C%E4%B8%80%E6%AE%B5%E6%97%B6%E9%97%B4%E5%90%8EIO%E8%BF%87%E9%AB%98%E7%9A%84%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/</id>
-    <published>2025-02-11T09:35:33.000Z</published>
-    <updated>2025-02-24T15:03:38.814Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h1><p>zabbix server 服务器运行一段时间后有两个进程会出现cpu负载和io瓶颈，主要是:</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">zabbix busy housekeeper processes </span><br><span class="line">zabbix busy history syncer processes</span><br></pre></td></tr></table></figure><p>出现这两个问题主要是表数据太大 history_uint，trends_uint，history主要是这三个表，</p><h1 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt;show variables like &quot;%_buffer%&quot;;</span><br><span class="line">innodb_buffer_pool_size=8M 默认mysql只有8M而已，</span><br></pre></td></tr></table></figure><p>可将此值调值物理内存的70%，比如innodb_buffer_pool_size&#x3D;4G，mysql的这个配置一般是在&#x2F;etc&#x2F;my.cnf，<br>如果次配置文件里没有此属性，直接添加，保存，重启mysql即可。</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart mysql</span><br></pre></td></tr></table></figure>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h1 id=&quot;问题描述&quot;&gt;&lt;a href=&quot;#问题描述&quot; class=&quot;headerlink&quot; title=&quot;问题描述&quot;&gt;&lt;/a&gt;问题描述&lt;/h1&gt;&lt;p&gt;zabbix server 服务器运行一段时间后有两个进程会出现cpu负载和io瓶颈，主要是:&lt;/p&gt;
-&lt;figure cl</summary>
-      
-    
-    
-    
-    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-    <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
-    
-    <category term="Zabbix" scheme="https://maydaychen.github.io/tags/Zabbix/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Zabbix监控万物3--监控Windows下某个文件夹的所有文件变化</title>
-    <link href="https://maydaychen.github.io/2025/02/11/Zabbix%E7%9B%91%E6%8E%A7%E4%B8%87%E7%89%A93--%E7%9B%91%E6%8E%A7Windows%E4%B8%8B%E6%9F%90%E4%B8%AA%E6%96%87%E4%BB%B6%E5%A4%B9%E7%9A%84%E6%89%80%E6%9C%89%E6%96%87%E4%BB%B6%E5%8F%98%E5%8C%96/"/>
-    <id>https://maydaychen.github.io/2025/02/11/Zabbix%E7%9B%91%E6%8E%A7%E4%B8%87%E7%89%A93--%E7%9B%91%E6%8E%A7Windows%E4%B8%8B%E6%9F%90%E4%B8%AA%E6%96%87%E4%BB%B6%E5%A4%B9%E7%9A%84%E6%89%80%E6%9C%89%E6%96%87%E4%BB%B6%E5%8F%98%E5%8C%96/</id>
-    <published>2025-02-11T09:32:19.000Z</published>
-    <updated>2025-02-24T15:16:43.682Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="获取所有的指定路径下的文件列表"><a href="#获取所有的指定路径下的文件列表" class="headerlink" title="获取所有的指定路径下的文件列表"></a>获取所有的指定路径下的文件列表</h1><p>以D:\Apps这个文件夹下的所有文件为例，我需要找到这个文件夹里面的子文件夹中的所有文件，但是排除backup这个文件夹，下面我们来看怎么操作<br>在scripts目录下创建check_file_in_D_Apps.ps1文件，内容如下</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$Path = &quot;D:\Apps&quot;</span><br><span class="line"></span><br><span class="line">$files = Get-ChildItem -Path $Path -File -Recurse | Where-Object &#123;</span><br><span class="line">    -not ($_.FullName -like &quot;*\backup\*&quot;)</span><br><span class="line">&#125; | ForEach-Object &#123;</span><br><span class="line">    @&#123;</span><br><span class="line">        &quot;&#123;#FULLPATH&#125;&quot; = $_.FullName</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$files | ConvertTo-Json -Depth 1</span><br></pre></td></tr></table></figure><h1 id="修改zabbix-agent-conf-file"><a href="#修改zabbix-agent-conf-file" class="headerlink" title="修改zabbix agent conf file"></a>修改zabbix agent conf file</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UserParameter=file_check_D_Apps,powershell -NoProfile -ExecutionPolicy Bypass -File &quot;C:\Program Files\zabbix\scripts\check_file_in_D_Apps.ps1&quot;</span><br></pre></td></tr></table></figure><h1 id="重启zabbix-agent"><a href="#重启zabbix-agent" class="headerlink" title="重启zabbix agent"></a>重启zabbix agent</h1><p>由于这里是windows服务器，所以直接去任务管理器中service那边重启即可</p><h1 id="配置LLD"><a href="#配置LLD" class="headerlink" title="配置LLD"></a>配置LLD</h1><img src="/2025/02/11/Zabbix%E7%9B%91%E6%8E%A7%E4%B8%87%E7%89%A93--%E7%9B%91%E6%8E%A7Windows%E4%B8%8B%E6%9F%90%E4%B8%AA%E6%96%87%E4%BB%B6%E5%A4%B9%E7%9A%84%E6%89%80%E6%9C%89%E6%96%87%E4%BB%B6%E5%8F%98%E5%8C%96/1.png" class="" title="图片"><img src="/2025/02/11/Zabbix%E7%9B%91%E6%8E%A7%E4%B8%87%E7%89%A93--%E7%9B%91%E6%8E%A7Windows%E4%B8%8B%E6%9F%90%E4%B8%AA%E6%96%87%E4%BB%B6%E5%A4%B9%E7%9A%84%E6%89%80%E6%9C%89%E6%96%87%E4%BB%B6%E5%8F%98%E5%8C%96/2.png" class="" title="图片"><p>按照上图所示，使用vfs.dir.size来监控每一个文件的大小，一旦有文件大小发生变化就立即触发报警</p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h1 id=&quot;获取所有的指定路径下的文件列表&quot;&gt;&lt;a href=&quot;#获取所有的指定路径下的文件列表&quot; class=&quot;headerlink&quot; title=&quot;获取所有的指定路径下的文件列表&quot;&gt;&lt;/a&gt;获取所有的指定路径下的文件列表&lt;/h1&gt;&lt;p&gt;以D:&#92;Apps这个文件夹下的所有文</summary>
-      
-    
-    
-    
-    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-    <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
-    
-    <category term="Zabbix" scheme="https://maydaychen.github.io/tags/Zabbix/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Opensearch问题记录1--ctx内容不全的问题</title>
-    <link href="https://maydaychen.github.io/2025/02/11/Opensearch%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%951--ctx%E5%86%85%E5%AE%B9%E4%B8%8D%E5%85%A8%E7%9A%84%E9%97%AE%E9%A2%98/"/>
-    <id>https://maydaychen.github.io/2025/02/11/Opensearch%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%951--ctx%E5%86%85%E5%AE%B9%E4%B8%8D%E5%85%A8%E7%9A%84%E9%97%AE%E9%A2%98/</id>
-    <published>2025-02-11T09:25:51.000Z</published>
-    <updated>2025-02-24T15:34:02.379Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>在OpenSearch中，我希望在action中把一整条log作为报警内容发送出来，但是根据文档，配置为ctx.results.0.hits.hits.0._source.log，但是发现根本找不到这个值</p><p>经过查询，我发现在返回的ctx中仅存在如下的值</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">results=[, hits=, max_score=null&#125;, took=13, timed_out=false&#125;], periodStart=2024-07-08T08:30:07.425Z, periodEnd=2024-07-08T08:31:07.425Z, error=null, trigger=&#123;id=GkWmgZABvp-0qNhTa6Rs, name=Test alarm, please ignore, severity=3, actions=[&#123;name=Test alarm, please ignore&#125;]&#125;, alert=&#123;acknowledged_time=null, id=sHdKkZABDnp5EchiGRFG, version=-1, end_time=null, error_message=null, execution_id=HEWmgZABvp-0qNhTa6R5_2024-07-08T07:41:09.151397924_6ca4e795-58a9-489d-85fe-74c4bbf2d9ab, workflow_id=, workflow_name=, associated_alert_ids=[], last_notification_time=1720426150054, severity=3, start_time=1720424470852, state=ACTIVE, bucket_keys=null, parent_bucket_path=null, finding_ids=, related_doc_ids=&#125;&#125;</span><br></pre></td></tr></table></figure><p>没有我需要的<br>查询语句为</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;size&quot;: 0,</span><br><span class="line">    &quot;query&quot;: &#123;</span><br><span class="line">        &quot;bool&quot;: &#123;</span><br><span class="line">            &quot;filter&quot;: [</span><br><span class="line">                &#123;</span><br><span class="line">                    &quot;range&quot;: &#123;</span><br><span class="line">                        &quot;@timestamp&quot;: &#123;</span><br><span class="line">                            &quot;from&quot;: &quot;&#123;&#123;period_end&#125;&#125;||-1d&quot;,</span><br><span class="line">                            &quot;to&quot;: &quot;&#123;&#123;period_end&#125;&#125;&quot;,</span><br><span class="line">                            &quot;include_lower&quot;: true,</span><br><span class="line">                            &quot;include_upper&quot;: true,</span><br><span class="line">                            &quot;format&quot;: &quot;epoch_millis&quot;,</span><br><span class="line">                            &quot;boost&quot;: 1</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;,</span><br><span class="line">                &#123;</span><br><span class="line">                    &quot;query_string&quot;: &#123;</span><br><span class="line">                        &quot;query&quot;: &quot;*BATCHMONITORING*&quot;,</span><br><span class="line">                        &quot;default_field&quot;: &quot;log&quot;,</span><br><span class="line">                        &quot;fields&quot;: [],</span><br><span class="line">                        &quot;type&quot;: &quot;best_fields&quot;,</span><br><span class="line">                        &quot;default_operator&quot;: &quot;or&quot;,</span><br><span class="line">                        &quot;max_determinized_states&quot;: 10000,</span><br><span class="line">                        &quot;enable_position_increments&quot;: true,</span><br><span class="line">                        &quot;fuzziness&quot;: &quot;AUTO&quot;,</span><br><span class="line">                        &quot;fuzzy_prefix_length&quot;: 0,</span><br><span class="line">                        &quot;fuzzy_max_expansions&quot;: 50,</span><br><span class="line">                        &quot;phrase_slop&quot;: 0,</span><br><span class="line">                        &quot;escape&quot;: false,</span><br><span class="line">                        &quot;auto_generate_synonyms_phrase_query&quot;: true,</span><br><span class="line">                        &quot;fuzzy_transpositions&quot;: true,</span><br><span class="line">                        &quot;boost&quot;: 1</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            ],</span><br><span class="line">            &quot;adjust_pure_negative&quot;: true,</span><br><span class="line">            &quot;boost&quot;: 1</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure><h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><p>经过查询，我发现问题存在于size这个参数</p><p>size: 这指定了返回的文档数量。在这里设为 0 表示只返回匹配的聚合结果，而不返回实际的文档内容。</p><p>我这边把size:0从查询语句中删除后，返回的结果终于包含了我需要的参数</p><h1 id="其他参数解释"><a href="#其他参数解释" class="headerlink" title="其他参数解释"></a>其他参数解释</h1><ul><li><strong>query</strong>: 这是查询的主体，使用布尔查询（bool query），允许将多个过滤条件组合在一起。</li><li><strong>bool</strong>: 布尔查询允许组合多个查询子句，如 <code>filter</code>、<code>must</code>、<code>must_not</code> 等。</li><li><strong>filter</strong>: 这是一个过滤器子句，它包含了两个过滤条件。</li><li><strong>range</strong>: 范围查询，用于限制 <code>@timestamp</code> 字段的范围。具体来说：<ul><li><code>&quot;from&quot;: &quot;&#123;&#123;period_end&#125;&#125;||-1d&quot;</code>：表示从 <code>period_end</code> 变量指定的时间开始，向前推一天。<code>&#123;&#123;period_end&#125;&#125;</code> 是一个模板变量，在实际执行时会被具体的时间值替换。</li><li><code>&quot;to&quot;: &quot;&#123;&#123;period_end&#125;&#125;&quot;</code>：表示到 <code>period_end</code> 变量指定的时间结束。</li><li><code>&quot;format&quot;: &quot;epoch_millis&quot;</code>：指定时间格式为毫秒级时间戳。</li><li><code>&quot;include_lower&quot;: true, &quot;include_upper&quot;: true</code>：包括上下界值。</li></ul></li><li><strong>query_string</strong>: 查询字符串查询，用于搜索包含指定关键字的文档。<ul><li><code>&quot;query&quot;: &quot;*BATCHMONITORING*&quot;</code>：这里的查询字符串是通配符形式，表示搜索包含 “BATCHMONITORING” 关键字的文档。</li><li><code>&quot;default_field&quot;: &quot;log&quot;</code>：指定默认搜索字段为 “log”。</li><li><code>&quot;default_operator&quot;: &quot;or&quot;</code>：默认操作符为 OR 操作符，表示任何一个关键字匹配即可。</li><li>其他参数如 <code>fuzziness</code>、<code>phrase_slop</code> 等是调整查询行为的参数，如自动模糊匹配、短语搜索等。</li></ul></li><li><strong>adjust_pure_negative</strong>: 设置为 <code>true</code>，表示查询结果中不包含全负匹配的文档。</li><li><strong>boost</strong>: 设置为 <code>1</code>，表示默认的查询权重。</li></ul>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h1 id=&quot;问题&quot;&gt;&lt;a href=&quot;#问题&quot; class=&quot;headerlink&quot; title=&quot;问题&quot;&gt;&lt;/a&gt;问题&lt;/h1&gt;&lt;p&gt;在OpenSearch中，我希望在action中把一整条log作为报警内容发送出来，但是根据文档，配置为ctx.results.0.hits</summary>
-      
-    
-    
-    
-    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-    <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
-    
-    <category term="ELK" scheme="https://maydaychen.github.io/tags/ELK/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Grafana使用日志6--开启Sigv4认证</title>
-    <link href="https://maydaychen.github.io/2025/02/11/Grafana%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%976--%E5%BC%80%E5%90%AFSigv4%E8%AE%A4%E8%AF%81/"/>
-    <id>https://maydaychen.github.io/2025/02/11/Grafana%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%976--%E5%BC%80%E5%90%AFSigv4%E8%AE%A4%E8%AF%81/</id>
-    <published>2025-02-11T09:15:08.000Z</published>
-    <updated>2025-02-24T15:25:25.444Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>在Grafana中，有些data source是需要开启sigv4认证的，例如OpenSearch，这个配置项默认是关闭的，这里我们介绍一下怎么开启</p><h1 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h1><h2 id="传统方式"><a href="#传统方式" class="headerlink" title="传统方式"></a>传统方式</h2><p>如果我们想在Grafana中开启sigv4认证，我们需要在grafana.ini中修改一个参数</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">;sigv4_auth_enabled = false</span><br></pre></td></tr></table></figure><p>这个配置默认是关闭的，所以我们需要修改成true并重启grafana</p><h2 id="K8S方式"><a href="#K8S方式" class="headerlink" title="K8S方式"></a>K8S方式</h2><p>如果我们使用了helmfile，在kube-prometheus-stack中，并没有全部的grafana配置，那么我们该怎么操作呢？<br>这时候我们需要找到prometheus-operator-values.yaml文件</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">grafana:</span><br><span class="line"># grafana.ini 字段用于修改 grafana 配置文件内容，使用 yaml 格式定义，会自动转成 ini。</span><br><span class="line">  grafana.ini:</span><br><span class="line">    auth:</span><br><span class="line">      sigv4_auth_enabled: false</span><br></pre></td></tr></table></figure><p>然后通过命令生效</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">helmfile apply</span><br></pre></td></tr></table></figure><img src="/2025/02/11/Grafana%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%976--%E5%BC%80%E5%90%AFSigv4%E8%AE%A4%E8%AF%81/1.png" class="" title="图片">]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;在Grafana中，有些data source是需要开启sigv4认证的，例如OpenSearch，这个配置项默认是关闭的，这里我们介绍一下</summary>
-      
-    
-    
-    
-    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-    <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
-    
-    <category term="Grafana" scheme="https://maydaychen.github.io/tags/Grafana/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>AI尝试日志2--使用ChatBox工具实现AI界面化操作</title>
-    <link href="https://maydaychen.github.io/2025/02/11/AI%E5%B0%9D%E8%AF%95%E6%97%A5%E5%BF%972--%E4%BD%BF%E7%94%A8ChatBox%E5%B7%A5%E5%85%B7%E5%AE%9E%E7%8E%B0AI%E7%95%8C%E9%9D%A2%E5%8C%96%E6%93%8D%E4%BD%9C/"/>
-    <id>https://maydaychen.github.io/2025/02/11/AI%E5%B0%9D%E8%AF%95%E6%97%A5%E5%BF%972--%E4%BD%BF%E7%94%A8ChatBox%E5%B7%A5%E5%85%B7%E5%AE%9E%E7%8E%B0AI%E7%95%8C%E9%9D%A2%E5%8C%96%E6%93%8D%E4%BD%9C/</id>
-    <published>2025-02-11T02:38:05.000Z</published>
-    <updated>2025-02-24T15:21:04.315Z</updated>
-    
-    
-    
-    
-    <category term="AI" scheme="https://maydaychen.github.io/categories/AI/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>Grafana使用日志5--配置SMTP以发送忘记密码重置邮件</title>
-    <link href="https://maydaychen.github.io/2025/02/10/Grafana%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%975--%E9%85%8D%E7%BD%AESMTP%E4%BB%A5%E5%8F%91%E9%80%81%E5%BF%98%E8%AE%B0%E5%AF%86%E7%A0%81%E9%87%8D%E7%BD%AE%E9%82%AE%E4%BB%B6/"/>
-    <id>https://maydaychen.github.io/2025/02/10/Grafana%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%975--%E9%85%8D%E7%BD%AESMTP%E4%BB%A5%E5%8F%91%E9%80%81%E5%BF%98%E8%AE%B0%E5%AF%86%E7%A0%81%E9%87%8D%E7%BD%AE%E9%82%AE%E4%BB%B6/</id>
-    <published>2025-02-10T01:52:50.000Z</published>
-    <updated>2025-02-24T15:25:25.446Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>在项目中，我们每个人都会用到各种各样的工具，随着工具的增多，拥有的账号的数量也随之递增，这时候如果没有使用密码管理工具，很容易就忘记了某一个工具的账号密码<br>而我们现在就要讨论一下在Grafana中，如果忘记了密码，怎么在不联系管理员的情况下手动重置密码</p><h1 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h1><p>在Grafana登录时，我们可以看到在登陆框的下面有一个Forget your password?<br>点击该按钮，会让你输入用户名或邮箱，然后Grafana就会自动发送邮件到这个邮箱，帮你重置密码<br>但是如果没有配置SMTP服务的话，这个功能是不起作用的，所以本文就是用来讲如何配置SMTP</p><img src="/2025/02/10/Grafana%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%975--%E9%85%8D%E7%BD%AESMTP%E4%BB%A5%E5%8F%91%E9%80%81%E5%BF%98%E8%AE%B0%E5%AF%86%E7%A0%81%E9%87%8D%E7%BD%AE%E9%82%AE%E4%BB%B6/1.png" class="" title="图片"><p>打开Grafana配置文件（&#x2F;etc&#x2F;grafana&#x2F;grafana.ini），找到如下这一段</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">#################################### SMTP / Emailing ##########################</span><br><span class="line">[smtp]</span><br><span class="line">;enabled = false</span><br><span class="line">enabled = true</span><br><span class="line">;host = localhost:25</span><br><span class="line">host = &#123;&#123;smtp-server:465&#125;&#125;</span><br><span class="line">;user =</span><br><span class="line">user = &#123;&#123;username&#125;&#125;</span><br><span class="line"># If the password contains # or ; you have to wrap it with triple quotes. Ex &quot;&quot;&quot;#password;&quot;&quot;&quot;</span><br><span class="line">;password =</span><br><span class="line">password = &#123;&#123;password&#125;&#125;</span><br><span class="line">;cert_file =</span><br><span class="line">;key_file =</span><br><span class="line">;skip_verify = false</span><br><span class="line">;from_address = admin@grafana.localhost</span><br><span class="line">from_address = &#123;&#123;aaa@example.com&#125;&#125;</span><br><span class="line">;from_name = Grafana</span><br><span class="line"># EHLO identity in SMTP dialog (defaults to instance_name)</span><br><span class="line">;ehlo_identity = dashboard.example.com</span><br><span class="line">ehlo_identity = &#123;&#123;ehlo&#125;&#125;</span><br><span class="line"># SMTP startTLS policy (defaults to &#x27;OpportunisticStartTLS&#x27;)</span><br><span class="line">;startTLS_policy = NoStartTLS</span><br><span class="line"># Enable trace propagation in e-mail headers, using the &#x27;traceparent&#x27;, &#x27;tracestate&#x27; and (optionally) &#x27;baggage&#x27; fields (defaults to false)</span><br><span class="line">;enable_tracing = false</span><br></pre></td></tr></table></figure><p>按照如上配置,修改括号中的内容</p><p>再之后重启grafana</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl restart grafana-server</span><br></pre></td></tr></table></figure><h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1><p>经测试可以正常发送，配置正确</p><img src="/2025/02/10/Grafana%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%975--%E9%85%8D%E7%BD%AESMTP%E4%BB%A5%E5%8F%91%E9%80%81%E5%BF%98%E8%AE%B0%E5%AF%86%E7%A0%81%E9%87%8D%E7%BD%AE%E9%82%AE%E4%BB%B6/2.png" class="" title="Grafana-login"><h1 id="题外话"><a href="#题外话" class="headerlink" title="题外话"></a>题外话</h1><h2 id="startTLS-policy"><a href="#startTLS-policy" class="headerlink" title="startTLS_policy"></a>startTLS_policy</h2><p>关于startTLS_policy，有三个选项，下面介绍一下每一个选项<br>startTLS_policy 用于定义 Grafana 在与 SMTP 服务器通信时如何处理 STARTTLS。它有以下几个可能的取值：</p><ul><li><p>OpportunisticStartTLS（默认值）：<br>  Grafana 会尝试使用 STARTTLS 升级为加密通信。<br>  如果服务器不支持 STARTTLS，Grafana 会回退到明文通信。<br>  这是一种灵活的策略，适用于大多数场景。</p></li><li><p>MandatoryStartTLS：<br>Grafana 必须使用 STARTTLS 加密通信。<br>如果服务器不支持 STARTTLS，Grafana 会拒绝连接并报错。<br>这种策略适合对安全性要求较高的场景。</p></li><li><p>NoStartTLS：<br>Grafana 不会尝试使用 STARTTLS。<br>所有通信都以明文方式进行。<br>这种策略仅适用于测试或内部网络环境，不推荐在生产环境中使用。</p></li></ul>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;在项目中，我们每个人都会用到各种各样的工具，随着工具的增多，拥有的账号的数量也随之递增，这时候如果没有使用密码管理工具，很容易就忘记了某一个</summary>
-      
-    
-    
-    
-    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-    <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
-    
-    <category term="Grafana" scheme="https://maydaychen.github.io/tags/Grafana/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Grafana使用日志4--重置密码方法</title>
-    <link href="https://maydaychen.github.io/2025/02/09/Grafana%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%974--%E9%87%8D%E7%BD%AE%E5%AF%86%E7%A0%81%E6%96%B9%E6%B3%95/"/>
-    <id>https://maydaychen.github.io/2025/02/09/Grafana%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%974--%E9%87%8D%E7%BD%AE%E5%AF%86%E7%A0%81%E6%96%B9%E6%B3%95/</id>
-    <published>2025-02-09T15:39:36.000Z</published>
-    <updated>2025-02-24T15:23:51.946Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>有时候当账号太多的时候，根本记不住所有的账号密码，这时候就很容易登录失败，这时候怎么办呢？<br>接下来就让我来给大家演示一下Grafana的账号如果忘记了的话，该怎么找回自己的账号密码</p><h1 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h1><p>让我们来看一下具体的实操环节，有两种实现方式，如下</p><h2 id="方法一-grafana-cli"><a href="#方法一-grafana-cli" class="headerlink" title="方法一 grafana-cli"></a>方法一 grafana-cli</h2><p>直接使用grafana-cli</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">grafana-cli admin reset-admin-password admin</span><br><span class="line"></span><br><span class="line">## 重启服务</span><br><span class="line">sudo systemctl restart grafana-server</span><br></pre></td></tr></table></figure><p>之后就可以用admin,admin登录了</p><h2 id="方法二-数据库"><a href="#方法二-数据库" class="headerlink" title="方法二 数据库"></a>方法二 数据库</h2><p>直接修改数据库</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">## 直接使用命令找到Grafana的数据库文件</span><br><span class="line">find / -name &quot;grafana.db&quot;</span><br><span class="line"></span><br><span class="line">## 打开数据库</span><br><span class="line">sqlite3 /var/lib/grafana/grafana.db</span><br><span class="line"></span><br><span class="line">## 查看数据库中包含的表</span><br><span class="line">.tables</span><br><span class="line">## 查看user表内容</span><br><span class="line">select * from user;</span><br><span class="line">## 重置admin用户的密码为默认admin</span><br><span class="line">update user set password = &#x27;59acf18b94d7eb0694c61e60ce44c110c7a683ac6a8f09580d626f90f4a242000746579358d77dd9e570e83fa24faa88a8a6&#x27;, salt = &#x27;F3FAxVm33R&#x27; where login = &#x27;admin&#x27;;</span><br><span class="line">## 退出sqlite3</span><br><span class="line">.exit</span><br></pre></td></tr></table></figure><p>之后就可以用admin,admin登录了</p><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>上面就是两种方法的具体操作啦，个人认为肯定是第一种比较简单一点啦，你们觉得嘞？<br>另外，如果服务是放在公网上的话，建议把admin这个账号disable一下或者至少是修改一下密码，防止被别人入侵哦</p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;有时候当账号太多的时候，根本记不住所有的账号密码，这时候就很容易登录失败，这时候怎么办呢？&lt;br&gt;接下来就让我来给大家演示一下Grafana</summary>
-      
-    
-    
-    
-    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-    <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
-    
-    <category term="Grafana" scheme="https://maydaychen.github.io/tags/Grafana/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Grafana使用日志3--使用Button修改MySQL数据库</title>
-    <link href="https://maydaychen.github.io/2025/02/08/Grafana%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%973--%E4%BD%BF%E7%94%A8Button%E4%BF%AE%E6%94%B9MySQL%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
-    <id>https://maydaychen.github.io/2025/02/08/Grafana%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%973--%E4%BD%BF%E7%94%A8Button%E4%BF%AE%E6%94%B9MySQL%E6%95%B0%E6%8D%AE%E5%BA%93/</id>
-    <published>2025-02-08T09:25:36.000Z</published>
-    <updated>2025-02-24T15:25:25.442Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>众所周知，Grafana是一个用来展示数据的平台，但是有时候还是会有需求说能不能有一个按钮，点击的时候再对数据库进行修改，从而达到更新数据的效果<br>经过多方查证，终于实现了一个简单的，点击button执行sql语句的功能，特此分享</p><h1 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h1><h2 id="安装Button插件"><a href="#安装Button插件" class="headerlink" title="安装Button插件"></a>安装Button插件</h2><p>可以在Grafana Plugins里直接找到，安装即可</p><img src="/2025/02/08/Grafana%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%973--%E4%BD%BF%E7%94%A8Button%E4%BF%AE%E6%94%B9MySQL%E6%95%B0%E6%8D%AE%E5%BA%93/1.png" class="" title="图片"><h2 id="配置Button功能"><a href="#配置Button功能" class="headerlink" title="配置Button功能"></a>配置Button功能</h2><img src="/2025/02/08/Grafana%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%973--%E4%BD%BF%E7%94%A8Button%E4%BF%AE%E6%94%B9MySQL%E6%95%B0%E6%8D%AE%E5%BA%93/2.png" class="" title="图片"><h3 id="Orientation"><a href="#Orientation" class="headerlink" title="Orientation"></a>Orientation</h3><p>按钮的方向，只有一个按钮的时候没有效果，当设置两个或两个以上时，可以设置按钮是水平放置还是垂直放置</p><h3 id="Button-Configuration"><a href="#Button-Configuration" class="headerlink" title="Button Configuration"></a>Button Configuration</h3><p>这边就是重头戏了，可以分别对每一个按钮进行设置<br>可以看到这边有三个选项，下面来一一解释</p><ul><li>Text： 即按钮上显示的文字</li><li>Datasource： 对哪一个datasource进行操作，选择项</li><li>Query： 按下这个button后要执行的语句</li></ul><p>可以看到，功能其实是非常简单的，只不过一开始用的时候，对于这个Query可能会有点懵逼</p><p>那么，到底该怎么配置这些个参数呢？插件作者并没有写，但是我尝试之后终于摸索出来了</p><img src="/2025/02/08/Grafana%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%973--%E4%BD%BF%E7%94%A8Button%E4%BF%AE%E6%94%B9MySQL%E6%95%B0%E6%8D%AE%E5%BA%93/3.png" class="" title="图片"><p>我们建立一个新的table控件，并使用query inspector功能来查看它的查询语句<br>可以看到，在queries中有一条数据，并且这边有rawSql参数和format参数比较陌生，于是把这两个参数放到Query中尝试一下，发现确实可以使用</p><p>并且，在页面的右上角也会有消息推送，表示执行成功，至此，功能已被我们实现</p><img src="/2025/02/08/Grafana%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%973--%E4%BD%BF%E7%94%A8Button%E4%BF%AE%E6%94%B9MySQL%E6%95%B0%E6%8D%AE%E5%BA%93/4.png" class="" title="图片"><h2 id="Todo-问题待解决"><a href="#Todo-问题待解决" class="headerlink" title="[Todo]问题待解决"></a>[Todo]问题待解决</h2><ol><li>如何解决功能实现后的刷新问题 </li><li>如何动态地编辑我们的数据，比如输入一个值，并通过点击把这个值插入数据库 -&gt; 目前没有找到一个很好的输入框控件~~</li></ol>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;众所周知，Grafana是一个用来展示数据的平台，但是有时候还是会有需求说能不能有一个按钮，点击的时候再对数据库进行修改，从而达到更新数据的</summary>
       
     
     
