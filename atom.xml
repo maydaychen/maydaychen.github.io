@@ -6,7 +6,7 @@
   <link href="https://maydaychen.github.io/atom.xml" rel="self"/>
   
   <link href="https://maydaychen.github.io/"/>
-  <updated>2025-07-26T09:33:44.715Z</updated>
+  <updated>2025-08-13T03:32:42.993Z</updated>
   <id>https://maydaychen.github.io/</id>
   
   <author>
@@ -15,6 +15,43 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Zabbix进阶11--如何使用ZabbixAPI</title>
+    <link href="https://maydaychen.github.io/2025/08/13/Zabbix%E8%BF%9B%E9%98%B611-%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8ZabbixAPI/"/>
+    <id>https://maydaychen.github.io/2025/08/13/Zabbix%E8%BF%9B%E9%98%B611-%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8ZabbixAPI/</id>
+    <published>2025-08-13T03:32:42.000Z</published>
+    <updated>2025-08-13T03:32:42.993Z</updated>
+    
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>瞎折腾1--Glance安装及优雅地使用面板</title>
+    <link href="https://maydaychen.github.io/2025/08/09/%E7%9E%8E%E6%8A%98%E8%85%BE1-Glance%E5%AE%89%E8%A3%85%E5%8F%8A%E4%BC%98%E9%9B%85%E5%9C%B0%E4%BD%BF%E7%94%A8%E9%9D%A2%E6%9D%BF/"/>
+    <id>https://maydaychen.github.io/2025/08/09/%E7%9E%8E%E6%8A%98%E8%85%BE1-Glance%E5%AE%89%E8%A3%85%E5%8F%8A%E4%BC%98%E9%9B%85%E5%9C%B0%E4%BD%BF%E7%94%A8%E9%9D%A2%E6%9D%BF/</id>
+    <published>2025-08-09T06:42:59.000Z</published>
+    <updated>2025-08-09T06:52:57.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="功能记录"><a href="#功能记录" class="headerlink" title="功能记录"></a>功能记录</h1><h2 id="登录验证"><a href="#登录验证" class="headerlink" title="登录验证"></a>登录验证</h2><p>首先需要创建一个secret key，如果是docker创建的，那就运行这个命令</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --rm glanceapp/glance secret:make</span><br></pre></td></tr></table></figure><p>会生成一个key，需要填写在配置文件中<br>然后就配置我们的账号密码,可以直接配置在glance.yml的第一行</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">auth:</span><br><span class="line">  secret-key: &#123;刚才生成的secret key&#125;# this must be set to a random value generated using the secret:make CLI command</span><br><span class="line">  users:</span><br><span class="line">    admin:</span><br><span class="line">      password: 123456</span><br><span class="line">    svilen:</span><br><span class="line">      password: 123456</span><br></pre></td></tr></table></figure><p>之后在登录的时候，就会要求输入用户名密码<br><img src="/%E7%9E%8E%E6%8A%98%E8%85%BE1--Glance%E5%AE%89%E8%A3%85%E5%8F%8A%E4%BC%98%E9%9B%85%E5%9C%B0%E4%BD%BF%E7%94%A8%E9%9D%A2%E6%9D%BF/auth.png" alt="图片"></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;功能记录&quot;&gt;&lt;a href=&quot;#功能记录&quot; class=&quot;headerlink&quot; title=&quot;功能记录&quot;&gt;&lt;/a&gt;功能记录&lt;/h1&gt;&lt;h2 id=&quot;登录验证&quot;&gt;&lt;a href=&quot;#登录验证&quot; class=&quot;headerlink&quot; title=&quot;登录验证&quot;&gt;&lt;/a</summary>
+      
+    
+    
+    
+    <category term="Tools" scheme="https://maydaychen.github.io/categories/Tools/"/>
+    
+    
+    <category term="NAS" scheme="https://maydaychen.github.io/tags/NAS/"/>
+    
+  </entry>
   
   <entry>
     <title>Linux操作记录9--MariaDB升级笔记</title>
@@ -467,54 +504,6 @@
     <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
     
     <category term="Prometheus" scheme="https://maydaychen.github.io/tags/Prometheus/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Zabbix监控万物5--监控JAVA heap memory相关</title>
-    <link href="https://maydaychen.github.io/2025/02/14/Zabbix%E7%9B%91%E6%8E%A7%E4%B8%87%E7%89%A95--%E7%9B%91%E6%8E%A7JAVA-heap-memory%E7%9B%B8%E5%85%B3/"/>
-    <id>https://maydaychen.github.io/2025/02/14/Zabbix%E7%9B%91%E6%8E%A7%E4%B8%87%E7%89%A95--%E7%9B%91%E6%8E%A7JAVA-heap-memory%E7%9B%B8%E5%85%B3/</id>
-    <published>2025-02-14T03:29:36.000Z</published>
-    <updated>2025-02-24T15:17:51.809Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><h1 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h1><h2 id="创建scripts"><a href="#创建scripts" class="headerlink" title="创建scripts"></a>创建scripts</h2><p>在scripts（&#x2F;etc&#x2F;zabbix&#x2F;scripts）目录下创建一个新的shell脚本 get_heap_memory.sh</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span></span><br><span class="line"></span><br><span class="line">pid=`ps -aux | grep java | grep wildfly | grep -v &quot;grep&quot; | grep -v $0 | awk &#x27;&#123;print $2&#125;&#x27;`</span><br><span class="line"></span><br><span class="line">S0U=`jstat -gc $pid | awk &#x27;&#123;if(NR!=1) print int($3+0.5)&#125;&#x27;`</span><br><span class="line">S1U=`jstat -gc $pid | awk &#x27;&#123;if(NR!=1) print int($4+0.5)&#125;&#x27;`</span><br><span class="line">EU=`jstat -gc $pid | awk &#x27;&#123;if(NR!=1) print int($6+0.5)&#125;&#x27;`</span><br><span class="line">OU=`jstat -gc $pid | awk &#x27;&#123;if(NR!=1) print int($8+0.5)&#125;&#x27;`</span><br><span class="line">heap_memory_used=$((S0U+S1U+EU+OU))</span><br><span class="line">heap_memory_max=`jinfo -flag MaxHeapSize $pid | awk -F &quot;=&quot; &#x27;&#123;print $2&#125;&#x27;`</span><br><span class="line">echo $heap_memory_used &gt; /var/log/zabbix/heap_memory_used.txt</span><br><span class="line">echo $heap_memory_max &gt; /var/log/zabbix/heap_memory_max.txt</span><br></pre></td></tr></table></figure><h2 id="配置定时任务"><a href="#配置定时任务" class="headerlink" title="配置定时任务"></a>配置定时任务</h2><p>由于zabbix agent没有权限去运行这个命令，因此我们采用定时任务的方式</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">* * * * * sudo bash /etc/zabbix/get_heap_memory.sh</span><br></pre></td></tr></table></figure><p>注：其实可以通过赋予agent运行这个脚本的权限来省略这一步</p><h2 id="获得任务执行结果"><a href="#获得任务执行结果" class="headerlink" title="获得任务执行结果"></a>获得任务执行结果</h2><p>在脚本运行后，会生成下面两个文件，我们监控这两个文件即可</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/var/log/zabbix/heap_memory_used.txt</span><br><span class="line">/var/log/zabbix/heap_memory_max.txt</span><br></pre></td></tr></table></figure><h2 id="在console中配置"><a href="#在console中配置" class="headerlink" title="在console中配置"></a>在console中配置</h2><p>分别创建两个item，用来监控最大值和已使用值</p><img src="/2025/02/14/Zabbix%E7%9B%91%E6%8E%A7%E4%B8%87%E7%89%A95--%E7%9B%91%E6%8E%A7JAVA-heap-memory%E7%9B%B8%E5%85%B3/1.png" class="" title="图片"><img src="/2025/02/14/Zabbix%E7%9B%91%E6%8E%A7%E4%B8%87%E7%89%A95--%E7%9B%91%E6%8E%A7JAVA-heap-memory%E7%9B%B8%E5%85%B3/2.png" class="" title="图片">]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;h1 id=&quot;实现&quot;&gt;&lt;a href=&quot;#实现&quot; class=&quot;headerlink&quot; title=&quot;实现&quot;&gt;&lt;/a&gt;实现&lt;/h1&gt;&lt;h2 id</summary>
-      
-    
-    
-    
-    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-    <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
-    
-    <category term="Zabbix" scheme="https://maydaychen.github.io/tags/Zabbix/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>AI尝试日志3--Ollama常用命令记录</title>
-    <link href="https://maydaychen.github.io/2025/02/13/AI%E5%B0%9D%E8%AF%95%E6%97%A5%E5%BF%973--Ollama%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E8%AE%B0%E5%BD%95/"/>
-    <id>https://maydaychen.github.io/2025/02/13/AI%E5%B0%9D%E8%AF%95%E6%97%A5%E5%BF%973--Ollama%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E8%AE%B0%E5%BD%95/</id>
-    <published>2025-02-13T14:15:37.000Z</published>
-    <updated>2025-02-24T15:21:20.074Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="查看所有支持的模型"><a href="#查看所有支持的模型" class="headerlink" title="查看所有支持的模型"></a>查看所有支持的模型</h1><p>在<a href="https://ollama.com/search">这个地方</a>能看到所有支持的模型，并且点击对应的模型名称可以有详细的介绍和下载命令<br>   <img src="/2025/02/13/AI%E5%B0%9D%E8%AF%95%E6%97%A5%E5%BF%973--Ollama%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E8%AE%B0%E5%BD%95/1.png" class="" title="图片"></p><h1 id="列出所有模型-list"><a href="#列出所有模型-list" class="headerlink" title="列出所有模型 (list)"></a>列出所有模型 (list)</h1><p>列出本地所有可用的模型,可以在这里查找模型名称。</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ollama list</span><br><span class="line">ollama ls</span><br></pre></td></tr></table></figure><h1 id="运行模型-run"><a href="#运行模型-run" class="headerlink" title="运行模型 (run)"></a>运行模型 (run)</h1><p>运行一个已安装的模型，执行某些任务。</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ollama run model_name</span><br></pre></td></tr></table></figure><h1 id="显示模型信息-show"><a href="#显示模型信息-show" class="headerlink" title="显示模型信息 (show)"></a>显示模型信息 (show)</h1><p>查看特定模型的详细信息，例如模型名称、版本等。</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ollama show model_name</span><br></pre></td></tr></table></figure><h1 id="删除模型-rm"><a href="#删除模型-rm" class="headerlink" title="删除模型 (rm)"></a>删除模型 (rm)</h1><p>删除一个已安装的模型。</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ollama rm model_name</span><br></pre></td></tr></table></figure><h1 id="查看版本-version"><a href="#查看版本-version" class="headerlink" title="查看版本 (version)"></a>查看版本 (version)</h1><p>显示当前 ollama 工具的版本信息。</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ollama -v</span><br><span class="line">ollama --version</span><br></pre></td></tr></table></figure>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h1 id=&quot;查看所有支持的模型&quot;&gt;&lt;a href=&quot;#查看所有支持的模型&quot; class=&quot;headerlink&quot; title=&quot;查看所有支持的模型&quot;&gt;&lt;/a&gt;查看所有支持的模型&lt;/h1&gt;&lt;p&gt;在&lt;a href=&quot;https://ollama.com/search&quot;&gt;这个地方&lt;</summary>
-      
-    
-    
-    
-    <category term="AI" scheme="https://maydaychen.github.io/categories/AI/"/>
-    
     
   </entry>
   
