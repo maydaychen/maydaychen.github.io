@@ -6,7 +6,7 @@
   <link href="https://maydaychen.github.io/atom.xml" rel="self"/>
   
   <link href="https://maydaychen.github.io/"/>
-  <updated>2025-08-16T07:03:35.171Z</updated>
+  <updated>2025-08-16T08:09:05.166Z</updated>
   <id>https://maydaychen.github.io/</id>
   
   <author>
@@ -21,9 +21,9 @@
     <link href="https://maydaychen.github.io/2025/08/16/AI%E5%B0%9D%E8%AF%95%E7%AC%94%E8%AE%B04-%E9%80%9A%E8%BF%87n8n%E5%8F%91%E9%80%81%E4%BF%A1%E6%81%AF/"/>
     <id>https://maydaychen.github.io/2025/08/16/AI%E5%B0%9D%E8%AF%95%E7%AC%94%E8%AE%B04-%E9%80%9A%E8%BF%87n8n%E5%8F%91%E9%80%81%E4%BF%A1%E6%81%AF/</id>
     <published>2025-08-16T06:48:30.000Z</published>
-    <updated>2025-08-16T07:03:35.171Z</updated>
+    <updated>2025-08-16T08:09:05.166Z</updated>
     
-    <content type="html"><![CDATA[<p>从来没想过通过TG发送消息竟然这么简单,下面记录一下通过TG发送消息的详细步骤</p><h1 id="创建机器人"><a href="#创建机器人" class="headerlink" title="创建机器人"></a>创建机器人</h1><p>我们只需要找到一个叫做BotFather的账号，然后输入&#x2F;newbot<br>他会要求你输入以下内容</p><ul><li>机器人的名字</li><li>机器人的用户名（必须以_bot结尾）<img src="/2025/08/16/AI%E5%B0%9D%E8%AF%95%E7%AC%94%E8%AE%B04-%E9%80%9A%E8%BF%87n8n%E5%8F%91%E9%80%81%E4%BF%A1%E6%81%AF/1.png" class="" title="图片">之后如果创建成功，会给你返回一个token，请务必记住这个token，因为n8n中需要</li></ul><h1 id="n8n设置Credential"><a href="#n8n设置Credential" class="headerlink" title="n8n设置Credential"></a>n8n设置Credential</h1><p>在n8n中创建一个credential，选择telegram，然后会要求你输入一个Access Token<br>将刚才BotFather给你的token输入即可</p><img src="/2025/08/16/AI%E5%B0%9D%E8%AF%95%E7%AC%94%E8%AE%B04-%E9%80%9A%E8%BF%87n8n%E5%8F%91%E9%80%81%E4%BF%A1%E6%81%AF/2.png" class="" title="图片"><h1 id="发送消息到群聊"><a href="#发送消息到群聊" class="headerlink" title="发送消息到群聊"></a>发送消息到群聊</h1><p>如果想要让这个Bot自动发送消息，需要配置一个chatid<br>创建群聊的操作这里就不多说， 跟微信什么的都是一样的<br>在创建群聊之后，我们在浏览器端访问API<br><a href="https://api.telegram.org/bot">https://api.telegram.org/bot</a>&#x2F;getUpdates<br>将换成刚才我们获取到的Token，API会返回一个JSON<br>其中”id”这个字段就是我们想要的，如果是群聊的话会以‘-’开头<br>切记在n8n中将这个‘-’也粘贴进去，不然会报找不到chatid</p>]]></content>
+    <content type="html"><![CDATA[<p>从来没想过通过TG发送消息竟然这么简单,下面记录一下通过TG发送消息的详细步骤</p><h1 id="创建机器人"><a href="#创建机器人" class="headerlink" title="创建机器人"></a>创建机器人</h1><p>我们只需要找到一个叫做BotFather的账号，然后输入&#x2F;newbot<br>他会要求你输入以下内容</p><ul><li>机器人的名字</li><li>机器人的用户名（必须以_bot结尾）<img src="/2025/08/16/AI%E5%B0%9D%E8%AF%95%E7%AC%94%E8%AE%B04-%E9%80%9A%E8%BF%87n8n%E5%8F%91%E9%80%81%E4%BF%A1%E6%81%AF/1.png" class="" title="图片">之后如果创建成功，会给你返回一个token，请务必记住这个token，因为n8n中需要</li></ul><h1 id="n8n设置Credential"><a href="#n8n设置Credential" class="headerlink" title="n8n设置Credential"></a>n8n设置Credential</h1><p>在n8n中创建一个credential，选择telegram，然后会要求你输入一个Access Token<br>将刚才BotFather给你的token输入即可</p><img src="/2025/08/16/AI%E5%B0%9D%E8%AF%95%E7%AC%94%E8%AE%B04-%E9%80%9A%E8%BF%87n8n%E5%8F%91%E9%80%81%E4%BF%A1%E6%81%AF/2.png" class="" title="图片"><h1 id="发送消息到群聊"><a href="#发送消息到群聊" class="headerlink" title="发送消息到群聊"></a>发送消息到群聊</h1><p>如果想要让这个Bot自动发送消息，需要配置一个chatid<br>创建群聊的操作这里就不多说， 跟微信什么的都是一样的<br>在创建群聊之后，我们在浏览器端访问API<br><a href="https://api.telegram.org/bot[token]/getUpdates">https://api.telegram.org/bot[token]/getUpdates</a><br>将[token]换成刚才我们获取到的Token，API会返回一个JSON<br>其中”id”这个字段就是我们想要的，如果是群聊的话会以‘-’开头<br>切记在n8n中将这个‘-’也粘贴进去，不然会报找不到chatid</p>]]></content>
     
     
       
@@ -92,9 +92,9 @@
     <link href="https://maydaychen.github.io/2025/08/14/AWS%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%971-%E5%A6%82%E4%BD%95%E4%B8%80%E4%B8%AA%E6%B5%8F%E8%A7%88%E5%99%A8%E5%A4%9A%E8%B4%A6%E6%88%B7%E5%90%8C%E6%97%B6%E7%99%BB%E5%BD%95/"/>
     <id>https://maydaychen.github.io/2025/08/14/AWS%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%971-%E5%A6%82%E4%BD%95%E4%B8%80%E4%B8%AA%E6%B5%8F%E8%A7%88%E5%99%A8%E5%A4%9A%E8%B4%A6%E6%88%B7%E5%90%8C%E6%97%B6%E7%99%BB%E5%BD%95/</id>
     <published>2025-08-14T07:08:57.000Z</published>
-    <updated>2025-08-14T07:13:45.000Z</updated>
+    <updated>2025-08-16T08:09:05.161Z</updated>
     
-    <content type="html"><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>由于现在所有的账号都在同一个control tower下，导致了一个账号登录后，另一个账号的页面就全部过期了，非常影响效率<br>这时候我发现可以启用AWS的multi-session support，就可以同时登录多个账户或者角色<br>但是限制上限为5</p><p>参考文章：<br><a href="https://docs.aws.amazon.com/zh_cn/awsconsolehelpdocs/latest/gsg/multisession.html">https://docs.aws.amazon.com/zh_cn/awsconsolehelpdocs/latest/gsg/multisession.html</a></p><h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><p><img src="/AWS%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%971--%E5%A6%82%E4%BD%95%E4%B8%80%E4%B8%AA%E6%B5%8F%E8%A7%88%E5%99%A8%E5%A4%9A%E8%B4%A6%E6%88%B7%E5%90%8C%E6%97%B6%E7%99%BB%E5%BD%95/img.png" alt="img.png"><br>点击那个turn on multi-session support，待页面刷新后即可多账户切换</p>]]></content>
+    <content type="html"><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>由于现在所有的账号都在同一个control tower下，导致了一个账号登录后，另一个账号的页面就全部过期了，非常影响效率<br>这时候我发现可以启用AWS的multi-session support，就可以同时登录多个账户或者角色<br>但是限制上限为5</p><p>参考文章：<br><a href="https://docs.aws.amazon.com/zh_cn/awsconsolehelpdocs/latest/gsg/multisession.html">https://docs.aws.amazon.com/zh_cn/awsconsolehelpdocs/latest/gsg/multisession.html</a></p><h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><img src="/2025/08/14/AWS%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%971-%E5%A6%82%E4%BD%95%E4%B8%80%E4%B8%AA%E6%B5%8F%E8%A7%88%E5%99%A8%E5%A4%9A%E8%B4%A6%E6%88%B7%E5%90%8C%E6%97%B6%E7%99%BB%E5%BD%95/img.png" class="" title="img.png"><p>点击那个turn on multi-session support，待页面刷新后即可多账户切换</p>]]></content>
     
     
       
