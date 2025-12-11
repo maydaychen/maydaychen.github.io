@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>AWS使用日志10--通过CloudwatchLogInsight查找CloudTrail事件 | Maydaychen Station</title>
+  <meta name="description" content="背景1On November 21, 2025, Amazon Simple Storage Service (Amazon S3) will stop returning Owner.DisplayName for all request responses. Owner.DisplayName is a legacy field that most modern applications do">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AWS使用日志10--通过CloudwatchLogInsight查找CloudTrail事件">
+<meta property="og:url" content="https://maydaychen.github.io/2025/11/13/AWS%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%9710-%E9%80%9A%E8%BF%87CloudwatchLogInsight%E6%9F%A5%E6%89%BECloudTrail%E4%BA%8B%E4%BB%B6/index.html">
+<meta property="og:site_name" content="Hexotest">
+<meta property="og:description" content="背景1On November 21, 2025, Amazon Simple Storage Service (Amazon S3) will stop returning Owner.DisplayName for all request responses. Owner.DisplayName is a legacy field that most modern applications do">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://maydaychen.github.io/2025/11/13/AWS%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%9710-%E9%80%9A%E8%BF%87CloudwatchLogInsight%E6%9F%A5%E6%89%BECloudTrail%E4%BA%8B%E4%BB%B6/img.png">
+<meta property="article:published_time" content="2025-11-13T02:53:58.000Z">
+<meta property="article:modified_time" content="2025-11-13T10:02:00.000Z">
+<meta property="article:author" content="Maydaychen">
+<meta property="article:tag" content="AWS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://maydaychen.github.io/2025/11/13/AWS%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%9710-%E9%80%9A%E8%BF%87CloudwatchLogInsight%E6%9F%A5%E6%89%BECloudTrail%E4%BA%8B%E4%BB%B6/img.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://maydaychen.github.io/2025/11/13/AWS%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%9710-%E9%80%9A%E8%BF%87CloudwatchLogInsight%E6%9F%A5%E6%89%BECloudTrail%E4%BA%8B%E4%BB%B6/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexotest" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/maydaychen" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Maydaychen</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Developer &amp; Infra engineer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Wuxi, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/maydaychen" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://weibo.com/maydaychen1" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/heychenyi" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>此站点仅作为日常记录与经验分享用途</br>十分期待各位精英的评论留言</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AI/">AI</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Tools/">Tools</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8D%9A%E5%AE%A2%E7%9B%B8%E5%85%B3/">博客相关</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%80%E5%8F%91/">开发</a><span class="category-list-count">22</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%94%9F%E6%B4%BB/">生活</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a><span class="category-list-count">76</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AWS/" rel="tag">AWS</a><span class="tag-list-count">11</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a><span class="tag-list-count">11</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ansible/" rel="tag">Ansible</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ELK/" rel="tag">ELK</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Grafana/" rel="tag">Grafana</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a><span class="tag-list-count">14</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MacOS/" rel="tag">MacOS</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NAS/" rel="tag">NAS</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Prometheus/" rel="tag">Prometheus</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/" rel="tag">Python</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Zabbix/" rel="tag">Zabbix</a><span class="tag-list-count">31</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9B%91%E6%8E%A7/" rel="tag">监控</a><span class="tag-list-count">47</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%A3%9F%E8%B0%B1/" rel="tag">食谱</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/AWS/" style="font-size: 13.56px;">AWS</a> <a href="/tags/Android/" style="font-size: 13.56px;">Android</a> <a href="/tags/Ansible/" style="font-size: 13.11px;">Ansible</a> <a href="/tags/Docker/" style="font-size: 13.11px;">Docker</a> <a href="/tags/ELK/" style="font-size: 13px;">ELK</a> <a href="/tags/Grafana/" style="font-size: 13.67px;">Grafana</a> <a href="/tags/Hexo/" style="font-size: 13.22px;">Hexo</a> <a href="/tags/Linux/" style="font-size: 13.78px;">Linux</a> <a href="/tags/MacOS/" style="font-size: 13.33px;">MacOS</a> <a href="/tags/NAS/" style="font-size: 13.44px;">NAS</a> <a href="/tags/Prometheus/" style="font-size: 13.11px;">Prometheus</a> <a href="/tags/Python/" style="font-size: 13.11px;">Python</a> <a href="/tags/Windows/" style="font-size: 13.11px;">Windows</a> <a href="/tags/Zabbix/" style="font-size: 13.89px;">Zabbix</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 13.44px;">前端</a> <a href="/tags/%E7%9B%91%E6%8E%A7/" style="font-size: 14px;">监控</a> <a href="/tags/%E9%A3%9F%E8%B0%B1/" style="font-size: 13px;">食谱</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/11/">十一月 2025</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/10/">十月 2025</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/09/">九月 2025</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">八月 2025</a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/07/">七月 2025</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/06/">六月 2025</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/04/">四月 2025</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/03/">三月 2025</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/02/">二月 2025</a><span class="archive-list-count">22</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/01/">一月 2025</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/12/">十二月 2024</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/08/">八月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/04/">四月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">三月 2024</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/02/">二月 2024</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">一月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">十一月 2023</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/10/">十月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">八月 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">二月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">九月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a>
+              </p>
+              <p class="item-title">
+                <a href="/2025/11/14/Linux%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%953-sftp%E8%BF%9E%E6%8E%A5%E5%88%B0%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%90%8E%E8%BF%9B%E5%BA%A6%E4%B8%80%E7%9B%B4%E5%8D%A10/" class="title">Linux问题记录3--sftp连接到服务器后进度一直卡0%</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2025-11-14T09:56:49.000Z" itemprop="datePublished">2025-11-14</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a>
+              </p>
+              <p class="item-title">
+                <a href="/2025/11/13/AWS%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%9710-%E9%80%9A%E8%BF%87CloudwatchLogInsight%E6%9F%A5%E6%89%BECloudTrail%E4%BA%8B%E4%BB%B6/" class="title">AWS使用日志10--通过CloudwatchLogInsight查找CloudTrail事件</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2025-11-13T02:53:58.000Z" itemprop="datePublished">2025-11-13</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a>
+              </p>
+              <p class="item-title">
+                <a href="/2025/11/13/AWS%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%9711-OrganizationAPI%E6%9B%B4%E6%96%B0Satus%E5%AD%97%E6%AE%B5%E7%9A%84%E5%BD%B1%E5%93%8D/" class="title">AWS使用日志11--OrganizationAPI更新Satus字段的影响</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2025-11-13T02:53:58.000Z" itemprop="datePublished">2025-11-13</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a>
+              </p>
+              <p class="item-title">
+                <a href="/2025/11/11/AWS%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%979-%E4%B8%BAStorageGateway%E5%88%9B%E5%BB%BACacheReport/" class="title">AWS使用日志9--为StorageGateway创建CacheReport</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2025-11-11T02:52:13.000Z" itemprop="datePublished">2025-11-11</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a>
+              </p>
+              <p class="item-title">
+                <a href="/2025/10/28/AWS%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%978-%E6%80%8E%E4%B9%88%E9%80%9A%E8%BF%87AWS-Config%E6%9F%A5%E6%89%BE%E9%85%8D%E7%BD%AE%E4%BA%86Lifecycle%E7%9A%84S3/" class="title">AWS使用日志8--怎么通过AWS Config查找配置了Lifecycle的S3</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2025-10-28T06:19:48.000Z" itemprop="datePublished">2025-10-28</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%83%8C%E6%99%AF"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">解决办法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E5%8F%91%E8%87%AA%E6%9F%A5"><span class="toc-number">2.1.</span> <span class="toc-text">开发自查</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lambda%E7%A1%AE%E8%AE%A4"><span class="toc-number">2.2.</span> <span class="toc-text">Lambda确认</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CloudTrail%E6%9F%A5%E8%AF%A2"><span class="toc-number">2.3.</span> <span class="toc-text">CloudTrail查询</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="toc-number">3.</span> <span class="toc-text">实现</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E6%9E%9C%E4%B8%8D%E8%83%BD%E7%94%A8Organization-Trail"><span class="toc-number">3.1.</span> <span class="toc-text">如果不能用Organization Trail</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E6%9E%9C%E7%94%A8%E4%BA%86Organization-Trail"><span class="toc-number">3.2.</span> <span class="toc-text">如果用了Organization Trail</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CloudWatch"><span class="toc-number">3.2.1.</span> <span class="toc-text">CloudWatch</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95"><span class="toc-number">4.</span> <span class="toc-text">问题记录</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%A1%E7%90%86%E8%B4%A6%E5%8F%B7%E7%9A%84Event-history%E4%B8%AD%E6%B2%A1%E7%9C%8B%E5%88%B0%E5%88%AB%E7%9A%84%E8%B4%A6%E5%8F%B7%E7%9A%84event"><span class="toc-number">4.1.</span> <span class="toc-text">管理账号的Event history中没看到别的账号的event</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B2%A1%E6%9C%89Data-Event"><span class="toc-number">4.2.</span> <span class="toc-text">没有Data Event</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E6%9E%9C%E6%88%91%E5%9C%A8%E7%AE%A1%E7%90%86%E8%B4%A6%E5%8F%B7%E5%88%9B%E5%BB%BA-Organization-Trail%EF%BC%8C%E4%BC%9A%E4%B8%8D%E4%BC%9A%E8%87%AA%E5%8A%A8%E6%94%B6%E9%9B%86%E5%88%B0%E6%89%80%E6%9C%89%E5%AD%90%E8%B4%A6%E5%8F%B7%E7%9A%84-Data-Events%EF%BC%9F"><span class="toc-number">4.2.1.</span> <span class="toc-text">如果我在管理账号创建 Organization Trail，会不会自动收集到所有子账号的 Data Events？</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="toc-number">5.</span> <span class="toc-text">知识点</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%B4%B9%E7%94%A8"><span class="toc-number">6.</span> <span class="toc-text">费用</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-AWS使用日志10-通过CloudwatchLogInsight查找CloudTrail事件" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      AWS使用日志10--通过CloudwatchLogInsight查找CloudTrail事件
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2025/11/13/AWS%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%9710-%E9%80%9A%E8%BF%87CloudwatchLogInsight%E6%9F%A5%E6%89%BECloudTrail%E4%BA%8B%E4%BB%B6/" class="article-date">
+	  <time datetime="2025-11-13T02:53:58.000Z" itemprop="datePublished">2025-11-13</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/AWS/" rel="tag">AWS</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2025/11/13/AWS%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%9710-%E9%80%9A%E8%BF%87CloudwatchLogInsight%E6%9F%A5%E6%89%BECloudTrail%E4%BA%8B%E4%BB%B6/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">On November 21, 2025, Amazon Simple Storage Service (Amazon S3) will stop returning Owner.DisplayName for all request responses. Owner.DisplayName is a legacy field that most modern applications do not rely on as it has been superseded by AWS Account IDs and IAM ARNs. Until November 21, 2025, S3 will progressively remove this field from request responses. After this date, Owner.DisplayName will not be returned for any requests made to Amazon S3. The Owner.DisplayName parameter is supported only in eight AWS Regions on the Amazon S3 APIs listed below under recommended actions. If you have applications that rely on this behavior to validate ownership of objects, we recommend using canonical IDs (unique identifier for AWS accounts), AWS account ID (12 digit identifier) or IAM ARNs (full resource naming) as a direct replacement of Owner.DisplayName. This change affects the following AWS Regions: US-EAST-1 Region, US-WEST-1 Region, US-WEST-2 Region, AP-SOUTHEAST-1 Region, AP-SOUTHEAST-2 Region, AP-NORTHEAST-1 Region, EU-WEST-1 Region, and SA-EAST-1 Region.</span><br></pre></td></tr></table></figure>
+<p>AWS 通知：从 2025-11-21 起，S3 不再返回 Owner.DisplayName 字段（逐步在此之前移除）。<br>建议替代：使用 owner canonical ID（Owner.ID）、AWS Account ID（12位） 或 IAM ARN 来校验对象归属或替代 DisplayName。</p>
+<h1 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h1><p>其实一开始想了好几个解决办法的，大致分为这几种</p>
+<h2 id="开发自查"><a href="#开发自查" class="headerlink" title="开发自查"></a>开发自查</h2><p>一开始我们想的让开发自己查一下，但是由于项目实在太多，而且开发任务很近，就此作罢</p>
+<h2 id="Lambda确认"><a href="#Lambda确认" class="headerlink" title="Lambda确认"></a>Lambda确认</h2><p>一个一个检查现有的Lambda function，虽然能查到一些东西，但是有局限性，比如</p>
+<ol>
+<li>function过多，一个一个查浪费大量时间</li>
+<li>除了Lambda，可能还有别的地方例如通过sdk查询的，没有办法查完整</li>
+</ol>
+<h2 id="CloudTrail查询"><a href="#CloudTrail查询" class="headerlink" title="CloudTrail查询"></a>CloudTrail查询</h2><p>由于AWS同时提供了可能会受影响的API，所以其实只要通过CloudTrail查询记录即可<br>最后决定用该方法查询</p>
+<table>
+<thead>
+<tr>
+<th>API 名称</th>
+<th>CloudTrail 事件名</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>REST.GET.ACL</code></td>
+<td><code>GetBucketAcl</code>, <code>GetObjectAcl</code></td>
+<td><strong>Management event</strong></td>
+<td>因为属于访问资源的访问控制列表（ACL），不算对象级数据操作</td>
+</tr>
+<tr>
+<td><code>REST.GET.BUCKET</code></td>
+<td><code>ListObjects</code>, <code>ListObjectsV2</code></td>
+<td><strong>Data event</strong></td>
+<td>属于读取对象列表（对象级操作）</td>
+</tr>
+<tr>
+<td><code>REST.GET.BUCKETVERSIONS</code></td>
+<td><code>ListObjectVersions</code></td>
+<td><strong>Data event</strong></td>
+<td>同样是列出对象版本（对象级操作）</td>
+</tr>
+<tr>
+<td><code>REST.GET.LOGGING_STATUS</code></td>
+<td><code>GetBucketLogging</code></td>
+<td><strong>Management event</strong></td>
+<td>属于查看 bucket 属性的管理操作</td>
+</tr>
+<tr>
+<td><code>REST.GET.SERVICE</code></td>
+<td><code>ListBuckets</code></td>
+<td><strong>Management event</strong></td>
+<td>属于查看账户下所有 bucket（管理级）</td>
+</tr>
+<tr>
+<td><code>REST.GET.UPLOAD</code></td>
+<td><code>ListParts</code></td>
+<td><strong>Data event</strong></td>
+<td>对象上传分片信息（对象级别）</td>
+</tr>
+<tr>
+<td><code>REST.GET.UPLOADS</code></td>
+<td><code>ListMultipartUploads</code></td>
+<td><strong>Data event</strong></td>
+<td>同上，属于对象上传过程的一部分</td>
+</tr>
+</tbody></table>
+<h1 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h1><h2 id="如果不能用Organization-Trail"><a href="#如果不能用Organization-Trail" class="headerlink" title="如果不能用Organization Trail"></a>如果不能用Organization Trail</h2><p>需在每个子账号：<br>手动登录查看 Event history（仅管理事件，保留 90 天）；<br>若要 Data Event，则在该子账号创建&#x2F;配置 Trail 启用 Data Events；<br>或者在每个子账号建立一个 “Audit Role”，在管理账号用 AssumeRole 脚本逐个查询 CloudTrail 事件（自动化但需跨账号权限与脚本）。</p>
+<h2 id="如果用了Organization-Trail"><a href="#如果用了Organization-Trail" class="headerlink" title="如果用了Organization Trail"></a>如果用了Organization Trail</h2><p>那我们这里需要确认有没有集成CloudWatch Log,在Trail的详情里如图所示<br>如果看到这个配置了，就说明已经开启了集成CloudWatch Log</p>
+<img src="/2025/11/13/AWS%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%9710-%E9%80%9A%E8%BF%87CloudwatchLogInsight%E6%9F%A5%E6%89%BECloudTrail%E4%BA%8B%E4%BB%B6/img.png" class="" title="如图所示">
+<p>这时候我们就可以去CloudWatch里面查找事件了</p>
+<h3 id="CloudWatch"><a href="#CloudWatch" class="headerlink" title="CloudWatch"></a>CloudWatch</h3><h1 id="问题记录"><a href="#问题记录" class="headerlink" title="问题记录"></a>问题记录</h1><h2 id="管理账号的Event-history中没看到别的账号的event"><a href="#管理账号的Event-history中没看到别的账号的event" class="headerlink" title="管理账号的Event history中没看到别的账号的event"></a>管理账号的Event history中没看到别的账号的event</h2><ul>
+<li>CloudTrail Event History 只显示 Management Account 本账号或 organization trail 可以看到的事件。</li>
+<li>Event History 页面本身只显示最近 90 天的事件。</li>
+<li>更重要的是，Event History 不会自动展示 Organization 中所有子账号的事件，它只显示事件的摘要，组织级的事件需要 通过 Trail 指向的 S3 或 CloudWatch Logs 来访问。<br>也就是说，即便你在 Management Account 创建了 Organization Trail，Management Account 的 Event History 界面不会直接显示子账号的事件。</li>
+</ul>
+<h2 id="没有Data-Event"><a href="#没有Data-Event" class="headerlink" title="没有Data Event"></a>没有Data Event</h2><p>organization自带了一个organization trail， 但是这个trail只有management event，并不会收集data event<br>如果想要收集data event的话，需要在管理账号中修改配置，添加data event</p>
+<h3 id="如果我在管理账号创建-Organization-Trail，会不会自动收集到所有子账号的-Data-Events？"><a href="#如果我在管理账号创建-Organization-Trail，会不会自动收集到所有子账号的-Data-Events？" class="headerlink" title="如果我在管理账号创建 Organization Trail，会不会自动收集到所有子账号的 Data Events？"></a>如果我在管理账号创建 Organization Trail，会不会自动收集到所有子账号的 Data Events？</h3><p>是的（条件）：<br>管理账号创建的 Organization Trail，并在该 trail 中启用了 DataEvents（例如 AWS::S3::Object），则会自动收集整个 Organization 下所有子账号的 Data Events（子账号无需做任何额外配置）。<br>关键是：创建时需设置 –is-organization-trail &#x2F; IsOrganizationTrail: true，并 put-event-selectors 加入 S3 DataResources：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">aws cloudtrail put-event-selectors \</span><br><span class="line">--trail-name OrgTrail \</span><br><span class="line">--event-selectors &#x27;[&#123;</span><br><span class="line">&quot;ReadWriteType&quot;:&quot;All&quot;,</span><br><span class="line">&quot;IncludeManagementEvents&quot;: true,</span><br><span class="line">&quot;DataResources&quot;: [</span><br><span class="line">&#123;&quot;Type&quot;:&quot;AWS::S3::Object&quot;,&quot;Values&quot;:[&quot;arn:aws:s3:::&quot;]&#125;</span><br><span class="line">]</span><br><span class="line">&#125;]&#x27;</span><br></pre></td></tr></table></figure>
+<p>验证：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">aws cloudtrail describe-trails --trail-name OrgTrail -&gt; IsOrganizationTrail: true</span><br></pre></td></tr></table></figure>
+<p>S3 存储路径下会看到各账户的日志 AWSLogs&#x2F;<account-id>&#x2F;CloudTrail&#x2F;…</p>
+<h1 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h1><ol>
+<li>Organization Trail的日志会存在Log Archived这个account中，而不是管理账号</li>
+</ol>
+<h1 id="费用"><a href="#费用" class="headerlink" title="费用"></a>费用</h1><p>CloudTrail &#x2F; Organization Trail 的计费（简要）<br>Management events：第一个副本（写入 S3 的 trail）免费。<br>Data events：按事件数量计费（例如 S3&#x2F;Lambda Data Event，通常为每 100,000 条 ~ $0.10 —— 以 AWS 公布的当期价格为准）。<br>Organization Trail 本身不单独收费，但Data Event 的计费会在管理账号中结算（所有子账号的 data event 汇总到管理账号计费）。<br>注意：如果对子账号也单独创建了另一个 trail 收集相同的 data events，会产生重复计费（每个 trail 都计费）。</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://maydaychen.github.io/2025/11/13/AWS%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%9710-%E9%80%9A%E8%BF%87CloudwatchLogInsight%E6%9F%A5%E6%89%BECloudTrail%E4%BA%8B%E4%BB%B6/" title="AWS使用日志10--通过CloudwatchLogInsight查找CloudTrail事件" target="_blank" rel="external">https://maydaychen.github.io/2025/11/13/AWS使用日志10-通过CloudwatchLogInsight查找CloudTrail事件/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/maydaychen" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/maydaychen" target="_blank"><span class="text-dark">Maydaychen</span><small class="ml-1x">Developer &amp; Infra engineer</small></a></h3>
+        <div>前Android/Vue开发，现Infra从业人员，主营监控/AWS</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2025/11/14/Linux%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%953-sftp%E8%BF%9E%E6%8E%A5%E5%88%B0%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%90%8E%E8%BF%9B%E5%BA%A6%E4%B8%80%E7%9B%B4%E5%8D%A10/" title="Linux问题记录3--sftp连接到服务器后进度一直卡0%"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2025/11/13/AWS%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%9711-OrganizationAPI%E6%9B%B4%E6%96%B0Satus%E5%AD%97%E6%AE%B5%E7%9A%84%E5%BD%B1%E5%93%8D/" title="AWS使用日志11--OrganizationAPI更新Satus字段的影响"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">    <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/maydaychen" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://weibo.com/maydaychen1" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/heychenyi" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2025 Maydaychen
+        
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: 'iQQzwxOn1A8OTubGOzrZ6HBx-gzGzoHsz',
+    appKey: '2cExUKFH9fnrzWbn0gIsHteF',
+    placeholder: '如果爱，请深爱，如果喷，请轻喷！',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>
