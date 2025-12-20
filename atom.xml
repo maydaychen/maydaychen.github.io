@@ -6,7 +6,7 @@
   <link href="https://maydaychen.github.io/atom.xml" rel="self"/>
   
   <link href="https://maydaychen.github.io/"/>
-  <updated>2025-11-13T09:58:09.000Z</updated>
+  <updated>2025-12-18T05:42:24.000Z</updated>
   <id>https://maydaychen.github.io/</id>
   
   <author>
@@ -15,6 +15,57 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>AWS使用日志12--使用第七代instance并使用DBsavingplan降低SQLServerRDS费用</title>
+    <link href="https://maydaychen.github.io/2025/12/19/AWS%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%9712-%E4%BD%BF%E7%94%A8%E7%AC%AC%E4%B8%83%E4%BB%A3instance%E5%B9%B6%E4%BD%BF%E7%94%A8DBsavingplan%E9%99%8D%E4%BD%8ESQLServerRDS%E8%B4%B9%E7%94%A8/"/>
+    <id>https://maydaychen.github.io/2025/12/19/AWS%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%9712-%E4%BD%BF%E7%94%A8%E7%AC%AC%E4%B8%83%E4%BB%A3instance%E5%B9%B6%E4%BD%BF%E7%94%A8DBsavingplan%E9%99%8D%E4%BD%8ESQLServerRDS%E8%B4%B9%E7%94%A8/</id>
+    <published>2025-12-19T05:33:07.000Z</published>
+    <updated>2025-12-18T05:42:24.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>最近AWS推出了DataBase Saving Plan，跟之前的EC2 Saving Plan一样的，只不过适用对象是各种DB相关的，而且只能适配第7代instance<br>具体可以看一下这篇<br><a href="https://aws.amazon.com/blogs/aws/introducing-database-savings-plans-for-aws-databases/">https://aws.amazon.com/blogs/aws/introducing-database-savings-plans-for-aws-databases/</a></p><p>另外还有一篇专门讲怎么让rds sql server的费用降低的文章，讲了第7代是怎么降低费用的，具体就是默认关闭了SMT，减少了vCPU,从而让license的费用降低<br><a href="https://aws.amazon.com/about-aws/whats-new/2025/12/amazon-rds-sql-server-optimized-cpu-lower-prices/">https://aws.amazon.com/about-aws/whats-new/2025/12/amazon-rds-sql-server-optimized-cpu-lower-prices/</a><br>而且规格越大的机器，费用便宜的越多</p><p>正好项目中有几台db.m6i.4xlarge的机器，每个月的费用都非常高，正好可以研究一下是否适用</p><h1 id="费用比较"><a href="#费用比较" class="headerlink" title="费用比较"></a>费用比较</h1><h1 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h1>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;最近AWS推出了DataBase Saving Plan，跟之前的EC2 Saving Plan一样的，只不过适用对象是各种DB相关的，而且</summary>
+      
+    
+    
+    
+    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+    <category term="AWS" scheme="https://maydaychen.github.io/tags/AWS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Zabbix基础8--配置SES发送邮件</title>
+    <link href="https://maydaychen.github.io/2025/12/18/Zabbix%E5%9F%BA%E7%A1%808-%E9%85%8D%E7%BD%AESES%E5%8F%91%E9%80%81%E9%82%AE%E4%BB%B6/"/>
+    <id>https://maydaychen.github.io/2025/12/18/Zabbix%E5%9F%BA%E7%A1%808-%E9%85%8D%E7%BD%AESES%E5%8F%91%E9%80%81%E9%82%AE%E4%BB%B6/</id>
+    <published>2025-12-18T02:43:39.000Z</published>
+    <updated>2025-12-18T05:31:41.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>Zabbix需要配置发送邮件报警，然后项目中使用了AWS SES服务作为SMTP服务，所以需要配置SES</p><h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h1><img src="/2025/12/18/Zabbix%E5%9F%BA%E7%A1%808-%E9%85%8D%E7%BD%AESES%E5%8F%91%E9%80%81%E9%82%AE%E4%BB%B6/1.png" class="" title="如图所示"><p>在SES上配置identity</p><h1 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h1><p>如图进行配置，注意SSL&#x2F;TLS使用的端口号是465</p><h1 id="测试邮件发送"><a href="#测试邮件发送" class="headerlink" title="测试邮件发送"></a>测试邮件发送</h1><p>在zabbix的media type中找到刚才配置的email选项，在最右侧有一个Test，点击</p><p>输入测试内容以及收件人，点击Test，即可发送邮件</p><img src="/2025/12/18/Zabbix%E5%9F%BA%E7%A1%808-%E9%85%8D%E7%BD%AESES%E5%8F%91%E9%80%81%E9%82%AE%E4%BB%B6/4.png" class="" title="如图所示"><h1 id="问题记录"><a href="#问题记录" class="headerlink" title="问题记录"></a>问题记录</h1><h2 id="Protocol-“smtps”-not-supported-or-disabled-in-libcurl"><a href="#Protocol-“smtps”-not-supported-or-disabled-in-libcurl" class="headerlink" title="Protocol “smtps” not supported or disabled in libcurl"></a>Protocol “smtps” not supported or disabled in libcurl</h2><p>解决办法：<br>配置zabbix使用SSL&#x2F;TLS，并使用465端口</p><h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><h2 id="Virtual-Deliverability-Manager"><a href="#Virtual-Deliverability-Manager" class="headerlink" title="Virtual Deliverability Manager"></a>Virtual Deliverability Manager</h2><p>VDM 是 SES 的可选高级功能<br>用于：</p><ul><li>邮件送达率分析（Deliverability Insights）</li><li>ISP 反馈、投诉、退信分析</li><li>发信质量监控与优化建议</li><li>每处理一封出站邮件，都会计一次 Count<br>每封邮件额外收取 $0.00007</li></ul><h3 id="BIMI-record-not-found-or-configured-without-default-selector"><a href="#BIMI-record-not-found-or-configured-without-default-selector" class="headerlink" title="BIMI record not found or configured without default selector"></a>BIMI record not found or configured without default selector</h3><p>核心结论（一句话）</p><p>你的发信域名没有启用 BIMI（品牌 Logo 展示）功能，或配置不完整。<br>👉 不会导致邮件发送失败<br>👉 不会直接影响是否进垃圾箱<br>👉 只影响“邮箱里是否显示你的品牌 Logo”</p><p>什么是 BIMI（Brand Indicators for Message Identification）<br>简单定义<br>BIMI 是一个“显示层”标准，用于让邮箱客户端在收件箱中显示发件方的品牌 Logo</p><h3 id="MAIL-FROM-record-is-not-aligned"><a href="#MAIL-FROM-record-is-not-aligned" class="headerlink" title="MAIL FROM record is not aligned"></a>MAIL FROM record is not aligned</h3><p>直译<br>MAIL FROM（信封发件人）使用的域名，未与主发件域名对齐。</p><p>核心结论<br>你的邮件在 SMTP 层 使用的发件域名与 From: 头部显示的域名 不一致或未按 DMARC 要求对齐<br>ISP（或 SES）认为这会 降低可信度，增加进垃圾箱概率</p><h3 id="Complaint-rate-exceeded-high-threshold-during-a-24-hour-period-in-the-last-3-days"><a href="#Complaint-rate-exceeded-high-threshold-during-a-24-hour-period-in-the-last-3-days" class="headerlink" title="Complaint rate exceeded high threshold during a 24 hour period in the last 3 days"></a>Complaint rate exceeded high threshold during a 24 hour period in the last 3 days</h3><p>直译<br>在最近 3 天内，存在 至少一个 24 小时窗口，<br>腾讯邮箱（Tencent ISP） 的 投诉率（Complaint Rate） 超过了 高阈值（High Threshold）。</p><p>实际含义<br>有一部分发往 qq.com &#x2F; foxmail.com &#x2F; 腾讯企业邮 的邮件<br>被收件人点击了“举报垃圾邮件”<br>在某一个 24 小时统计周期内，比例偏高<br>SES 认为这已经达到需要告警的风险水平</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;Zabbix需要配置发送邮件报警，然后项目中使用了AWS SES服务作为SMTP服务，所以需要配置SES&lt;/p&gt;
+&lt;h1 id=&quot;准备工作&quot;</summary>
+      
+    
+    
+    
+    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
+    
+    
+    <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
+    
+    <category term="Zabbix" scheme="https://maydaychen.github.io/tags/Zabbix/"/>
+    
+  </entry>
   
   <entry>
     <title>Linux问题记录3--sftp连接到服务器后进度一直卡0%</title>
@@ -430,53 +481,6 @@
     <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
     
     <category term="Grafana" scheme="https://maydaychen.github.io/tags/Grafana/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>AI尝试笔记4--通过n8n发送信息</title>
-    <link href="https://maydaychen.github.io/2025/08/16/AI%E5%B0%9D%E8%AF%95%E7%AC%94%E8%AE%B04-%E9%80%9A%E8%BF%87n8n%E5%8F%91%E9%80%81%E4%BF%A1%E6%81%AF/"/>
-    <id>https://maydaychen.github.io/2025/08/16/AI%E5%B0%9D%E8%AF%95%E7%AC%94%E8%AE%B04-%E9%80%9A%E8%BF%87n8n%E5%8F%91%E9%80%81%E4%BF%A1%E6%81%AF/</id>
-    <published>2025-08-16T06:48:30.000Z</published>
-    <updated>2025-08-16T08:09:05.166Z</updated>
-    
-    <content type="html"><![CDATA[<p>从来没想过通过TG发送消息竟然这么简单,下面记录一下通过TG发送消息的详细步骤</p><h1 id="创建机器人"><a href="#创建机器人" class="headerlink" title="创建机器人"></a>创建机器人</h1><p>我们只需要找到一个叫做BotFather的账号，然后输入&#x2F;newbot<br>他会要求你输入以下内容</p><ul><li>机器人的名字</li><li>机器人的用户名（必须以_bot结尾）<img src="/2025/08/16/AI%E5%B0%9D%E8%AF%95%E7%AC%94%E8%AE%B04-%E9%80%9A%E8%BF%87n8n%E5%8F%91%E9%80%81%E4%BF%A1%E6%81%AF/1.png" class="" title="图片">之后如果创建成功，会给你返回一个token，请务必记住这个token，因为n8n中需要</li></ul><h1 id="n8n设置Credential"><a href="#n8n设置Credential" class="headerlink" title="n8n设置Credential"></a>n8n设置Credential</h1><p>在n8n中创建一个credential，选择telegram，然后会要求你输入一个Access Token<br>将刚才BotFather给你的token输入即可</p><img src="/2025/08/16/AI%E5%B0%9D%E8%AF%95%E7%AC%94%E8%AE%B04-%E9%80%9A%E8%BF%87n8n%E5%8F%91%E9%80%81%E4%BF%A1%E6%81%AF/2.png" class="" title="图片"><h1 id="发送消息到群聊"><a href="#发送消息到群聊" class="headerlink" title="发送消息到群聊"></a>发送消息到群聊</h1><p>如果想要让这个Bot自动发送消息，需要配置一个chatid<br>创建群聊的操作这里就不多说， 跟微信什么的都是一样的<br>在创建群聊之后，我们在浏览器端访问API<br><a href="https://api.telegram.org/bot[token]/getUpdates">https://api.telegram.org/bot[token]/getUpdates</a><br>将[token]换成刚才我们获取到的Token，API会返回一个JSON<br>其中”id”这个字段就是我们想要的，如果是群聊的话会以‘-’开头<br>切记在n8n中将这个‘-’也粘贴进去，不然会报找不到chatid</p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;从来没想过通过TG发送消息竟然这么简单,下面记录一下通过TG发送消息的详细步骤&lt;/p&gt;
-&lt;h1 id=&quot;创建机器人&quot;&gt;&lt;a href=&quot;#创建机器人&quot; class=&quot;headerlink&quot; title=&quot;创建机器人&quot;&gt;&lt;/a&gt;创建机器人&lt;/h1&gt;&lt;p&gt;我们只需要找到一个叫做</summary>
-      
-    
-    
-    
-    <category term="AI" scheme="https://maydaychen.github.io/categories/AI/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>Mac优化记录4--修改系统路由表</title>
-    <link href="https://maydaychen.github.io/2025/08/15/Mac%E4%BC%98%E5%8C%96%E8%AE%B0%E5%BD%954-%E4%BF%AE%E6%94%B9%E7%B3%BB%E7%BB%9F%E8%B7%AF%E7%94%B1%E8%A1%A8/"/>
-    <id>https://maydaychen.github.io/2025/08/15/Mac%E4%BC%98%E5%8C%96%E8%AE%B0%E5%BD%954-%E4%BF%AE%E6%94%B9%E7%B3%BB%E7%BB%9F%E8%B7%AF%E7%94%B1%E8%A1%A8/</id>
-    <published>2025-08-15T09:16:36.000Z</published>
-    <updated>2025-08-15T09:58:24.000Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>由于项目需要使用VPN软件才能连接到特定的环境，但是连接VPN之后，内网的服务就连不上了，就导致了没法连接打印机或者是内网的服务器，故而产生了这个文章，研究了怎么在连接VPN的同时还能够连接到本地的服务器</p><h1 id="实现方案"><a href="#实现方案" class="headerlink" title="实现方案"></a>实现方案</h1><p>这里我才用的是修改路由表的方式，将需要连接的内网ip强制转成走本地路由</p><h2 id="查询当前路由表"><a href="#查询当前路由表" class="headerlink" title="查询当前路由表"></a>查询当前路由表</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -rn</span><br></pre></td></tr></table></figure><p>可以看到这样的结果,我已经让GPT给我解析了一下</p><img src="/2025/08/15/Mac%E4%BC%98%E5%8C%96%E8%AE%B0%E5%BD%954-%E4%BF%AE%E6%94%B9%E7%B3%BB%E7%BB%9F%E8%B7%AF%E7%94%B1%E8%A1%A8/1.png" class="" title="图片"><p>可以看到，现在默认所有的目标网段都走了VPN了，这就导致了无法连接内网</p><p>关键点<br>第一条 default（VPN）：<br>网关：10.11.11.6（VPN 服务器分配的虚拟网关）。<br>接口：utun23（VPN 虚拟接口）。<br>Flags：UGScg（U&#x3D;启用，G&#x3D;网关，S&#x3D;静态，c&#x3D;克隆，g&#x3D;网关缓存）。<br>优先级更高：因为 g（网关缓存）标志表示它是系统当前生效的默认路由。</p><p>第二条 default（本地）：<br>网关：10.0.95.254（本地路由器或光猫的 IP）。<br>接口：en0（物理网卡，如 Wi-Fi&#x2F;以太网）。<br>Flags：UGScIg（I&#x3D;间接路由，通常表示备用路由）。<br>优先级更低：I 标志表明它是备选路由，仅在主路由失效时使用。</p><h2 id="配置新路由规则"><a href="#配置新路由规则" class="headerlink" title="配置新路由规则"></a>配置新路由规则</h2><p>以10.0.199.111为例</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo route -n add 10.0.199.111/32 10.0.95.254</span><br></pre></td></tr></table></figure><p>&#x2F;32 表示精确匹配单个 IP。<br>10.0.95.254 需替换为你的实际本地网关（通过 netstat -rn | grep default 确认）。</p><h2 id="验证路由是否生效"><a href="#验证路由是否生效" class="headerlink" title="验证路由是否生效"></a>验证路由是否生效</h2><p>继续使用命令</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -rn</span><br></pre></td></tr></table></figure><p>可以看到如下一条</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">10.0.199.111/32    10.0.95.254        UGSc                  en0 </span><br></pre></td></tr></table></figure><p>表示验证通过</p><h2 id="重启后路由被覆盖"><a href="#重启后路由被覆盖" class="headerlink" title="重启后路由被覆盖"></a>重启后路由被覆盖</h2><p>当电脑重启之后，再次无法连接，原因在于路由表被重新覆盖<br>这时候只需要创建一个脚本，在重启之后运行即可</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">删除可能冲突的路由</span></span><br><span class="line">sudo route -n delete 10.0.199.111/32 10.11.11.1 2&gt;/dev/null</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">添加本地路由</span></span><br><span class="line">sudo route -n add 10.0.199.111/32 10.0.95.254</span><br><span class="line">echo &quot;已强制 10.0.199.111 走本地网络&quot;</span><br></pre></td></tr></table></figure><p>将脚本保存为fix_route.sh并运行即可</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chmod +x fix_route.sh</span><br><span class="line">./fix_route.sh</span><br></pre></td></tr></table></figure><h2 id="开机自动修改路由表"><a href="#开机自动修改路由表" class="headerlink" title="开机自动修改路由表"></a>开机自动修改路由表</h2><p>如果想开机自动修改的话，可以直接使用cron</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">crontab -e</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">添加一行</span></span><br><span class="line">@reboot /path/fix_route.sh</span><br></pre></td></tr></table></figure>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;由于项目需要使用VPN软件才能连接到特定的环境，但是连接VPN之后，内网的服务就连不上了，就导致了没法连接打印机或者是内网的服务器，故而产生</summary>
-      
-    
-    
-    
-    <category term="Tools" scheme="https://maydaychen.github.io/categories/Tools/"/>
-    
-    
-    <category term="MacOS" scheme="https://maydaychen.github.io/tags/MacOS/"/>
     
   </entry>
   
