@@ -6,7 +6,7 @@
   <link href="https://maydaychen.github.io/atom.xml" rel="self"/>
   
   <link href="https://maydaychen.github.io/"/>
-  <updated>2025-12-18T05:42:24.000Z</updated>
+  <updated>2026-01-10T14:18:11.060Z</updated>
   <id>https://maydaychen.github.io/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>AI尝试笔记5--n8n配置使用美团LongCat模型踩坑记录</title>
+    <link href="https://maydaychen.github.io/2026/01/10/AI%E5%B0%9D%E8%AF%95%E7%AC%94%E8%AE%B05-n8n%E9%85%8D%E7%BD%AE%E4%BD%BF%E7%94%A8%E7%BE%8E%E5%9B%A2LongCat%E6%A8%A1%E5%9E%8B%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95/"/>
+    <id>https://maydaychen.github.io/2026/01/10/AI%E5%B0%9D%E8%AF%95%E7%AC%94%E8%AE%B05-n8n%E9%85%8D%E7%BD%AE%E4%BD%BF%E7%94%A8%E7%BE%8E%E5%9B%A2LongCat%E6%A8%A1%E5%9E%8B%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95/</id>
+    <published>2026-01-10T08:47:16.000Z</published>
+    <updated>2026-01-10T14:18:11.060Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>由于最近阿里云百炼的试用都到期了，本来还想直接就购买阿里云的API了，毕竟感觉速度很可以<br>但是这时候，美团推出了自己的LongCat，也就是龙猫，而且每天都有五万的token免费使用，所以惊喜之下就想把n8n上的API都换成美团的<br>但是发现修改了URL之后一直报failed如图<br><img src="/AI%E5%B0%9D%E8%AF%95%E7%AC%94%E8%AE%B05--n8n%E9%85%8D%E7%BD%AE%E4%BD%BF%E7%94%A8%E7%BE%8E%E5%9B%A2LongCat%E6%A8%A1%E5%9E%8B%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95/img.png" alt="图片"></p><h1 id="错误解决"><a href="#错误解决" class="headerlink" title="错误解决"></a>错误解决</h1><p>死活查不出问题，然后百度不行就bing，bing不行就google，终于在Facebook上看到有人说出问题了<br>结果解决方案是什么呢？<br>就是不用管这个error，保存API跟Base URL，然后在选择模型的时候，直接输入美团的模型名称<br>LongCat-Flash-ChatOpenAI&#x2F;Anthropic高性能通用对话模型<br>LongCat-Flash-ThinkingOpenAI&#x2F;Anthropic深度思考模型</p><p>尝试确实可以使用……</p><p>搞不懂美团的API到底在搞什么鬼</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;由于最近阿里云百炼的试用都到期了，本来还想直接就购买阿里云的API了，毕竟感觉速度很可以&lt;br&gt;但是这时候，美团推出了自己的LongCat，</summary>
+      
+    
+    
+    
+    <category term="AI" scheme="https://maydaychen.github.io/categories/AI/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>AWS使用日志12--使用第七代instance并使用DBsavingplan降低SQLServerRDS费用</title>
@@ -445,32 +467,6 @@
       
     <summary type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;在QA团队做负载测试的时候，需要产出负载报告，这时候他们要求直接从Grafana导出报告，因此才有了这篇文章&lt;/p&gt;
 &lt;h1 id=&quot;实现&quot;</summary>
-      
-    
-    
-    
-    <category term="运维" scheme="https://maydaychen.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-    <category term="监控" scheme="https://maydaychen.github.io/tags/%E7%9B%91%E6%8E%A7/"/>
-    
-    <category term="Grafana" scheme="https://maydaychen.github.io/tags/Grafana/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Grafana使用日志10--接入keycloak验证</title>
-    <link href="https://maydaychen.github.io/2025/08/18/Grafana%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%9710--%E6%8E%A5%E5%85%A5keycloak%E9%AA%8C%E8%AF%81/"/>
-    <id>https://maydaychen.github.io/2025/08/18/Grafana%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%9710--%E6%8E%A5%E5%85%A5keycloak%E9%AA%8C%E8%AF%81/</id>
-    <published>2025-08-18T02:40:34.000Z</published>
-    <updated>2025-08-21T03:15:46.656Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>众所周知，在Grafana中自带的账号体系是没有办法支持MFA的，只能通过第三方来支持MFA，而其他的MFA工具因为各种原因都不太好用，所以这里选择了keycloak作为第三方的工具<br>下面就来介绍一下如何对接keycloak作为第三方登录工具</p><h1 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h1><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;众所周知，在Grafana中自带的账号体系是没有办法支持MFA的，只能通过第三方来支持MFA，而其他的MFA工具因为各种原因都不太好用，所以</summary>
       
     
     
